@@ -1,18 +1,18 @@
 {
     "standard": [
         {
-            "dot": "Dot",
-            "dot_with_version": "Dot {appVersion}",
-            "dot_full": "Dot Browser",
-            "dot_full_with_version": "Dot Browser {appVersion}",
+            "dot": "Ice",
+            "dot_with_version": "Ice {appVersion}",
+            "dot_full": "Ice Browser",
+            "dot_full_with_version": "Ice Browser {appVersion}",
             "button_open": "Open",
             "button_run": "Run",
             "button_send": "Send",
             "button_download": "Nedlasting",
             "search_placeholder": "Search",
             "quit": "Forlat",
-            "quit_dot": "Forlat Dot",
-            "quit_dot_with_version": "Forlat Dot {appVersion}"
+            "quit_dot": "Forlat Ice",
+            "quit_dot_with_version": "Forlat Ice {appVersion}"
         }
     ],
     "languages": [
@@ -35,8 +35,8 @@
             "file_details": "Viser en {fileType} fil",
             "active_small_text": "Surfer en nettside",
             "idle_small_text": "Inaktiv",
-            "idle_details": "Dot Browser",
-            "large_text": "Dot Browser {version}"
+            "idle_details": "Ice Browser",
+            "large_text": "Ice Browser {version}"
         }
     ],
     "overlay": [
@@ -104,7 +104,7 @@
             "appearance": [
                 {
                     "title": "Utseende",
-                    "toggle_dot": "Endre Dot knappen",
+                    "toggle_dot": "Endre Ice knappen",
                     "search_engine": "Søkemotor",
                     "temp_type": "Temperatur type",
                     "guest_user": "Gjest"
@@ -126,8 +126,8 @@
             ],
             "about_dot": [
                 {
-                    "title": "Om Dot",
-                    "thanks_message": "Dot har blitt gjort mulig takket",
+                    "title": "Om Ice",
+                    "thanks_message": "Ice har blitt gjort mulig takket",
                     "wxnd_coffee": "og ☕.",
                     "made_in": "Laget i",
                     "gb_with": "storbritannia med ",
@@ -193,7 +193,7 @@
             "navigate_forward": "Framover",
             "navigate_refresh": "Oppdater siden (F5)",
             "navigate_close": "Lukk kategorien (Ctrl+W)",
-            "open_dot": "Åpne Dot Launcher"
+            "open_dot": "Åpne Ice Launcher"
         }
     ]
 }

@@ -1,7 +1,7 @@
 <!-- markdownlint-disable -->
 <p align="center">
   <img src="https://i.imgur.com/Gdko6yP.png" style="display: block;margin-left: auto;margin-right: auto;" data-canonical-src="https://i.imgur.com/Gdko6yP.png" width="300" height="50" align="center"/>
-  <br><a href="https://dotbrowser.me">dotbrowser.me</a>
+  <br>
 </p>
 
 <div align="center">
@@ -33,8 +33,6 @@
 </p>
 
 A privacy-centric web browser, with an elegant UI and a robust built-in ad blocker, all designed with anonymity in mind.
-
-![](https://dotbrowser.me/static/Dot-landing.png)
 
 </div>
 

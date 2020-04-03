@@ -1,18 +1,18 @@
 {
     "standard": [
         {
-            "dot": "Dot",
-            "dot_with_version": "Dot {appVersion}",
-            "dot_full": "Dot Browser",
-            "dot_full_with_version": "Dot Browser {appVersion}",
+            "dot": "Ice",
+            "dot_with_version": "Ice {appVersion}",
+            "dot_full": "Ice Browser",
+            "dot_full_with_version": "Ice Browser {appVersion}",
             "button_open": "Open",
             "button_run": "Run",
             "button_send": "Send",
             "button_download": "Download",
             "search_placeholder": "Search",
             "quit": "Quit",
-            "quit_dot": "Quit Dot",
-            "quit_dot_with_version": "Quit Dot {appVersion}"
+            "quit_dot": "Quit Ice",
+            "quit_dot_with_version": "Quit Ice {appVersion}"
         }
     ],
     "languages": [
@@ -35,8 +35,8 @@
             "file_details": "Viewing a {fileType} file",
             "active_small_text": "Browsing a webpage",
             "idle_small_text": "Idle",
-            "idle_details": "Dot Browser",
-            "large_text": "Dot Browser {version}"
+            "idle_details": "Ice Browser",
+            "large_text": "Ice Browser {version}"
         }
     ],
     "overlay": [
@@ -104,7 +104,7 @@
             "appearance": [
                 {
                     "title": "Appearance",
-                    "toggle_dot": "Toggle Dot button",
+                    "toggle_dot": "Toggle Ice button",
                     "search_engine": "Search Engine",
                     "temp_type": "Temperature type",
                     "guest_user": "Guest"
@@ -126,8 +126,8 @@
             ],
             "about_dot": [
                 {
-                    "title": "About Dot",
-                    "thanks_message": "Dot was made possible thanks to",
+                    "title": "About Ice",
+                    "thanks_message": "Ice was made possible thanks to",
                     "wxnd_coffee": "and ☕.",
                     "made_in": "Made in",
                     "gb_with": "Great Britain with ",
@@ -193,7 +193,7 @@
             "navigate_forward": "Forward",
             "navigate_refresh": "Refresh (F5)",
             "navigate_close": "Close tab (Ctrl+W)",
-            "open_dot": "Open Dot Launcher"
+            "open_dot": "Open Ice Launcher"
         }
     ]
 }

@@ -1,18 +1,18 @@
 {
   "standard": [
     {
-      "dot": "Dot",
-      "dot_with_version": "Dot {appVersion}",
-      "dot_full": "Dot Webbläsare",
-      "dot_full_with_version": "Dot Webbläsare {appVersion}",
+      "dot": "Ice",
+      "dot_with_version": "Ice {appVersion}",
+      "dot_full": "Ice Webbläsare",
+      "dot_full_with_version": "Ice Webbläsare {appVersion}",
       "button_open": "Öppna",
       "button_run": "Kör",
       "button_send": "Skicka",
       "button_download": "Ladda ner",
       "search_placeholder": "Sök",
       "quit": "Stäng",
-      "quit_dot": "Stäng Dot",
-      "quit_dot_with_version": "Stäng Dot {appVersion}"
+      "quit_dot": "Stäng Ice",
+      "quit_dot_with_version": "Stäng Ice {appVersion}"
     }
   ],
   "languages": [
@@ -35,8 +35,8 @@
       "file_details": "Kollar på en {fileType} fil",
       "active_small_text": "Bläddrar en webbplats",
       "idle_small_text": "Inaktiv",
-      "idle_details": "Dot Webbläsare",
-      "large_text": "Dot Webbläsare {version}"
+      "idle_details": "Ice Webbläsare",
+      "large_text": "Ice Webbläsare {version}"
     }
   ],
   "overlay": [
@@ -104,7 +104,7 @@
       "appearance": [
         {
           "title": "Utseende",
-          "toggle_dot": "Toggla Dot knappen",
+          "toggle_dot": "Toggla Ice knappen",
           "search_engine": "Sökmotor",
           "temp_type": "Temperatur typ",
           "guest_user": "Gäst"
@@ -126,8 +126,8 @@
       ],
       "about_dot": [
         {
-          "title": "Om Dot",
-          "thanks_message": "Dot var gjord möjlig tack vare",
+          "title": "Om Ice",
+          "thanks_message": "Ice var gjord möjlig tack vare",
           "wxnd_coffee": "och ☕.",
           "made_in": "Tillverkad i",
           "gb_with": "Storbritannien med ",
@@ -193,7 +193,7 @@
       "navigate_forward": "Framåt",
       "navigate_refresh": "Ladda om (F5)",
       "navigate_close": "Stäng flik (Ctrl+W)",
-      "open_dot": "Öppna Dot Launcher"
+      "open_dot": "Öppna Ice Launcher"
     }
   ]
 }

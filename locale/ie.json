@@ -1,18 +1,18 @@
 {
     "standard": [
         {
-            "dot": "Dot",
-            "dot_with_version": "Dot {appVersion}",
-            "dot_full": "Dot Brabhsálaí",
-            "dot_full_with_version": "Dot Brabhsálaí {appVersion}",
+            "dot": "Ice",
+            "dot_with_version": "Ice {appVersion}",
+            "dot_full": "Ice Brabhsálaí",
+            "dot_full_with_version": "Ice Brabhsálaí {appVersion}",
             "button_open": "Oscailte",
             "button_run": "Rith",
             "button_send": "Seol",
             "button_download": "Íoslódáil",
             "search_placeholder": "Cuardaigh",
             "quit": "Scoir",
-            "quit_dot": "Scoir Dot",
-            "quit_dot_with_version": "Scoir Dot {appVersion}"
+            "quit_dot": "Scoir Ice",
+            "quit_dot_with_version": "Scoir Ice {appVersion}"
         }
     ],
     "languages": [
@@ -35,8 +35,8 @@
             "file_details": "Ag féachaint ar chomhad {fileType}",
             "active_small_text": "Brabhsáil leathanach gréasáin",
             "idle_small_text": "Díomhaoin",
-            "idle_details": "Dot Brabhsálaí",
-            "large_text": "Dot Brabhsálaí {version}"
+            "idle_details": "Ice Brabhsálaí",
+            "large_text": "Ice Brabhsálaí {version}"
         }
     ],
     "overlay": [
@@ -104,7 +104,7 @@
             "appearance": [
                 {
                     "title": "Dealramh",
-                    "toggle_dot": "Toggle cnaipe Dot",
+                    "toggle_dot": "Toggle cnaipe Ice",
                     "search_engine": "Inneall Cuardaigh",
                     "temp_type": "Cineál teochta",
                     "guest_user": "Aoi"
@@ -126,8 +126,8 @@
             ],
             "about_dot": [
                 {
-                    "title": "Faoi Dot",
-                    "thanks_message": "Dot bhíothas in ann a bhuíochas sin do",
+                    "title": "Faoi Ice",
+                    "thanks_message": "Ice bhíothas in ann a bhuíochas sin do",
                     "wxnd_coffee": "agus ☕.",
                     "made_in": "A rinneadh i",
                     "gb_with": "An Bhreatain Mhór le ",
@@ -192,7 +192,7 @@
             "navigate_forward": "Ar aghaidh",
             "navigate_refresh": "Athnuachan (F5)",
             "navigate_close": "Dún an cluaisín (Ctrl+W)",
-            "open_dot": "Tosaitheoir Dot Oscailte"
+            "open_dot": "Tosaitheoir Ice Oscailte"
         }
     ]
 }

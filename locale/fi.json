@@ -1,18 +1,18 @@
 {
     "standard": [
         {
-            "dot": "Dot",
-            "dot_with_version": "Dot {appVersion}",
-            "dot_full": "Dot selain",
-            "dot_full_with_version": "Dot selain {appVersion}",
+            "dot": "Ice",
+            "dot_with_version": "Ice {appVersion}",
+            "dot_full": "Ice selain",
+            "dot_full_with_version": "Ice selain {appVersion}",
             "button_open": "Avaa",
             "button_run": "Suorita",
             "button_send": "Lähetä",
             "button_download": "Ladata",
             "search_placeholder": "Etsi",
             "quit": "Lopeta",
-            "quit_dot": "Lopeta Dot",
-            "quit_dot_with_version": "Lopeta Dot {appVersion}"
+            "quit_dot": "Lopeta Ice",
+            "quit_dot_with_version": "Lopeta Ice {appVersion}"
         }
     ],
     "languages": [
@@ -35,8 +35,8 @@
             "file_details": "Tarkastellaan {fileType} -tiedostoa",
             "active_small_text": "Web-sivun selaaminen",
             "idle_small_text": "Poissa",
-            "idle_details": "Dot selain",
-            "large_text": "Dot selain {version}"
+            "idle_details": "Ice selain",
+            "large_text": "Ice selain {version}"
         }
     ],
     "overlay": [
@@ -104,7 +104,7 @@
             "appearance": [
                 {
                     "title": "Ulkomuoto",
-                    "toggle_dot": "Vaihda Dot -painiketta",
+                    "toggle_dot": "Vaihda Ice -painiketta",
                     "search_engine": "Hakukone",
                     "temp_type": "Lämpötilan tyyppi",
                     "guest_user": "Vieras"
@@ -127,7 +127,7 @@
             "about_dot": [
                 {
                     "title": "Meistä",
-                    "thanks_message": "Dot oli tehty mahdolliseksi",
+                    "thanks_message": "Ice oli tehty mahdolliseksi",
                     "wxnd_coffee": "ja ☕.",
                     "made_in": "Tehty",
                     "gb_with": "Isossa Britanniassa",
@@ -193,7 +193,7 @@
             "navigate_forward": "Eteenpäin",
             "navigate_refresh": "Päivitä sivu (F5)",
             "navigate_close": "Sulje välilehti (Ctrl+W)",
-            "open_dot": "Avaa Dot Launcher"
+            "open_dot": "Avaa Ice Launcher"
         }
     ]
 }
