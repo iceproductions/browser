@@ -24,16 +24,15 @@ export class SuggestionsStore {
 
       const historySuggestions: Suggestion[] = [];
 
-      var searchengine:string = 'google'
+      var searchengine: string = 'google';
 
       var data = store.options.getById(searchengine);
-      if(data) {
-        if(data.title) {
+      if (data) {
+        if (data.title) {
           searchengine = data.title;
         }
-      }
-      else {
-        searchengine = 'google'
+      } else {
+        searchengine = 'google';
       }
 
       var cse = searchengine.charAt(0).toUpperCase() + searchengine.slice(1);
@@ -73,9 +72,7 @@ export class SuggestionsStore {
       }
 
       let suggestions: Suggestion[] =
-        input.value === ''
-          ? []
-          : historySuggestions.concat(searchSuggestions).slice(0, 6);
+        input.value === '' ? [] : historySuggestions.concat(searchSuggestions).slice(0, 6);
 
       for (let i = 0; i < suggestions.length; i++) {
         suggestions[i].id = i;
@@ -99,10 +96,7 @@ export class SuggestionsStore {
           });
         }
 
-        suggestions =
-          input.value === ''
-            ? []
-            : historySuggestions.concat(searchSuggestions).slice(0, 6);
+        suggestions = input.value === '' ? [] : historySuggestions.concat(searchSuggestions).slice(0, 6);
 
         for (let i = 0; i < suggestions.length; i++) {
           suggestions[i].id = i;

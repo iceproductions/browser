@@ -5,8 +5,8 @@ export const StyledApp = styled.div`
   border-radius: 0 20px 20px 0;
   overflow: hidden;
   position: relative;
-  transition: 0.2s opacity,0.2s margin-top;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  transition: 0.2s opacity, 0.2s margin-top;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 
   ${({ visible }: { visible: boolean }) => css`
     opacity: ${visible ? 1 : 0};

@@ -36,19 +36,18 @@ export class Dialog extends BrowserView {
   private timeout: any;
   private hideTimeout: number;
 
-  public constructor(
-    appWindow: AppWindow,
-    { bounds, name, devtools, hideTimeout }: IOptions,
-  ) {
+  public constructor(appWindow: AppWindow, { bounds, name, devtools, hideTimeout }: IOptions) {
     super({
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: false,
-        preload: `${process.cwd()}/build/preloads/dialog-preload.js`
+        preload: `${process.cwd()}/build/preloads/dialog-preload.js`,
       },
     });
 
-    console.log(`${colors.blue.bold('Dialog')} Loaded ${name} dialog in ${Date.now() - windowsManager.performanceStart}ms`);
+    console.log(
+      `${colors.blue.bold('Dialog')} Loaded ${name} dialog in ${Date.now() - windowsManager.performanceStart}ms`
+    );
 
     this.appWindow = appWindow;
     this.bounds = { ...this.bounds, ...bounds };
@@ -65,24 +64,24 @@ export class Dialog extends BrowserView {
     });
 
     try {
-        this.webContents.debugger.attach('1.1')
+      this.webContents.debugger.attach('1.1');
     } catch (err) {
-        console.log('Failed to attach debugger', err)
+      console.log('Failed to attach debugger', err);
     }
-    
+
     this.webContents.debugger.on('detach', (event, reason) => {
-        console.log('Debugger detached.', reason)
-    })
-    
+      console.log('Debugger detached.', reason);
+    });
+
     this.webContents.debugger.on('message', (event, method, params) => {
-        if(method == 'Runtime.exceptionThrown') {
-            const error = params.exceptionDetails.exception.description;
+      if (method == 'Runtime.exceptionThrown') {
+        const error = params.exceptionDetails.exception.description;
 
-            console.log(`${colors.blue.bold('Dialog')} ${error}`);
-        }
-    })
+        console.log(`${colors.blue.bold('Dialog')} ${error}`);
+      }
+    });
 
-    this.webContents.debugger.sendCommand('Runtime.enable')
+    this.webContents.debugger.sendCommand('Runtime.enable');
 
     if (process.env.ENV === 'dev') {
       this.webContents.loadURL(`http://localhost:4444/${name}.html`);
@@ -90,9 +89,7 @@ export class Dialog extends BrowserView {
         this.webContents.openDevTools({ mode: 'detach' });
       }
     } else {
-      this.webContents.loadURL(
-        join('file://', app.getAppPath(), `\\build\\${name}.html`),
-      );
+      this.webContents.loadURL(join('file://', app.getAppPath(), `\\build\\${name}.html`));
     }
   }
 

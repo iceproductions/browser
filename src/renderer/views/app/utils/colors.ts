@@ -1,10 +1,5 @@
 // https://stackoverflow.com/a/13542669
-export const shadeBlendConvert = function (
-  this: any,
-  p: any,
-  from: any,
-  to: any = null,
-) {
+export const shadeBlendConvert = function(this: any, p: any, from: any, to: any = null) {
   if (
     typeof p !== 'number' ||
     p < -1 ||
@@ -30,9 +25,7 @@ export const shadeBlendConvert = function (
       } else {
         if (l === 8 || l === 6 || l < 4) return null; // ErrorCheck
         if (l < 6) {
-          d = `#${d[1]}${d[1]}${d[2]}${d[2]}${d[3]}${d[3]}${
-            l > 4 ? `${d[4]}${d[4]}` : ''
-          }`;
+          d = `#${d[1]}${d[1]}${d[2]}${d[2]}${d[3]}${d[3]}${l > 4 ? `${d[4]}${d[4]}` : ''}`;
         } // 3 or 4 digit
         (d = i(d.slice(1), 16)),
           (RGB[0] = (d >> 16) & 255),
@@ -52,14 +45,7 @@ export const shadeBlendConvert = function (
   const i = parseInt;
   const r = Math.round;
   let h = from.length > 9;
-  h =
-    typeof to === 'string'
-      ? to.length > 9
-        ? true
-        : to === 'c'
-        ? !h
-        : false
-      : h;
+  h = typeof to === 'string' ? (to.length > 9 ? true : to === 'c' ? !h : false) : h;
   const b = p < 0;
   p = b ? p * -1 : p;
   to = to && to !== 'c' ? to : b ? '#000000' : '#FFFFFF';
@@ -67,18 +53,12 @@ export const shadeBlendConvert = function (
   const t = this.sbcRip(to);
   if (!f || !t) return null; // ErrorCheck
   if (h) {
-    return `rgb${f[3] > -1 || t[3] > -1 ? 'a(' : '('}${r(
-      (t[0] - f[0]) * p + f[0],
-    )},${r((t[1] - f[1]) * p + f[1])},${r((t[2] - f[2]) * p + f[2])}${
+    return `rgb${f[3] > -1 || t[3] > -1 ? 'a(' : '('}${r((t[0] - f[0]) * p + f[0])},${r((t[1] - f[1]) * p + f[1])},${r(
+      (t[2] - f[2]) * p + f[2]
+    )}${
       f[3] < 0 && t[3] < 0
         ? ')'
-        : `,${
-            f[3] > -1 && t[3] > -1
-              ? r(((t[3] - f[3]) * p + f[3]) * 10000) / 10000
-              : t[3] < 0
-              ? f[3]
-              : t[3]
-          })`
+        : `,${f[3] > -1 && t[3] > -1 ? r(((t[3] - f[3]) * p + f[3]) * 10000) / 10000 : t[3] < 0 ? f[3] : t[3]})`
     }`;
   }
 
@@ -105,9 +85,7 @@ export const getColorBrightness = (color: any) => {
   let b;
 
   if (color.match(/^rgb/)) {
-    color = color.match(
-      /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/,
-    );
+    color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
 
     r = color[1];
     g = color[2];

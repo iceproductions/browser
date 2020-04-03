@@ -1,4 +1,3 @@
 export interface ClosedTabs {
-    url: any;
+  url: any;
 }
-  

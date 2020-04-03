@@ -1,5 +1,5 @@
 export interface ViewError {
-    code: number,
-    description: string,
-    url: string
+  code: number;
+  description: string;
+  url: string;
 }

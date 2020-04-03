@@ -31,8 +31,8 @@ export const StyledApp = styled.div`
 export const Icon = styled.div`
   ${({ theme, icon, size, centered }: { theme: ITheme; icon: any; size: number; centered: boolean }) => css`
     background-image: url(${icon});
-    filter: ${theme["general-element"]};
-    
+    filter: ${theme['general-element']};
+
     width: ${size}px;
     height: ${size}px;
 

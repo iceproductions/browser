@@ -23,18 +23,10 @@ const onAddTabClick = () => {
 export const Tabbar = observer(() => {
   return (
     <StyledTabbar>
-      <TabsContainer
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        ref={store.tabs.containerRef}
-      >
+      <TabsContainer onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={store.tabs.containerRef}>
         <Tabs />
       </TabsContainer>
-      <AddTab
-        icon={icons.add}
-        onClick={onAddTabClick}
-        divRef={(r: any) => (store.addTab.ref = r)}
-      />
+      <AddTab icon={icons.add} onClick={onAddTabClick} divRef={(r: any) => (store.addTab.ref = r)} />
       <HorizontalScrollbar
         ref={store.tabs.scrollbarRef}
         enabled={store.tabs.scrollable}

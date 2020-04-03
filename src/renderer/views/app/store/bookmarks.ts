@@ -26,7 +26,7 @@ export class BookmarksStore {
   public menuLeft: number = 0;
 
   @observable
-  public currentDisplay: 'default' | 'new_bookmark' | 'import' | 'export' = 'default'
+  public currentDisplay: 'default' | 'new_bookmark' | 'import' | 'export' = 'default';
 
   @observable
   public menuTop: number = 0;
@@ -38,9 +38,7 @@ export class BookmarksStore {
 
   @computed
   public get visibleItems() {
-    return this.list.filter(
-      x => x.url.includes(this.searched) || x.title.includes(this.searched),
-    );
+    return this.list.filter((x) => x.url.includes(this.searched) || x.title.includes(this.searched));
   }
 
   constructor() {
@@ -52,7 +50,7 @@ export class BookmarksStore {
   }
 
   public getById(id: string) {
-    return this.list.find(x => x._id === id);
+    return this.list.find((x) => x._id === id);
   }
 
   public async load() {
@@ -75,9 +73,9 @@ export class BookmarksStore {
   }
 
   public removeItem(id: string) {
-    this.list = this.list.filter(x => x._id !== id);
+    this.list = this.list.filter((x) => x._id !== id);
 
-    this.db.remove({ _id: id }, err => {
+    this.db.remove({ _id: id }, (err) => {
       if (err) return console.warn(err);
     });
   }

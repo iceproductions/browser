@@ -12,43 +12,41 @@ import { FORECAST_KEY } from '../constants'; /* Forecast key is used to fetch th
 
 //New class by Daniel Bulant
 //New class, for easier day storing
-export class WeatherStoreDay{
-
+export class WeatherStoreDay {
   @observable
   public maxTemp?: number = 20;
 
   @observable
   public minTemp?: number = 12;
-  
+
   @observable
   public summary?: string;
 
   @observable
-  public name?: string = "Day";
+  public name?: string = 'Day';
 
   @observable
   public icon?: string;
 }
 
 export class WeatherStore {
-
   @observable
   public loaded?: boolean = false;
 
   @observable
-  public location?: string = "Offline";
+  public location?: string = 'Offline';
 
   @observable
   public temp?: number = 0;
 
   @observable
-  public summary?: string = "Unable to get weather";
+  public summary?: string = 'Unable to get weather';
 
   @observable
   public icon?: string;
 
   @observable
-  public timetype?: string = "Offline";
+  public timetype?: string = 'Offline';
 
   @observable
   public timeInt?: number = 3;
@@ -57,49 +55,57 @@ export class WeatherStore {
   public tempindicator?: string;
 
   @observable
-  public day1: WeatherStoreDay = new WeatherStoreDay;
+  public day1: WeatherStoreDay = new WeatherStoreDay();
 
   @observable
-  public day2: WeatherStoreDay = new WeatherStoreDay;
+  public day2: WeatherStoreDay = new WeatherStoreDay();
 
   @observable
-  public day3: WeatherStoreDay = new WeatherStoreDay;
+  public day3: WeatherStoreDay = new WeatherStoreDay();
 
   @observable
-  public day4: WeatherStoreDay = new WeatherStoreDay;
+  public day4: WeatherStoreDay = new WeatherStoreDay();
 
   /** This function will be called when your app is first opened or when they need to reload the data */
   public async load(deg?: string) {
-
     try {
-      
-      if(!file.get("tempType")) {
-        file.set("tempType", "c");
-        file.save()
+      if (!file.get('tempType')) {
+        file.set('tempType', 'c');
+        file.save();
       }
 
-      var dt = "c";
-      if(deg) {
-        if(deg == "F") {
-          dt = "F"
+      var dt = 'c';
+      if (deg) {
+        if (deg == 'F') {
+          dt = 'F';
         }
       }
-      if(!deg) {
-        if(!file.get("tempType")) {
-          return dt = "c"
+      if (!deg) {
+        if (!file.get('tempType')) {
+          return (dt = 'c');
         } else {
-          dt = file.get("tempType");
+          dt = file.get('tempType');
         }
       }
       //darksky uses different form, ca for Celsius, uk2 for Farnheit
-      var indicator = store.weather.tempindicator == "c" ? "ca" : "uk2";
+      var indicator = store.weather.tempindicator == 'c' ? 'ca' : 'uk2';
       //To get current position, returns lat and lon (double precision)
       var ip_url = 'http://ip-api.com/json/';
       var ip_loc = await fetch(ip_url);
       ip_loc = await ip_loc.json();
 
       //CORS anywhere needed, darksky API don't have CORS headers
-      var api_url = "https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/"+FORECAST_KEY+"/"+ ip_loc.lat + "," + ip_loc.lon +"/?exclude=flags,hourly,alerts&lang=" + store.locale.currentLanguage + "&units="+indicator;
+      var api_url =
+        'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/' +
+        FORECAST_KEY +
+        '/' +
+        ip_loc.lat +
+        ',' +
+        ip_loc.lon +
+        '/?exclude=flags,hourly,alerts&lang=' +
+        store.locale.currentLanguage +
+        '&units=' +
+        indicator;
       const data = await fetch(api_url);
       const json = await data.json();
 
@@ -109,24 +115,24 @@ export class WeatherStore {
       this.summary = json.currently.summary;
       this.icon = json.icon;
 
-      this.timetype = "Day"
-      this.timeInt = 0
+      this.timetype = 'Day';
+      this.timeInt = 0;
 
-      if (new Date(1564166909*1000).getHours() < 12) {
-        this.timetype = "Morning"
-        this.timeInt = 1
-      } else if (new Date(1564166909*1000).getHours() < 18) {
-        this.timetype = "Afternoon"
-        this.timeInt = 2
+      if (new Date(1564166909 * 1000).getHours() < 12) {
+        this.timetype = 'Morning';
+        this.timeInt = 1;
+      } else if (new Date(1564166909 * 1000).getHours() < 18) {
+        this.timetype = 'Afternoon';
+        this.timeInt = 2;
       } else {
-        this.timetype = "Night"
-        this.timeInt = 3
+        this.timetype = 'Night';
+        this.timeInt = 3;
       }
 
-      this.timeInt = 3
+      this.timeInt = 3;
 
       var date = new Date();
-  
+
       //Tomorrow, day after tomorrow etc.
       var day1 = new Date(date.getTime() + 24 * 60 * 60 * 1000);
       var day2 = new Date(day1.getTime() + 24 * 60 * 60 * 1000);
@@ -149,21 +155,11 @@ export class WeatherStore {
       this.day2.summary = json.daily.data[2].summary;
       this.day3.summary = json.daily.data[3].summary;
       this.day4.summary = json.daily.data[4].summary;
-      
-      
-      
-      
 
       /**
        * Loaded the weather ✨ magic
-      */
+       */
       this.loaded = true;
-      
-
-    }
-    catch (e) {
-      
-    }
+    } catch (e) {}
   }
-
 }

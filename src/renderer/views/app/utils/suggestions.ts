@@ -7,9 +7,7 @@ export const countVisitedTimes = (hItems: HistoryItem[]) => {
   const historyItems = hItems.slice();
 
   for (const historyItem of historyItems) {
-    const itemsWithUrl = historyItems.filter(
-      x => x.url.replace('/', '') === historyItem.url.replace('/', ''),
-    );
+    const itemsWithUrl = historyItems.filter((x) => x.url.replace('/', '') === historyItem.url.replace('/', ''));
 
     const itemToPush = {
       times: itemsWithUrl.length,
@@ -66,17 +64,11 @@ export const getHistorySuggestions = (filter: string) => {
         .split('&')[0]
         .replace(/\+/g, ' ')
         .replace(/%20/g, ' ');
-      if (
-        query.startsWith(filterPart) &&
-        urlMatchedItems.filter(x => x.url === query).length === 0
-      ) {
+      if (query.startsWith(filterPart) && urlMatchedItems.filter((x) => x.url === query).length === 0) {
         itemToPush.url = query;
         urlMatchedItems.push({ url: query, canSuggest: true, isSearch: true });
       }
-    } else if (
-      urlPart.toLowerCase().startsWith(filterPart) ||
-      `www.${urlPart}`.startsWith(filterPart)
-    ) {
+    } else if (urlPart.toLowerCase().startsWith(filterPart) || `www.${urlPart}`.startsWith(filterPart)) {
       urlMatchedItems.push({ ...itemToPush, canSuggest: true });
     } else if (itemToPush.title.toLowerCase().includes(filter)) {
       titleMatchedItems.push({ ...itemToPush, canSuggest: false });
@@ -115,11 +107,7 @@ export const getSearchSuggestions = (filter: string) =>
 
     try {
       const data = JSON.parse(
-        (await requestURL(
-          `http://google.com/complete/search?client=chrome&q=${encodeURIComponent(
-            input,
-          )}`,
-        )).data,
+        (await requestURL(`http://google.com/complete/search?client=chrome&q=${encodeURIComponent(input)}`)).data
       );
 
       let suggestions: string[] = [];

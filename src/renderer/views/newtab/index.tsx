@@ -67,4 +67,4 @@ document.head.appendChild(styleElement);
 
 createMount(document);
 
-ReactDOM.render(<App />, document.getElementById("app"));
+ReactDOM.render(<App />, document.getElementById('app'));

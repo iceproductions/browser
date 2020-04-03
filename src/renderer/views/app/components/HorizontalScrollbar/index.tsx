@@ -52,10 +52,7 @@ export default class HorizontalScrollbar extends React.Component<Props, State> {
   }
 
   public shouldComponentUpdate(nextProps: Props, nextState: State) {
-    if (
-      this.state.visible !== nextState.visible ||
-      this.props.enabled !== nextProps.enabled
-    ) {
+    if (this.state.visible !== nextState.visible || this.props.enabled !== nextProps.enabled) {
       return true;
     }
 
@@ -64,10 +61,7 @@ export default class HorizontalScrollbar extends React.Component<Props, State> {
     }
 
     if (nextProps.visible && nextState.visible) {
-      if (
-        this.state.thumbLeft !== nextState.thumbLeft ||
-        this.state.thumbWidth !== nextState.thumbWidth
-      ) {
+      if (this.state.thumbLeft !== nextState.thumbLeft || this.state.thumbWidth !== nextState.thumbWidth) {
         return true;
       }
     }
@@ -118,8 +112,7 @@ export default class HorizontalScrollbar extends React.Component<Props, State> {
     if (this.scrollData.dragging && this.container) {
       const { startLeft, mouseStartX } = this.scrollData;
       const { offsetWidth, scrollWidth } = this.container;
-      this.container.scrollLeft =
-        ((startLeft + e.pageX - mouseStartX) / offsetWidth) * scrollWidth;
+      this.container.scrollLeft = ((startLeft + e.pageX - mouseStartX) / offsetWidth) * scrollWidth;
     }
   };
 

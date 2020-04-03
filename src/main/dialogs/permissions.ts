@@ -16,14 +16,14 @@ export class PermissionsDialog extends Dialog {
         height: HEIGHT,
         y: 36,
       },
-      devtools: true
+      devtools: true,
     });
   }
 
   public rearrange() {
     const { width } = this.appWindow.getContentBounds();
-    var x = Math.round(((width - WIDTH) / 2));
-    super.setBounds({ x, y: 36, width: WIDTH, height: HEIGHT })
+    var x = Math.round((width - WIDTH) / 2);
+    super.setBounds({ x, y: 36, width: WIDTH, height: HEIGHT });
   }
 
   public show() {
@@ -37,21 +37,14 @@ export class PermissionsDialog extends Dialog {
     this.rearrange();
     this.webContents.send('visible', false);
     setTimeout(() => {
-        super.hide();
-        this.visible = false;
+      super.hide();
+      this.visible = false;
     }, 100);
   }
 
-  public async requestPermission(
-    name: string,
-    url: string,
-    details: any,
-  ): Promise<boolean> {
+  public async requestPermission(name: string, url: string, details: any): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      if (
-        name === 'unknown' ||
-        (name === 'media' && details.mediaTypes.length === 0)
-      ) {
+      if (name === 'unknown' || (name === 'media' && details.mediaTypes.length === 0)) {
         return reject('Unknown permission');
       }
 
@@ -60,26 +53,19 @@ export class PermissionsDialog extends Dialog {
 
       this.webContents.send('request-permission', { name, url, details });
 
-      ipcMain.once(
-        'request-permission-result',
-        (e: any, r: boolean, permission: any) => {
-          resolve(r);
-          
-          this.hide()
+      ipcMain.once('request-permission-result', (e: any, r: boolean, permission: any) => {
+        resolve(r);
 
-          if (permission.name == 'http_permission') {
-            if(r == true) {
-              this.appWindow.viewManager.selected.webContents.loadURL(
-                `https://${
-                  this.appWindow.viewManager.selected.webContents
-                    .getURL()
-                    .split('://')[1]
-                }`,
-              );
-            }
+        this.hide();
+
+        if (permission.name == 'http_permission') {
+          if (r == true) {
+            this.appWindow.viewManager.selected.webContents.loadURL(
+              `https://${this.appWindow.viewManager.selected.webContents.getURL().split('://')[1]}`
+            );
           }
-        },
-      );
+        }
+      });
     });
   }
 }

@@ -17,7 +17,7 @@ export class SearchDialog extends Dialog {
         height: HEIGHT,
         y: 80,
       },
-      devtools: true
+      devtools: true,
     });
 
     ipcMain.on(`height-${this.webContents.id}`, (e, height) => {
@@ -28,13 +28,12 @@ export class SearchDialog extends Dialog {
       });
       this.lastHeight = 78 + height;
     });
-
   }
 
   public rearrange() {
     const { width } = this.appWindow.getContentBounds();
-    var x = Math.round(((width - WIDTH) / 2));
-    super.setBounds({ x, y: 80, width: WIDTH, height: HEIGHT })
+    var x = Math.round((width - WIDTH) / 2);
+    super.setBounds({ x, y: 80, width: WIDTH, height: HEIGHT });
   }
 
   public show(content?: any) {
@@ -49,5 +48,4 @@ export class SearchDialog extends Dialog {
     this.webContents.send('visible', false);
     super.hide();
   }
-
 }

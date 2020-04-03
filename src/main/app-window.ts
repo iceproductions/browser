@@ -1,10 +1,4 @@
-import {
-  BrowserWindow,
-  app,
-  nativeImage,
-  session,
-  ipcRenderer,
-} from 'electron';
+import { BrowserWindow, app, nativeImage, session, ipcRenderer } from 'electron';
 
 import { resolve } from 'path';
 import { platform } from 'os';
@@ -28,16 +22,16 @@ import { Dialog } from './dialogs/dialog';
 const showSearchOnStartup = (window: AppWindow) => {
   const { search } = window.dialogs;
 
-  const url = "";
+  const url = '';
   const tabId = 0;
 
   search.show({
     url,
-    tabId
+    tabId,
   });
 
-  search.webContents.focus()
-}
+  search.webContents.focus();
+};
 
 interface IDialogs {
   search?: SearchDialog;
@@ -47,15 +41,15 @@ interface IDialogs {
 
   alert?: AlertDialog;
   permissions?: PermissionsDialog;
-  
+
   [key: string]: Dialog;
 }
 
 export class AppWindow extends BrowserWindow {
   public viewManager: ViewManager = new ViewManager();
   public dialogs: IDialogs = {
-    search: new SearchDialog(this)
-  }
+    search: new SearchDialog(this),
+  };
 
   constructor() {
     super({
@@ -76,7 +70,7 @@ export class AppWindow extends BrowserWindow {
         enableBlinkFeatures: 'OverlayScrollbars',
         webviewTag: true,
         webSecurity: false,
-        enableRemoteModule: true
+        enableRemoteModule: true,
       },
     });
 
@@ -110,7 +104,7 @@ export class AppWindow extends BrowserWindow {
       this.dialogs.alert.rearrange();
       this.dialogs.print.rearrange();
       this.dialogs.permissions.rearrange();
-      this.dialogs.menu.hide()
+      this.dialogs.menu.hide();
     });
 
     this.on('unmaximize', () => {
@@ -119,7 +113,7 @@ export class AppWindow extends BrowserWindow {
       this.dialogs.alert.rearrange();
       this.dialogs.print.rearrange();
       this.dialogs.permissions.rearrange();
-      this.dialogs.menu.hide()
+      this.dialogs.menu.hide();
     });
 
     this.on('resize', () => {
@@ -153,15 +147,18 @@ export class AppWindow extends BrowserWindow {
     this.on('restore', resize);
     this.on('unmaximize', resize);
 
-    process.on('uncaughtException', error => {
+    process.on('uncaughtException', (error) => {
       console.log(`${colors.blue.bold('Exception')}`, error);
     });
 
     if (process.env.ENV == 'dev') {
       this.setIcon(
         nativeImage.createFromPath(
-          resolve(app.getAppPath(), `/static/icon.${platform() == 'win32' ? 'icon' : platform() == 'darwin' ? 'icns' : 'png'}`),
-        ),
+          resolve(
+            app.getAppPath(),
+            `/static/icon.${platform() == 'win32' ? 'icon' : platform() == 'darwin' ? 'icns' : 'png'}`
+          )
+        )
       );
       this.webContents.openDevTools({ mode: 'detach' });
       this.loadURL('http://localhost:4444/app.html');
@@ -171,11 +168,13 @@ export class AppWindow extends BrowserWindow {
 
     this.once('ready-to-show', async () => {
       this.show();
-      runAdblockService(session.fromPartition("persist:view"));
+      runAdblockService(session.fromPartition('persist:view'));
 
-      console.log(`${colors.blue.bold('Performance')} Loaded application in ${Date.now() - windowsManager.performanceStart}ms`);
+      console.log(
+        `${colors.blue.bold('Performance')} Loaded application in ${Date.now() - windowsManager.performanceStart}ms`
+      );
 
-      this.focus()
+      this.focus();
     });
 
     this.on('enter-full-screen', () => {
@@ -208,17 +207,11 @@ export class AppWindow extends BrowserWindow {
     });
 
     this.on('app-command', (e, cmd) => {
-      if (
-        cmd === 'browser-backward' &&
-        this.viewManager.selected.webContents.canGoBack()
-      ) {
+      if (cmd === 'browser-backward' && this.viewManager.selected.webContents.canGoBack()) {
         this.viewManager.selected.webContents.goBack();
       }
 
-      if (
-        cmd === 'browser-forward' &&
-        this.viewManager.selected.webContents.canGoBack()
-      ) {
+      if (cmd === 'browser-forward' && this.viewManager.selected.webContents.canGoBack()) {
         this.viewManager.selected.webContents.goBack();
       }
     });

@@ -63,10 +63,7 @@ export class TabsStore {
 
     this.rearrangeTabsTimer.interval = setInterval(() => {
       // Set widths and positions for tabs 3 seconds after a tab was closed
-      if (
-        this.rearrangeTabsTimer.canReset &&
-        this.rearrangeTabsTimer.time === 3
-      ) {
+      if (this.rearrangeTabsTimer.canReset && this.rearrangeTabsTimer.time === 3) {
         this.updateTabsBounds(true);
         this.rearrangeTabsTimer.canReset = false;
       }
@@ -77,53 +74,38 @@ export class TabsStore {
       this.updateTabsBounds(false);
     });
 
-    ipcRenderer.on(
-      'api-tabs-create',
-      (e: any, options: chrome.tabs.CreateProperties) => {
-        this.addTab(options);
-      },
-    );
-    
+    ipcRenderer.on('api-tabs-create', (e: any, options: chrome.tabs.CreateProperties) => {
+      this.addTab(options);
+    });
+
     ipcRenderer.on('view-create', (e: any, url: any, active: boolean) => {
-      this.addTab({ url, active })
-    })
+      this.addTab({ url, active });
+    });
 
-    ipcRenderer.on('get-accent-color', e => {
-      const filtered = shadeBlendConvert(
-        store.theme['tab-vibrant-opacity']+0.3,
-        this.selectedTab.background
-      )
+    ipcRenderer.on('get-accent-color', (e) => {
+      const filtered = shadeBlendConvert(store.theme['tab-vibrant-opacity'] + 0.3, this.selectedTab.background);
 
-      ipcRenderer.send('receive-accent-color', filtered)
-    })
+      ipcRenderer.send('receive-accent-color', filtered);
+    });
 
     ipcRenderer.on(
       `found-in-page`,
-      (
-        e: any,
-        { activeMatchOrdinal, matches, requestId }: Electron.FoundInPageResult,
-      ) => {
-        const tab = this.list.find(x => x.findRequestId === requestId);
+      (e: any, { activeMatchOrdinal, matches, requestId }: Electron.FoundInPageResult) => {
+        const tab = this.list.find((x) => x.findRequestId === requestId);
 
         if (tab) {
           tab.findOccurrences = `${activeMatchOrdinal}/${matches}`;
         }
-      },
+      }
     );
 
-    ipcRenderer.on(
-      `zoom-level-changed`,
-      (
-        e: any,
-        zoomFactor: number,
-      ) => {
-        const tab = this.selectedTab
+    ipcRenderer.on(`zoom-level-changed`, (e: any, zoomFactor: number) => {
+      const tab = this.selectedTab;
 
-        if (tab) {
-          tab.zoomAmount = zoomFactor;
-        }
-      },
-    );
+      if (tab) {
+        tab.zoomAmount = zoomFactor;
+      }
+    });
   }
 
   public resetRearrangeTabsTimer() {
@@ -157,12 +139,7 @@ export class TabsStore {
 
   public getHostname(url: string) {
     var match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
-    if (
-      match != null &&
-      match.length > 2 &&
-      typeof match[2] === 'string' &&
-      match[2].length > 0
-    ) {
+    if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
       return match[2];
     } else {
       return null;
@@ -170,7 +147,7 @@ export class TabsStore {
   }
 
   public get selectedTab() {
-    return this.getTabById(this.selectedId)
+    return this.getTabById(this.selectedId);
   }
 
   public get hoveredTab() {
@@ -178,7 +155,7 @@ export class TabsStore {
   }
 
   public getTabById(id: number) {
-    return this.list.find(x => x.id === id);
+    return this.list.find((x) => x.id === id);
   }
 
   @action
@@ -215,9 +192,7 @@ export class TabsStore {
 
   @action
   public setTabsWidths(animation: boolean) {
-    const tabs = this.list.filter(
-      x => !x.isClosing && x.tabGroupId === store.tabGroups.currentGroupId,
-    );
+    const tabs = this.list.filter((x) => !x.isClosing && x.tabGroupId === store.tabGroups.currentGroupId);
 
     const containerWidth = this.containerWidth;
 
@@ -232,9 +207,7 @@ export class TabsStore {
   @action
   public setTabsLefts(animation: boolean) {
     const tabs = this.list
-      .filter(
-        x => !x.isClosing && x.tabGroupId === store.tabGroups.currentGroupId,
-      )
+      .filter((x) => !x.isClosing && x.tabGroupId === store.tabGroups.currentGroupId)
       .slice()
       .sort((a, b) => a.position - b.position);
 
@@ -248,10 +221,7 @@ export class TabsStore {
       left += tab.width + TABS_PADDING;
     }
 
-    store.addTab.setLeft(
-      Math.min(left, containerWidth + TABS_PADDING),
-      animation,
-    );
+    store.addTab.setLeft(Math.min(left, containerWidth + TABS_PADDING), animation);
   }
 
   @action
@@ -265,9 +235,7 @@ export class TabsStore {
   }
 
   public getTabsToReplace(callingTab: Tab, direction: string) {
-    let tabs = this.list
-      .slice()
-      .sort((a, b) => a.tempPosition - b.tempPosition);
+    let tabs = this.list.slice().sort((a, b) => a.tempPosition - b.tempPosition);
 
     const index = tabs.indexOf(callingTab);
 
@@ -331,20 +299,12 @@ export class TabsStore {
       store.canToggleMenu = false;
       selectedTab.isDragging = true;
 
-      const newLeft =
-        tabStartX +
-        e.pageX -
-        mouseStartX -
-        (lastScrollLeft - container.current.scrollLeft);
+      const newLeft = tabStartX + e.pageX - mouseStartX - (lastScrollLeft - container.current.scrollLeft);
 
       let left = Math.max(0, newLeft);
 
-      if (
-        newLeft + selectedTab.width >
-        store.addTab.left + container.current.scrollLeft - TABS_PADDING
-      ) {
-        left =
-          store.addTab.left - selectedTab.width + lastScrollLeft - TABS_PADDING;
+      if (newLeft + selectedTab.width > store.addTab.left + container.current.scrollLeft - TABS_PADDING) {
+        left = store.addTab.left - selectedTab.width + lastScrollLeft - TABS_PADDING;
       }
 
       selectedTab.setLeft(left, false);
@@ -358,21 +318,13 @@ export class TabsStore {
         // TODO: Create a new window
       }
 
-      this.getTabsToReplace(
-        selectedTab,
-        lastMouseX - e.pageX >= 1 ? 'left' : 'right',
-      );
+      this.getTabsToReplace(selectedTab, lastMouseX - e.pageX >= 1 ? 'left' : 'right');
 
       this.lastMouseX = e.pageX;
     }
   };
 
-  public animateProperty(
-    property: string,
-    obj: any,
-    value: number,
-    animation: boolean,
-  ) {
+  public animateProperty(property: string, obj: any, value: number, animation: boolean) {
     if (obj) {
       const props: any = {
         ease: animation ? TAB_ANIMATION_EASING : null,

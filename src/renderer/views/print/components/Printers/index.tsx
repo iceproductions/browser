@@ -8,17 +8,16 @@ import store from '../../store';
 import { observer } from 'mobx-react-lite';
 
 export const Printers = observer(() => {
-    const [selected, setSelection] = React.useState(0);
+  const [selected, setSelection] = React.useState(0);
 
-    return (
-        <StyledPrinters>
-            {store.printers.map((item, index) => (
-                <Printer key={index} selected={selected == index} onClick={() => setSelection(index)}>
-                    <Icon icon={icons.print} opacity={0.7} hoverable={true} selected={selected == index} />
-                    <Heading>{item.name}</Heading>
-                </Printer>
-            ))}
-        </StyledPrinters>
-
-    )
-})
+  return (
+    <StyledPrinters>
+      {store.printers.map((item, index) => (
+        <Printer key={index} selected={selected == index} onClick={() => setSelection(index)}>
+          <Icon icon={icons.print} opacity={0.7} hoverable={true} selected={selected == index} />
+          <Heading>{item.name}</Heading>
+        </Printer>
+      ))}
+    </StyledPrinters>
+  );
+});

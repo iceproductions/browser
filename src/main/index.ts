@@ -1,7 +1,4 @@
-import {
-  ipcMain,
-  app,
-} from 'electron';
+import { ipcMain, app } from 'electron';
 import { resolve } from 'path';
 import { platform, homedir } from 'os';
 

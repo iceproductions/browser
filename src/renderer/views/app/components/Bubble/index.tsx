@@ -10,15 +10,14 @@ export const getSize = (i: number) => {
 };
 
 const ieTextOverflow = (children: any) => {
-  if(children == store.locale.lang.bookmarks[0].title) {
-    if(store.locale.currentLanguage == 'ie') {
-      return "12px"
-    }
-    else {
-      return "13px"
+  if (children == store.locale.lang.bookmarks[0].title) {
+    if (store.locale.currentLanguage == 'ie') {
+      return '12px';
+    } else {
+      return '13px';
     }
   }
-}
+};
 
 export const Bubble = ({
   children,
@@ -46,11 +45,7 @@ export const Bubble = ({
   const width = getSize(itemsPerRow);
 
   return (
-    <StyledBubble
-      style={{ minWidth: width, maxWidth: width }}
-      disabled={disabled}
-      onClick={onClick}
-    >
+    <StyledBubble style={{ minWidth: width, maxWidth: width }} disabled={disabled} onClick={onClick}>
       <Icon
         invert={invert}
         light={light}
@@ -63,7 +58,7 @@ export const Bubble = ({
       <Title
         style={{
           WebkitLineClamp: maxLines,
-          fontSize: `${ieTextOverflow(children)}`
+          fontSize: `${ieTextOverflow(children)}`,
         }}
       >
         {children}

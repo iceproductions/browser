@@ -17,7 +17,7 @@ export const StyledToolbar = styled.div`
   padding-right: ${platform() !== 'darwin' ? 138 : 0}px;
   transition: 0.3s margin-top 0.2s, 0.2s background-color 0s;
 
-  ${({ isHTMLFullscreen, theme }: { isHTMLFullscreen: boolean; isDisabled: boolean, theme: ITheme }) => css`
+  ${({ isHTMLFullscreen, theme }: { isHTMLFullscreen: boolean; isDisabled: boolean; theme: ITheme }) => css`
     margin-top: ${isHTMLFullscreen ? -TOOLBAR_HEIGHT : 0}px;
     background-color: ${theme['active-toolbar-color']};
   `};
@@ -38,6 +38,6 @@ export const Separator = styled.div`
   margin: 0 3px;
 
   ${({ theme }: { theme?: ITheme }) => css`
-    background-color: ${theme['toolbar-separator-color']}
+    background-color: ${theme['toolbar-separator-color']};
   `};
 `;

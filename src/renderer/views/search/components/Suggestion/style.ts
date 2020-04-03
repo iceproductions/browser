@@ -11,20 +11,12 @@ export const StyledSuggestion = styled.div`
   position: relative;
   align-items: center;
   overflow: hidden;
-  ${({
-    selected,
-    hovered,
-    theme
-  }: {
-    selected: boolean;
-    hovered: boolean;
-    theme: ITheme
-  }) => {
+  ${({ selected, hovered, theme }: { selected: boolean; hovered: boolean; theme: ITheme }) => {
     let backgroundColor = 'transparent';
     if (selected) {
-      backgroundColor = theme["omnibox-suggestion-selected"]
+      backgroundColor = theme['omnibox-suggestion-selected'];
     } else if (hovered) {
-      backgroundColor = theme["omnibox-suggestion-hover"]
+      backgroundColor = theme['omnibox-suggestion-hover'];
     }
     return css`
       background-color: ${backgroundColor};
@@ -43,7 +35,7 @@ export const PrimaryText = styled.div`
   user-select: none;
 
   ${({ theme }: { theme: ITheme }) => css`
-    color: ${theme["omnibox-text-color"]};
+    color: ${theme['omnibox-text-color']};
   `};
 `;
 
@@ -58,7 +50,7 @@ export const SecondaryText = styled.div`
   user-select: none;
 
   ${({ theme }: { theme: ITheme }) => css`
-    color: ${theme["omnibox-text-color"]};
+    color: ${theme['omnibox-text-color']};
   `};
 `;
 
@@ -70,7 +62,7 @@ export const Icon = styled.div`
   ${centerIcon()};
 
   ${({ theme }: { theme: ITheme }) => css`
-    filter: ${theme["general-element"]};
+    filter: ${theme['general-element']};
   `};
 `;
 
@@ -80,6 +72,6 @@ export const Dash = styled.div`
   opacity: ${transparency.text.medium};
 
   ${({ theme }: { theme: ITheme }) => css`
-    color: ${theme["omnibox-text-color"]};
+    color: ${theme['omnibox-text-color']};
   `};
 `;

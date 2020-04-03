@@ -10,7 +10,7 @@ import { getTheme } from '~/shared/utils/themes';
 const GlobalStyle = createGlobalStyle`${Style}`;
 
 interface Props {
-  style?: any
+  style?: any;
 }
 
 @observer
@@ -21,14 +21,14 @@ class App extends React.Component<Props, {}> {
 
   render() {
     const { style } = this.props;
-    
+
     const theme = () => {
-      if((window as any).settings) {
-        return getTheme((window as any).settings.appearance.theme)
+      if ((window as any).settings) {
+        return getTheme((window as any).settings.appearance.theme);
       } else {
-        return getTheme("light");
+        return getTheme('light');
       }
-    }
+    };
 
     return (
       <ThemeProvider theme={theme()}>

@@ -39,11 +39,11 @@ export class Store {
   public options = new OptionsStore();
   public preferences = new PreferencesStore(this);
 
-  public app = require("electron").app;
-  public remoteApp = require("electron").remote.app;
-  public remote = require("electron").remote;
-  public ipcMsg = require("electron").ipcRenderer;
-  public ipcRec = require("electron").ipcMain;
+  public app = require('electron').app;
+  public remoteApp = require('electron').remote.app;
+  public remote = require('electron').remote;
+  public ipcMsg = require('electron').ipcRenderer;
+  public ipcRec = require('electron').ipcMain;
 
   @observable
   public isFullscreen = false;
@@ -79,7 +79,7 @@ export class Store {
 
   @computed
   public get theme() {
-    return getTheme(this.preferences.conf.appearance.theme)
+    return getTheme(this.preferences.conf.appearance.theme);
   }
 
   @observable
@@ -93,12 +93,9 @@ export class Store {
   public loaded: boolean = false;
 
   public constructor() {
-    ipcRenderer.on(
-      'update-navigation-state',
-      (e: IpcRendererEvent, data: any) => {
-        this.navigationState = data;
-      },
-    );
+    ipcRenderer.on('update-navigation-state', (e: IpcRendererEvent, data: any) => {
+      this.navigationState = data;
+    });
 
     ipcRenderer.once('visible', (e: IpcRendererEvent, flag: any) => {
       this.quickMenuVisible = flag;
@@ -112,21 +109,14 @@ export class Store {
       this.isHTMLFullscreen = fullscreen;
     });
 
-    ipcRenderer.on(
-      'update-available',
-      (e: IpcRendererEvent, version: string) => {
-        this.updateInfo.version = version;
-        this.updateInfo.available = true;
-      },
-    );
+    ipcRenderer.on('update-available', (e: IpcRendererEvent, version: string) => {
+      this.updateInfo.version = version;
+      this.updateInfo.available = true;
+    });
 
-    ipcRenderer.on(
-      'url-arguments-applied',
-      (e: IpcRendererEvent, url: string) => {
-        
-        this.tabs.addTab({ url, active: true })
-      },
-    );
+    ipcRenderer.on('url-arguments-applied', (e: IpcRendererEvent, url: string) => {
+      this.tabs.addTab({ url, active: true });
+    });
 
     ipcRenderer.on('find', () => {
       if (this.tabs.selectedTab) {
@@ -146,12 +136,10 @@ export class Store {
           setTimeout(function(this: any) {
             this.tabs.addTab({ url: `file:///${path}`, active: true });
           }, 4000);
-         
         }
       }
     });
   }
-
 }
 
 export default new Store();

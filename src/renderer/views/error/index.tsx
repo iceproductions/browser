@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { render } from 'react-dom';;
+import { render } from 'react-dom';
 import Error from './app/index';
 import { fonts } from '../app/constants/fonts';
 import { createMount } from '~/shared/utils/webui';

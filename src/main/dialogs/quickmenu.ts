@@ -16,7 +16,7 @@ export class QuickMenuDialog extends Dialog {
         height: HEIGHT,
         y: 0,
       },
-      devtools: true
+      devtools: true,
     });
   }
 

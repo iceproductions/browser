@@ -9,32 +9,32 @@ import { ipcRenderer } from 'electron';
 const onBackClick = () => {
   callViewMethod(store.tabId, 'webContents.goBack');
   store.hide();
-}
+};
 
 const onForwardClick = () => {
   callViewMethod(store.tabId, 'webContents.goForward');
   store.hide();
-}
+};
 
 const onRefreshClick = () => {
   callViewMethod(store.tabId, 'webContents.reload');
   store.hide();
-}
+};
 
 const onPrintClick = () => {
   ipcRenderer.send('open-print');
   store.hide();
-}
+};
 
 const onViewSourceClick = () => {
   callViewMethod(store.tabId, 'webContents.loadURL', `view-source:${store.url}`);
   store.hide();
-}
+};
 
 const onInspectClick = () => {
-  callViewMethod(store.tabId, 'webContents.inspectElement', 0, 0)
+  callViewMethod(store.tabId, 'webContents.inspectElement', 0, 0);
   store.hide();
-}
+};
 
 const Navigation = () => (
   <Category>
@@ -54,7 +54,7 @@ const Navigation = () => (
       <Hotkey>F5</Hotkey>
     </MenuItem>
   </Category>
-)
+);
 
 const Multimedia = () => (
   <Category>
@@ -68,7 +68,7 @@ const Multimedia = () => (
       <Hotkey>Ctrl+P</Hotkey>
     </MenuItem>
   </Category>
-)
+);
 
 const Developer = () => (
   <Category>
@@ -82,7 +82,7 @@ const Developer = () => (
       <Hotkey>Ctrl+P</Hotkey>
     </MenuItem>
   </Category>
-)
+);
 
 const App = observer(() => (
   <StyledApp visible={store.visible}>
@@ -92,6 +92,6 @@ const App = observer(() => (
       <Developer />
     </StyledMenu>
   </StyledApp>
-))
+));
 
 export default App;

@@ -3,28 +3,14 @@ import { observer } from 'mobx-react';
 import { platform } from 'os';
 
 import { Bubble } from '../Bubble';
-import {
-  Actions,
-  Line,
-  MenuItem,
-  MenuItems,
-  Background,
-  Content,
-  Icon,
-  MenuItemTitle,
-  Shortcut,
-} from './style';
+import { Actions, Line, MenuItem, MenuItems, Background, Content, Icon, MenuItemTitle, Shortcut } from './style';
 import store from '../../store';
 import { ipcRenderer } from 'electron';
 import { icons, NEWTAB_URL } from '../../../../views/app/constants';
 
-const onDarkClick = () => {
-  
-};
+const onDarkClick = () => {};
 
-const onShieldClick = () => {
-  
-};
+const onShieldClick = () => {};
 
 const onAlwaysClick = () => {
   // store.isAlwaysOnTop = !store.isAlwaysOnTop;
@@ -43,16 +29,14 @@ const onIncognitoClick = () => {
   ipcRenderer.send('create-window', true);
 };
 
-const onPrintClick = () => {
-
-};
+const onPrintClick = () => {};
 
 const addTab = (url: string) => () => {
   // ipcRenderer.send(`browserview-create-${store.tabs.selected}`, { url, active: true });
   store.hide();
 };
 
-console.log(`[LocaleStore] Loaded ${store.lang.length} language groups.`, store.lang)
+console.log(`[LocaleStore] Loaded ${store.lang.length} language groups.`, store.lang);
 
 export const QuickMenu = observer(() => {
   const invert = true;
@@ -64,7 +48,7 @@ export const QuickMenu = observer(() => {
         flexFlow: 'column',
       }}
     >
-      <Background></Background>
+      <Background />
       <Content>
         <Actions>
           <Bubble
@@ -76,18 +60,10 @@ export const QuickMenu = observer(() => {
           >
             Top Most
           </Bubble>
-          <Bubble
-            onClick={onDarkClick}
-            invert={invert}
-            icon={icons.dark}
-          >
+          <Bubble onClick={onDarkClick} invert={invert} icon={icons.dark}>
             {store.lang.themes[0].dark}
           </Bubble>
-          <Bubble
-            invert={invert}
-            icon={icons.shield}
-            onClick={onShieldClick}
-          >
+          <Bubble invert={invert} icon={icons.shield} onClick={onShieldClick}>
             Shield
           </Bubble>
           {platform() === 'win32' && (
@@ -147,7 +123,7 @@ export const QuickMenu = observer(() => {
             <Shortcut>Ctrl+F</Shortcut>
           </MenuItem>
           <MenuItem>
-            <Icon icon={icons.print} onClick={onPrintClick}/>
+            <Icon icon={icons.print} onClick={onPrintClick} />
             <MenuItemTitle>Print</MenuItemTitle>
             <Shortcut>Ctrl+P</Shortcut>
           </MenuItem>

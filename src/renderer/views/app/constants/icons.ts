@@ -216,5 +216,5 @@ export const icons = {
   },
   images: {
     missing,
-  }
+  },
 };

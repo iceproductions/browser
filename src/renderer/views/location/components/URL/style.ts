@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 export const StyledURL = styled.div`
-    height: 30px;
-    background-color: white;
+  height: 30px;
+  background-color: white;
 `;
 
 export const Text = styled.div`

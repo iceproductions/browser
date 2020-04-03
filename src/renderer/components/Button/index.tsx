@@ -14,16 +14,7 @@ interface Props {
   icon?: any;
 }
 
-export const Button = ({
-  background,
-  foreground,
-  type,
-  onClick,
-  children,
-  style,
-  visible,
-  icon,
-}: Props) => (
+export const Button = ({ background, foreground, type, onClick, children, style, visible, icon }: Props) => (
   <StyledButton
     background={background}
     foreground={foreground}

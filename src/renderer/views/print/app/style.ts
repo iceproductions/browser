@@ -3,55 +3,55 @@ import { centerIcon } from '../../../../shared/mixins';
 import { icons } from '../../app/constants';
 
 export const StyledApp = styled.div`
-    height: 98vh;
-    display: flex;
-    transition: 0.2s opacity, 0.2s transform;
+  height: 98vh;
+  display: flex;
+  transition: 0.2s opacity, 0.2s transform;
 
-    ${({ visible }: { visible: boolean }) => css`
-        opacity: ${visible ? 1 : 0};
-        transform: ${visible ? 'translateY(0px)' : 'translateY(8px)'};
-    `}
+  ${({ visible }: { visible: boolean }) => css`
+    opacity: ${visible ? 1 : 0};
+    transform: ${visible ? 'translateY(0px)' : 'translateY(8px)'};
+  `}
 `;
 
 export const Preview = styled.div`
-    width: 700px;
-    display: block;
-    float: left;
-    background-color: #fff;
-    border: 1px solid lightgray;
-    border-radius: 4px 0 0 4px;
+  width: 700px;
+  display: block;
+  float: left;
+  background-color: #fff;
+  border: 1px solid lightgray;
+  border-radius: 4px 0 0 4px;
 `;
 
 export const Page = styled.div`
-    width: 465px;
-    height: 684px;
-    background-size: 482px;
+  width: 465px;
+  height: 684px;
+  background-size: 482px;
 
-    ${({ image }: { image: string }) => css`
-        background-image: url(${image});
-    `}
+  ${({ image }: { image: string }) => css`
+    background-image: url(${image});
+  `}
 `;
 
 export const PrintController = styled.div`
-    display: block;
-    float: left;
-    background-color: white;
-    padding: 30px;
-    border: 1px solid lightgray;
-    border-left: none;
-    border-radius: 0 4px 4px 0;
+  display: block;
+  float: left;
+  background-color: white;
+  padding: 30px;
+  border: 1px solid lightgray;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
 `;
 
 export const TitleWrapper = styled.div`
-    display: flex;
-    line-height: 8px;
-    margin-bottom: 20px;
+  display: flex;
+  line-height: 8px;
+  margin-bottom: 20px;
 `;
 
 export const ListItem = styled.div`
-    display: flex;
-    line-height: 8px;
-    margin-top: 20px;
+  display: flex;
+  line-height: 8px;
+  margin-top: 20px;
 `;
 
 export const Icon = styled.div`
@@ -61,7 +61,17 @@ export const Icon = styled.div`
   border-radius: 50px;
   filter: grayscale(1) brightness(0.2);
 
-  ${({ icon, opacity, hoverable, selected }: { icon: any; opacity: number; hoverable: boolean; selected: boolean; }) => css`
+  ${({
+    icon,
+    opacity,
+    hoverable,
+    selected,
+  }: {
+    icon: any;
+    opacity: number;
+    hoverable: boolean;
+    selected: boolean;
+  }) => css`
     mask-image: url(${icon});
     opacity: ${opacity};
 
@@ -73,12 +83,12 @@ export const Icon = styled.div`
     ${selected == true ? 'filter: none;' : ''};
 
     &:hover {
-        filter: ${hoverable ? 
-            selected == false ? 
-            'grayscale(1) brightness(0.2)' : 'none' 
+      filter: ${hoverable
+        ? selected == false
+          ? 'grayscale(1) brightness(0.2)'
+          : 'none'
         : 'grayscale(1) brightness(5)'};
     }
-    
   `}
 `;
 
@@ -87,5 +97,5 @@ export const CloseIcon = styled.div`
   height: 32px;
   width: 32px;
   border-radius: 50px;
-  background-image: url(${icons.close})
+  background-image: url(${icons.close});
 `;

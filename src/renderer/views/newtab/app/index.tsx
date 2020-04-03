@@ -18,25 +18,27 @@ const blobHTML = `
     <script>window.location.href = "$1"</script>
 </head>
 </html>
-`
+`;
 
 setInterval(() => {
-    document.querySelectorAll("[href]").forEach(node => {
-        if(!node.getAttribute("href").startsWith("blob:")) {
-            const blob = new Blob([Buffer.from(blobHTML.replace("$1", node.getAttribute("href")), 'utf8')], { type: "text/html" })
-            node.setAttribute("data-native-href", node.getAttribute("href"))
-            node.href = URL.createObjectURL(blob)
-        }
-    });
-}, 100)
+  document.querySelectorAll('[href]').forEach((node) => {
+    if (!node.getAttribute('href').startsWith('blob:')) {
+      const blob = new Blob([Buffer.from(blobHTML.replace('$1', node.getAttribute('href')), 'utf8')], {
+        type: 'text/html',
+      });
+      node.setAttribute('data-native-href', node.getAttribute('href'));
+      node.href = URL.createObjectURL(blob);
+    }
+  });
+}, 100);
 
 export const App = observer(() => (
-    <ThemeProvider theme={store.theme}>
-        <StyledApp>
-            <GlobalStyle />
-            {/* <Update /> */}
-            <Header />
-            <News />
-        </StyledApp>
-    </ThemeProvider>
-))
+  <ThemeProvider theme={store.theme}>
+    <StyledApp>
+      <GlobalStyle />
+      {/* <Update /> */}
+      <Header />
+      <News />
+    </StyledApp>
+  </ThemeProvider>
+));

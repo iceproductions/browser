@@ -17,21 +17,18 @@ export class DownloadsStore {
   }
 
   constructor() {
-    ipcRenderer.on(
-      'download-started',
-      (e: any, item: DownloadItem, location: any) => {
-        this.list.unshift(item);
-      },
-    );
+    ipcRenderer.on('download-started', (e: any, item: DownloadItem, location: any) => {
+      this.list.unshift(item);
+    });
 
     ipcRenderer.on('download-progress', (e: any, item: DownloadItem) => {
-      const i = this.list.find(x => x.id === item.id);
+      const i = this.list.find((x) => x.id === item.id);
       i.receivedBytes = item.receivedBytes;
     });
 
     ipcRenderer.on('download-completed', (e: any, id: string) => {
       /* @todo Rewrite downloads */
-      const i = this.list.find(x => x.id === id);
+      const i = this.list.find((x) => x.id === id);
       // i.savePath = resolve(file.get('downloadLocation') + '\\' + i.fileName);
       i.completed = true;
 

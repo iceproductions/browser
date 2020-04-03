@@ -17,14 +17,14 @@ export class AlertDialog extends Dialog {
         height: HEIGHT,
         y: 36,
       },
-      devtools: true
+      devtools: true,
     });
   }
 
   public rearrange() {
     const { width } = this.appWindow.getContentBounds();
-    var x = Math.round(((width - WIDTH) / 2));
-    super.setBounds({ x, y: 36, width: WIDTH, height: HEIGHT })
+    var x = Math.round((width - WIDTH) / 2);
+    super.setBounds({ x, y: 36, width: WIDTH, height: HEIGHT });
   }
 
   public show() {
@@ -38,8 +38,8 @@ export class AlertDialog extends Dialog {
     this.rearrange();
     this.webContents.send('visible', false);
     setTimeout(() => {
-        super.hide();
-        this.visible = false;
+      super.hide();
+      this.visible = false;
     }, 100);
   }
 

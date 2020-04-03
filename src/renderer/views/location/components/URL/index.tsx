@@ -5,9 +5,9 @@ import { StyledURL, Text } from './style';
 import store from '../../store';
 
 export const URL = observer(() => {
-    return (
-        <StyledURL>
-            <Text>{store.url}</Text>
-        </StyledURL>
-    )
-})
+  return (
+    <StyledURL>
+      <Text>{store.url}</Text>
+    </StyledURL>
+  );
+});

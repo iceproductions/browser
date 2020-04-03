@@ -7,7 +7,6 @@ import { StyledApp } from './style';
 import { QuickMenu } from '../QuickMenu';
 import store from '../../store';
 
-
 const GlobalStyle = createGlobalStyle`${Style}`;
 
 const App = observer(() => {
@@ -17,6 +16,6 @@ const App = observer(() => {
       <GlobalStyle />
     </StyledApp>
   );
-})
+});
 
 export default App;

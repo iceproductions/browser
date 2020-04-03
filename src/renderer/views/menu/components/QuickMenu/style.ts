@@ -53,7 +53,7 @@ export const MenuItem = styled.div`
     `};
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.06)
+    background-color: rgba(0, 0, 0, 0.06);
   }
 `;
 

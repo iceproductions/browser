@@ -5,7 +5,7 @@ import store from '~/renderer/views/app/store';
 import { StyledToolbar, Buttons, Separator, ToolbarWrap } from './style';
 import { NavigationButtons } from '../NavigationButtons';
 import { Tabbar } from '../Tabbar';
-import ToolbarButton from "../ToolbarButton";
+import ToolbarButton from '../ToolbarButton';
 import { icons, TOOLBAR_HEIGHT } from '../../constants';
 import { ipcRenderer, remote } from 'electron';
 import BrowserAction from '../BrowserAction';
@@ -20,37 +20,34 @@ const onUpdateClick = () => {
 };
 
 export const audioPlaying = () => {
-  if(store.tabs.selectedTab) {
-    if(store.tabs.selectedTab.audioPlaying == true) {
-      return "This tab is playing audio."
+  if (store.tabs.selectedTab) {
+    if (store.tabs.selectedTab.audioPlaying == true) {
+      return 'This tab is playing audio.';
+    } else {
+      return 'This tab is not playing audio or has been pasued.';
     }
-    else {
-      return "This tab is not playing audio or has been pasued."
-    }
+  } else {
+    return '';
   }
-  else {
-    return ""
-  }
-}
+};
 
 export const audioVisible = () => {
-  if(store.tabs.selectedTab) {
-    if(store.tabs.selectedTab.audioPlaying == true) {
-      return true
+  if (store.tabs.selectedTab) {
+    if (store.tabs.selectedTab.audioPlaying == true) {
+      return true;
     }
-    if(store.tabs.selectedTab.audioPlaying == false) {
-      return false
+    if (store.tabs.selectedTab.audioPlaying == false) {
+      return false;
     }
+  } else {
+    return false;
   }
-  else {
-    return false
-  }
-}
+};
 
 const resetZoom = () => {
-  ipcRenderer.send("reset-zoom");
+  ipcRenderer.send('reset-zoom');
   store.tabs.selectedTab.zoomAmount = 1;
-}
+};
 
 export const Toolbar = observer(() => {
   return (
@@ -60,9 +57,7 @@ export const Toolbar = observer(() => {
         <Tabbar />
         <Find />
         <Buttons>
-          {store.updateInfo.available && (
-            <ToolbarButton icon={icons.download} onClick={onUpdateClick} />
-          )}
+          {store.updateInfo.available && <ToolbarButton icon={icons.download} onClick={onUpdateClick} />}
           <AbButton title={audioPlaying()}>
             <BrowserAction
               size={16}
@@ -71,20 +66,17 @@ export const Toolbar = observer(() => {
               title="This tab is playing audio."
               visible={audioVisible()}
               data={{
-                badgeBackgroundColor: store.tabs.selectedTab
-                  ? store.tabs.selectedTab.background
-                  : 'transparent',
-                badgeText: store.tabs.selectedTab
-                ? store.tabs.selectedTab.audioPlaying
-                  ? ''
-                  : ''
-                : '',
+                badgeBackgroundColor: store.tabs.selectedTab ? store.tabs.selectedTab.background : 'transparent',
+                badgeText: store.tabs.selectedTab ? (store.tabs.selectedTab.audioPlaying ? '' : '') : '',
                 icon: icons.music,
                 badgeTextColor: store.tabs.selectedTab
-                  ? shadeBlendConvert(store.preferences.conf.appearance.theme == 'light' ? 0.85 : 0.3, store.tabs.selectedTab.background)
+                  ? shadeBlendConvert(
+                      store.preferences.conf.appearance.theme == 'light' ? 0.85 : 0.3,
+                      store.tabs.selectedTab.background
+                    )
                   : 'transparent',
               }}
-            />          
+            />
           </AbButton>
           <AbButton>
             <BrowserAction
@@ -94,9 +86,7 @@ export const Toolbar = observer(() => {
               title="Dot Downloads"
               visible={store.downloads.list.length > 0}
               data={{
-                badgeBackgroundColor: store.tabs.selectedTab
-                  ? store.tabs.selectedTab.background
-                  : 'transparent',
+                badgeBackgroundColor: store.tabs.selectedTab ? store.tabs.selectedTab.background : 'transparent',
                 badgeText: store.tabs.selectedTab
                   ? store.downloads.list.length > 0
                     ? store.downloads.list.length.toString()
@@ -104,10 +94,13 @@ export const Toolbar = observer(() => {
                   : '',
                 icon: icons.download,
                 badgeTextColor: store.tabs.selectedTab
-                  ? shadeBlendConvert(store.preferences.conf.appearance.theme == 'light' ? 0.85 : 0.3, store.tabs.selectedTab.background)
+                  ? shadeBlendConvert(
+                      store.preferences.conf.appearance.theme == 'light' ? 0.85 : 0.3,
+                      store.tabs.selectedTab.background
+                    )
                   : 'transparent',
               }}
-            />          
+            />
           </AbButton>
           <AbButton onClick={resetZoom}>
             <BrowserAction
@@ -119,15 +112,21 @@ export const Toolbar = observer(() => {
                 badgeBackgroundColor: store.tabs.selectedTab
                   ? store.preferences.conf.appearance.theme == 'light'
                     ? store.tabs.selectedTab.background
-                    : shadeBlendConvert(store.preferences.conf.appearance.theme !== 'dark' && store.preferences.conf.appearance.theme !== 'oled' ? 0.85 : 0.3, store.tabs.selectedTab.background)
+                    : shadeBlendConvert(
+                        store.preferences.conf.appearance.theme !== 'dark' &&
+                          store.preferences.conf.appearance.theme !== 'oled'
+                          ? 0.85
+                          : 0.3,
+                        store.tabs.selectedTab.background
+                      )
                   : 'transparent',
                 badgeText: store.tabs.selectedTab
                   ? store.tabs.selectedTab.zoomAmount !== 1
-                    ? (store.tabs.selectedTab.zoomAmount * 100).toFixed(0).toString() + "%"
+                    ? (store.tabs.selectedTab.zoomAmount * 100).toFixed(0).toString() + '%'
                     : ''
                   : '',
                 icon: icons.zoom,
-                badgeTextColor: colors.grey['100']
+                badgeTextColor: colors.grey['100'],
               }}
             />
           </AbButton>
@@ -142,7 +141,13 @@ export const Toolbar = observer(() => {
                 badgeBackgroundColor: store.tabs.selectedTab
                   ? store.preferences.conf.appearance.theme == 'light'
                     ? store.tabs.selectedTab.background
-                    : shadeBlendConvert(store.preferences.conf.appearance.theme !== 'dark' && store.preferences.conf.appearance.theme !== 'oled' ? 0.85 : 0.3, store.tabs.selectedTab.background)
+                    : shadeBlendConvert(
+                        store.preferences.conf.appearance.theme !== 'dark' &&
+                          store.preferences.conf.appearance.theme !== 'oled'
+                          ? 0.85
+                          : 0.3,
+                        store.tabs.selectedTab.background
+                      )
                   : 'transparent',
                 badgeText: store.tabs.selectedTab
                   ? store.tabs.selectedTab.blockedAds > 0
@@ -150,7 +155,7 @@ export const Toolbar = observer(() => {
                     : ''
                   : '',
                 icon: icons.shield,
-                badgeTextColor: colors.grey['100']
+                badgeTextColor: colors.grey['100'],
               }}
             />
           </AbButton>

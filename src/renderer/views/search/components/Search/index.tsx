@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-  StyledSearchBox,
-  SearchContainer,
-  SearchIcon,
-  Input,
-  SecurityIcon,
-  GOOGLE_ICON,
-} from './style';
+import { StyledSearchBox, SearchContainer, SearchIcon, Input, SecurityIcon, GOOGLE_ICON } from './style';
 import store from '../../store';
 import { callViewMethod } from '~/shared/utils/view';
 import { ipcRenderer } from 'electron';
@@ -15,7 +8,7 @@ import { observer } from 'mobx-react';
 import { icons } from '~/renderer/views/app/constants';
 import { Spotlight } from '../Spotlight';
 
-const urlRegex = /([--:\w?@%&+~#=]*\.[a-z]{2,4}\/{0,2})((?:[?&](?:\w+)=(?:\w+))+|[--:\w?@%&+~#=]+)?/
+const urlRegex = /([--:\w?@%&+~#=]*\.[a-z]{2,4}\/{0,2})((?:[?&](?:\w+)=(?:\w+))+|[--:\w?@%&+~#=]+)?/;
 
 const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
   if (e.which === 13) {
@@ -25,23 +18,19 @@ const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const text = e.currentTarget.value;
     let url = text;
 
-    if(!urlRegex.test(url)) {
-      url = `https://duckduckgo.com/${text}`
-    } else if(url.indexOf("://") === -1) {
-      url = `http://${text}`
+    if (!urlRegex.test(url)) {
+      url = `https://duckduckgo.com/${text}`;
+    } else if (url.indexOf('://') === -1) {
+      url = `http://${text}`;
     }
 
-    if(text.startsWith("dot://")) {
+    if (text.startsWith('dot://')) {
       url = text;
     }
 
-    console.log(url, url.startsWith("dot://"))
+    console.log(url, url.startsWith('dot://'));
 
-    callViewMethod(
-      store.tabId,
-      'webContents.loadURL',
-      url,
-    );
+    callViewMethod(store.tabId, 'webContents.loadURL', url);
 
     setTimeout(() => {
       ipcRenderer.send(`hide-${store.id}`);
@@ -51,7 +40,7 @@ const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
 
 const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   store.details.url = e.currentTarget.value;
-}
+};
 
 export const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
   const key = e.keyCode;
@@ -77,37 +66,34 @@ export const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 
   if (e.keyCode === 38 || e.keyCode === 40) {
     e.preventDefault();
-    if (
-      e.keyCode === 40 &&
-      suggestions.selected + 1 <= list.length - 1 + store.history.length
-    ) {
+    if (e.keyCode === 40 && suggestions.selected + 1 <= list.length - 1 + store.history.length) {
       suggestions.selected++;
     } else if (e.keyCode === 38 && suggestions.selected - 1 >= 0) {
       suggestions.selected--;
     }
 
-    let suggestion = list.find(x => x.id === suggestions.selected);
+    let suggestion = list.find((x) => x.id === suggestions.selected);
 
     if (!suggestion) {
-      suggestion = store.history.find(x => x.id === suggestions.selected);
+      suggestion = store.history.find((x) => x.id === suggestions.selected);
     }
 
-    if(suggestion) {
+    if (suggestion) {
       input.value = suggestion.primaryText;
     }
   }
-}
+};
 
 const onInput = () => {
-  store.suggest()
-}
+  store.suggest();
+};
 
 @observer
 export class Search extends React.Component {
   public props: any = {
     isFixed: false,
     style: '',
-    visible: false
+    visible: false,
   };
 
   constructor(props: any) {
@@ -115,7 +101,7 @@ export class Search extends React.Component {
   }
 
   public state = {
-    focused: false
+    focused: false,
   };
 
   render() {
@@ -128,11 +114,11 @@ export class Search extends React.Component {
     if (suggestionsVisible) {
       store.suggestions.list.forEach(() => {
         height += 38;
-      })
+      });
 
       store.history.forEach(() => {
         height += 38;
-      })
+      });
 
       if (store.suggestions.list.length > 0) {
         height += 30;
@@ -150,14 +136,14 @@ export class Search extends React.Component {
     return (
       <StyledSearchBox isFixed={isFixed} style={style} isFocused={true} visible={visible}>
         <SearchContainer>
-          <SearchIcon 
-            isFocused={store.details.url !== ""} 
+          <SearchIcon
+            isFocused={store.details.url !== ''}
             icon={
-              store.details.url == "" 
-                ? icons.search 
-                : store.inputRef.current.value.length == 0 
-                  ? store.details.favicon 
-                  : GOOGLE_ICON
+              store.details.url == ''
+                ? icons.search
+                : store.inputRef.current.value.length == 0
+                ? store.details.favicon
+                : GOOGLE_ICON
             }
           />
           <Input
@@ -175,7 +161,7 @@ export class Search extends React.Component {
             ref={store.inputRef}
           />
         </SearchContainer>
-        <Suggestions visible={suggestionsVisible} style={{ height: `${height}px` }}></Suggestions>
+        <Suggestions visible={suggestionsVisible} style={{ height: `${height}px` }} />
       </StyledSearchBox>
     );
   }

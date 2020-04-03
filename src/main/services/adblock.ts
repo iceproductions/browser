@@ -8,33 +8,33 @@ import { existsSync, writeFileSync, readFileSync } from 'fs';
 export let engine: ElectronBlocker;
 
 const loadFilters = async () => {
-    const path = resolve(__dirname, '../', 'filters/default.dat');
-  
-    const downloadFilters = async () => {
-      engine = await ElectronBlocker.fromPrebuiltAdsAndTracking(fetch);
-  
-      try {
-        await writeFileSync(path, engine.serialize());
-      } catch (err) {
-        if (err) return console.error(err);
-      }
-    };
-  
-    if (existsSync(path)) {
-      try {
-        const buffer = readFileSync(resolve(path));
-  
-        try {
-          engine = ElectronBlocker.deserialize(buffer);
-        } catch (e) {
-          return downloadFilters();
-        }
-      } catch (err) {
-        return console.error(err);
-      }
-    } else {
-      return downloadFilters();
+  const path = resolve(__dirname, '../', 'filters/default.dat');
+
+  const downloadFilters = async () => {
+    engine = await ElectronBlocker.fromPrebuiltAdsAndTracking(fetch);
+
+    try {
+      await writeFileSync(path, engine.serialize());
+    } catch (err) {
+      if (err) return console.error(err);
     }
+  };
+
+  if (existsSync(path)) {
+    try {
+      const buffer = readFileSync(resolve(path));
+
+      try {
+        engine = ElectronBlocker.deserialize(buffer);
+      } catch (e) {
+        return downloadFilters();
+      }
+    } catch (err) {
+      return console.error(err);
+    }
+  } else {
+    return downloadFilters();
+  }
 };
 
 export const runAdblockService = (ses: Electron.Session) => {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render } from 'react-dom';;
+import { render } from 'react-dom';
 
 import App from './components/App';
 import { fonts } from './constants/fonts';
@@ -47,66 +47,69 @@ export let appWindow: AppWindow;
 remote.Menu.setApplicationMenu(
   remote.Menu.buildFromTemplate([
     {
-      label: "File",
+      label: 'File',
       type: 'submenu',
       submenu: [
-        { 
+        {
           label: 'New tab',
           accelerator: 'CmdOrCtrl+T',
-          click() { 
+          click() {
             store.isHTMLFullscreen = false;
             store.isFullscreen = false;
-            
+
             const url = NEWTAB_URL;
             store.tabs.addTab({ url, active: true });
-          } 
+          },
         },
-        { 
+        {
           label: 'Re-open closed tab',
           accelerator: 'CmdOrCtrl+Shift+T',
-          click() { 
-            if(store.tabs) {
+          click() {
+            if (store.tabs) {
               var url = store.tabs.lastUrl[store.tabs.lastUrl.length - 1];
               if (url != '') {
                 store.tabs.addTab({ url, active: true });
                 store.tabs.lastUrl.splice(-1, 1);
               }
             }
-          } 
+          },
         },
         { type: 'separator' },
-        { 
+        {
           label: 'Close Window',
           accelerator: 'CmdOrCtrl+Shift+W',
-          click() { 
-            process.exit(0)
-          } 
+          click() {
+            process.exit(0);
+          },
         },
-        { 
+        {
           label: 'Close Tab',
           accelerator: 'CmdOrCtrl+W',
-          click() { 
-            if(store.tabs.selectedTab) {
+          click() {
+            if (store.tabs.selectedTab) {
               if (store.tabs.selectedTab.loading) {
                 store.tabs.selectedTab.callViewMethod('webContents.stop');
-                store.tabs.selectedTab.close()
-              }
-              else {
-                store.tabs.selectedTab.close()
+                store.tabs.selectedTab.close();
+              } else {
+                store.tabs.selectedTab.close();
               }
             }
-          } 
+          },
         },
         { type: 'separator' },
-        { 
+        {
           label: 'Print',
           accelerator: 'CmdOrCtrl+P',
-          click() { 
-            ipcRenderer.send("show-alert", "alert", "Print is disabled right now. However, you can expect it to return soon!")
-          } 
+          click() {
+            ipcRenderer.send(
+              'show-alert',
+              'alert',
+              'Print is disabled right now. However, you can expect it to return soon!'
+            );
+          },
         },
         { role: 'reload', label: 'Reload', accelerator: 'CmdOrCtrl+Shift+Alt+R' },
-      ]
+      ],
     },
     {
       label: 'Edit',
@@ -126,9 +129,9 @@ remote.Menu.setApplicationMenu(
           accelerator: 'CmdOrCtrl+F',
           label: 'Find in page',
           click() {
-            if(store.tabs.selectedTab) {
+            if (store.tabs.selectedTab) {
               store.tabs.selectedTab.findVisible = true;
-            
+
               setTimeout(() => {
                 store.tabs.selectedTab.findVisible = true;
               }, 200);
@@ -138,8 +141,8 @@ remote.Menu.setApplicationMenu(
       ],
     },
     {
-      label: "View",
-      type: "submenu",
+      label: 'View',
+      type: 'submenu',
       submenu: [
         {
           accelerator: 'CmdOrCtrl+.',
@@ -149,43 +152,43 @@ remote.Menu.setApplicationMenu(
             store.tabs.selectedTab.callViewMethod('webContents.stop');
           },
         },
-        { 
+        {
           label: 'Reload',
           accelerator: 'CmdOrCtrl+R',
-          click() { 
-            if(store.tabs.selectedTab) {
-              store.tabs.selectedTab.callViewMethod('webContents.reload'); 
+          click() {
+            if (store.tabs.selectedTab) {
+              store.tabs.selectedTab.callViewMethod('webContents.reload');
             }
-          } 
+          },
         },
-        { 
+        {
           label: 'Reload',
           accelerator: 'F5',
           visible: false,
-          click() { 
-            if(store.tabs.selectedTab) {
-              store.tabs.selectedTab.callViewMethod('webContents.reload'); 
+          click() {
+            if (store.tabs.selectedTab) {
+              store.tabs.selectedTab.callViewMethod('webContents.reload');
             }
-          } 
+          },
         },
         { type: 'separator' },
-        { 
+        {
           label: 'Zoom In',
           accelerator: 'CmdOrCtrl+=',
-          click() { 
-            ipcRenderer.send("set-zoom", "in")
-          } 
+          click() {
+            ipcRenderer.send('set-zoom', 'in');
+          },
         },
-        { 
+        {
           label: 'Zoom Out',
           accelerator: 'CmdOrCtrl+-',
-          click() { 
-            ipcRenderer.send("set-zoom", "out")
-          } 
+          click() {
+            ipcRenderer.send('set-zoom', 'out');
+          },
         },
-      ]
-    }
-  ]),
+      ],
+    },
+  ])
 );
 
 store.tabGroups.addGroup();

@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`${Style}`;
 const App = observer(() => {
   return (
     <ThemeProvider theme={store.theme}>
-      <StyledApp >
+      <StyledApp>
         <GlobalStyle />
         <Toolbar />
         <Line />

@@ -3,10 +3,10 @@ import { centerIcon } from '~/shared/mixins';
 import { icons } from '../../app/constants';
 
 export const Style = css`
-body {
-  overflow-y: hidden;
-  overflow-x: hidden;
-}
+  body {
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
 `;
 
 export const StyledSearch = styled.div`

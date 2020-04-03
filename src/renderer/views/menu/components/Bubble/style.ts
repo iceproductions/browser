@@ -28,13 +28,7 @@ export const Icon = styled.div`
   ${centerIcon(24)};
   transition: 0.2s filter;
 
-  ${({
-    invert,
-    toggled,
-  }: {
-    invert: boolean;
-    toggled?: boolean;
-  }) => css`
+  ${({ invert, toggled }: { invert: boolean; toggled?: boolean }) => css`
     transition: 0.2s filter
     filter: ${invert || toggled ? 'invert(100%)' : 'none'};
   `}
@@ -52,9 +46,7 @@ export const Circle = styled.div`
   ${({ toggled }: { toggled?: boolean }) => css`
     transition: 0.2s background-color;
 
-    background-color: ${toggled
-      ? 'rgba(0, 0, 0, 0.12)'
-      : 'rgba(255, 255, 255, 0.12)'};
+    background-color: ${toggled ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.12)'};
   `}
 `;
 

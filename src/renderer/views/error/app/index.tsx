@@ -3,7 +3,6 @@ import { StyledError, Container } from '../components/Error/style';
 import { Title, ErrorIcon, Subtitle } from '../style';
 import { Buttons } from '../components/Buttons';
 
-
 const Error = () => (
   <StyledError>
     <Container>
@@ -13,6 +12,6 @@ const Error = () => (
       <Buttons />
     </Container>
   </StyledError>
-)
+);
 
 export default Error;

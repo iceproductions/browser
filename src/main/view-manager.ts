@@ -25,33 +25,21 @@ export class ViewManager {
   }
 
   constructor() {
-    ipcMain.on(
-      'browserview-create',
-      (e: Electron.IpcMainEvent, { tabId, url }: any) => {
-        this.create(tabId, url);
+    ipcMain.on('browserview-create', (e: Electron.IpcMainEvent, { tabId, url }: any) => {
+      this.create(tabId, url);
 
-        windowsManager.window.webContents.send(
-          `browserview-created-${tabId}`,
-          this.views[tabId].id,
-        );
-      },
-    );
+      windowsManager.window.webContents.send(`browserview-created-${tabId}`, this.views[tabId].id);
+    });
 
-    ipcMain.on(
-      'browserview-select',
-      (e: Electron.IpcMainEvent, id: number) => {
-        const view = this.views[id];
-        this.select(id);
-        view.updateNavigationState();
-      },
-    );
+    ipcMain.on('browserview-select', (e: Electron.IpcMainEvent, id: number) => {
+      const view = this.views[id];
+      this.select(id);
+      view.updateNavigationState();
+    });
 
-    ipcMain.on(
-      'browserview-destroy',
-      (e: Electron.IpcMainEvent, id: number) => {
-        this.destroy(id);
-      },
-    );
+    ipcMain.on('browserview-destroy', (e: Electron.IpcMainEvent, id: number) => {
+      this.destroy(id);
+    });
 
     ipcMain.on('browserview-call', async (e: any, data: any) => {
       const view = this.views[data.tabId];
@@ -71,10 +59,7 @@ export class ViewManager {
           }
 
           if (data.callId) {
-            windowsManager.window.webContents.send(
-              `browserview-call-result-${data.callId}`,
-              result,
-            );
+            windowsManager.window.webContents.send(`browserview-call-result-${data.callId}`, result);
           }
         } catch (e) {}
       }
@@ -131,11 +116,7 @@ export class ViewManager {
 
   public newTabView() {
     for (const key in this.views) {
-      if (
-        this.views[key].webContents
-          .getURL()
-          .startsWith('dot://newtab')
-      ) {
+      if (this.views[key].webContents.getURL().startsWith('dot://newtab')) {
         return this.views[key];
       }
     }
@@ -157,10 +138,7 @@ export class ViewManager {
 
     const currUrl = view.webContents.getURL();
 
-    if (
-      (currUrl === '' && view.homeUrl === 'about:blank') ||
-      currUrl === 'about:blank'
-    ) {
+    if ((currUrl === '' && view.homeUrl === 'about:blank') || currUrl === 'about:blank') {
       windowsManager.window.webContents.focus();
     } else {
       view.webContents.focus();

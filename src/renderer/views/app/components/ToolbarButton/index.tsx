@@ -91,12 +91,7 @@ export default class ToolbarButton extends React.Component<Props, {}> {
         }}
         disabled={disabled}
       >
-        <Icon
-          style={{ backgroundImage: `url(${icon})` }}
-          size={size}
-          disabled={disabled}
-          opacity={opacity}
-        />
+        <Icon style={{ backgroundImage: `url(${icon})` }} size={size} disabled={disabled} opacity={opacity} />
         <Circle id={id} />
         {children}
       </Button>

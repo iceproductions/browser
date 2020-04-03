@@ -25,7 +25,19 @@ export const ContextMenuItem = styled.div`
   font-size: 14px;
   color: var(--context-menu-item-color);
 
-  ${({ icon, selected, invert, opac, borderRadius }: { icon?: string; selected?: boolean; invert?: boolean; opac?: boolean; borderRadius?: boolean; }) => css`
+  ${({
+    icon,
+    selected,
+    invert,
+    opac,
+    borderRadius,
+  }: {
+    icon?: string;
+    selected?: boolean;
+    invert?: boolean;
+    opac?: boolean;
+    borderRadius?: boolean;
+  }) => css`
     background-color: ${selected ? 'var(--context-menu-selected)' : 'none'};
 
     &:hover {

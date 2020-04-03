@@ -45,11 +45,10 @@ export const StyledClose = styled.div`
   ${centerIcon(16)};
 
   ${({ theme }: { theme: ITheme }) => css`
-    filter: ${theme["general-element"]};
+    filter: ${theme['general-element']};
   `};
 
-  opacity: ${({ visible }: CloseProps) =>
-    visible ? transparency.icons.inactive : 0};
+  opacity: ${({ visible }: CloseProps) => (visible ? transparency.icons.inactive : 0)};
 
   &:hover {
     &:after {

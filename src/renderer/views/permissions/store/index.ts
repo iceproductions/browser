@@ -1,50 +1,49 @@
-import { observable } from "mobx";
+import { observable } from 'mobx';
 import { ipcRenderer } from 'electron';
 import { getHostname } from '~/shared/utils/url';
 
 interface PermissionRequest {
-    url: string;
-    name: string;
-    time: number;
+  url: string;
+  name: string;
+  time: number;
 }
 
 const defaultPermissionRequest = {
-    url: '',
-    name: 'geolocation',
-    time: Date.now()
-}
+  url: '',
+  name: 'geolocation',
+  time: Date.now(),
+};
 
 class Store {
+  public constructor() {
+    ipcRenderer.on('visible', (e, flag) => {
+      this.visible = flag;
+    });
 
-    public constructor() {
-        ipcRenderer.on('visible', (e, flag) => {
-            this.visible = flag;
-        });
+    ipcRenderer.on('request-permission', (e, content) => {
+      content.url = getHostname(content.url);
 
-        ipcRenderer.on('request-permission', (e, content) => {
-            content.url = getHostname(content.url)
+      this.content.push(content);
+      this.content.shift();
+    });
+  }
 
-            this.content.push(content)
-            this.content.shift()
-        })
-    }
+  @observable
+  public visible: boolean = false;
 
-    @observable
-    public visible: boolean = false;
+  @observable
+  public content: PermissionRequest[] = [defaultPermissionRequest];
 
-    @observable
-    public content: PermissionRequest[] = [defaultPermissionRequest]
+  public hide() {
+    this.visible = false;
+    setTimeout(() => {
+      ipcRenderer.send('hide-dialog', 'alert');
+    }, 100);
+  }
 
-    public hide() {
-        this.visible = false;
-        setTimeout(() => {
-            ipcRenderer.send('hide-dialog', 'alert');
-        }, 100);
-    }
-
-    public resolveRequest(r: boolean) {
-        ipcRenderer.send('request-permission-result', r, this.content[0]);
-    }
+  public resolveRequest(r: boolean) {
+    ipcRenderer.send('request-permission-result', r, this.content[0]);
+  }
 }
 
-export default new Store()
+export default new Store();

@@ -20,7 +20,7 @@ export const Suggestions = observer(({ visible, style }: Props) => {
     <StyledSuggestions onMouseDown={onMouseDown} style={style}>
       <SuggestionsWrapper visible={visible}>
         {store.suggestions.list.length > 0 && <Subheading>Search</Subheading>}
-        {store.suggestions.list.map(suggestion => (
+        {store.suggestions.list.map((suggestion) => (
           <Suggestion suggestion={suggestion} key={suggestion.id} />
         ))}
       </SuggestionsWrapper>

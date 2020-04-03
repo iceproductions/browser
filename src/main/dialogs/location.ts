@@ -18,7 +18,7 @@ export class LocationDialog extends Dialog {
       devtools: false,
     });
 
-    this.webContents.openDevTools()
+    this.webContents.openDevTools();
   }
 
   public rearrange() {

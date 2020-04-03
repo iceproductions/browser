@@ -1,9 +1,6 @@
 import { ipcRenderer, webFrame } from 'electron';
 
-const tabId = parseInt(
-  process.argv.find(x => x.startsWith('--tab-id=')).split('=')[1],
-  10,
-);
+const tabId = parseInt(process.argv.find((x) => x.startsWith('--tab-id=')).split('=')[1], 10);
 
 const goBack = () => {
   ipcRenderer.send('browserview-call', {
@@ -19,7 +16,7 @@ const goForward = () => {
   });
 };
 
-window.addEventListener('mouseup', e => {
+window.addEventListener('mouseup', (e) => {
   if (e.button === 3) {
     goBack();
   } else if (e.button === 4) {
@@ -27,7 +24,7 @@ window.addEventListener('mouseup', e => {
   }
 });
 
-if (window.location.protocol === 'dot:' || window.location.host == "localhost:4445") {
+if (window.location.protocol === 'dot:' || window.location.host == 'localhost:4445') {
   (async function() {
     const w = await webFrame.executeJavaScript('window');
     w.settings = ipcRenderer.sendSync('get-settings-sync');
@@ -36,63 +33,61 @@ if (window.location.protocol === 'dot:' || window.location.host == "localhost:44
   window.onload = () => {
     if (window.location.hostname === 'settings') document.title = 'Settings';
     else if (window.location.hostname === 'history') document.title = 'History';
-    else if (window.location.hostname === 'bookmarks')
-      document.title = 'Bookmarks';
+    else if (window.location.hostname === 'bookmarks') document.title = 'Bookmarks';
     else if (window.location.hostname === 'extensions') {
       document.title = 'Extensions';
     } else if (window.location.hostname === 'newtab') {
       document.title = 'New tab';
     } else if (window.location.hostname === 'error') {
-      document.title = window.location.hash.split("#")[1] || 'dot://error';
+      document.title = window.location.hash.split('#')[1] || 'dot://error';
     }
-
   };
 }
 
 const updateAlert = () => {
-  webFrame.executeJavaScript('window', false).then(w => {
-    w.navigator.usingDotBrowser = true
+  webFrame.executeJavaScript('window', false).then((w) => {
+    w.navigator.usingDotBrowser = true;
 
     w.alert = (message?: any) => {
       ipcRenderer.send('show-alert', 'alert', message);
-    }
+    };
 
     w.confirm = (message?: any) => {
       ipcRenderer.send('show-alert', 'confirm', message);
-    }
+    };
 
     w.prompt = (message?: any) => {
       ipcRenderer.send('show-alert', 'input', message);
-    }
-  })
-}
+    };
+  });
+};
 
 const insertStyles = () => {
-  const styleElement = document.createElement("style")
+  const styleElement = document.createElement('style');
 
   styleElement.textContent = `
     ::selection {
       background-color: #cfe8fc;
     }
-  `
+  `;
 
-  styleElement.setAttribute("data-dot-special", "");
+  styleElement.setAttribute('data-dot-special', '');
 
-  document.head.appendChild(styleElement)
-}
+  document.head.appendChild(styleElement);
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   const flags = {
-    disableHighlight: document.querySelector('meta[name="dot-disable-highlight"][content="true"]') == null
-  }
+    disableHighlight: document.querySelector('meta[name="dot-disable-highlight"][content="true"]') == null,
+  };
 
   updateAlert();
 
-  if(flags.disableHighlight) {
+  if (flags.disableHighlight) {
     insertStyles();
   }
 
-  setInterval(updateAlert, 1000)
+  setInterval(updateAlert, 1000);
 
   let beginningScrollLeft: number = null;
   let beginningScrollRight: number = null;
@@ -122,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return { left, right };
   }
 
-  document.addEventListener('wheel', e => {
+  document.addEventListener('wheel', (e) => {
     verticalMouseMove += e.deltaY;
     horizontalMouseMove += e.deltaX;
 
@@ -134,24 +129,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   ipcRenderer.on('scroll-touch-end', () => {
-    if (
-      horizontalMouseMove - beginningScrollRight > 150 &&
-      Math.abs(horizontalMouseMove / verticalMouseMove) > 2.5
-    ) {
+    if (horizontalMouseMove - beginningScrollRight > 150 && Math.abs(horizontalMouseMove / verticalMouseMove) > 2.5) {
       if (beginningScrollRight < 10) {
         goForward();
       }
     }
 
-    if (
-      horizontalMouseMove + beginningScrollLeft < -150 &&
-      Math.abs(horizontalMouseMove / verticalMouseMove) > 2.5
-    ) {
+    if (horizontalMouseMove + beginningScrollLeft < -150 && Math.abs(horizontalMouseMove / verticalMouseMove) > 2.5) {
       if (beginningScrollLeft < 10) {
         goBack();
       }
     }
 
     resetCounters();
-  })
-})
+  });
+});

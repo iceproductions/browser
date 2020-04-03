@@ -30,9 +30,7 @@ export const StyledButton = styled.div`
   ${({ background, foreground, type, visible, icon, theme }: StyledButtonProps) => css`
     display: ${visible ? 'auto' : 'none'};
     color: ${foreground || '#fff'};
-    background-color: ${type === 'outlined'
-      ? 'transparent'
-      : background || '#2196F3'};
+    background-color: ${type === 'outlined' ? 'transparent' : background || '#2196F3'};
     background-image: url(${icon})
 
     border: 1px ${theme['button-border']} solid;

@@ -88,12 +88,7 @@ export default class Ripple extends React.Component<IProps, IState> {
 
   public makeRipple(mouseX: number, mouseY: number) {
     const { opacity } = this.props;
-    const {
-      left,
-      top,
-      width,
-      height,
-    } = this.root.current.getBoundingClientRect();
+    const { left, top, width, height } = this.root.current.getBoundingClientRect();
 
     window.addEventListener('mouseup', this.onMouseUp);
 
@@ -122,33 +117,17 @@ export default class Ripple extends React.Component<IProps, IState> {
   public render() {
     const { color, fadeOutTime, rippleTime, style } = this.props;
 
-    const {
-      rippleX,
-      rippleY,
-      rippleSize,
-      rippleOpacity,
-      opacityTransition,
-      sizeTransition,
-    } = this.state;
+    const { rippleX, rippleY, rippleSize, rippleOpacity, opacityTransition, sizeTransition } = this.state;
 
     return (
-      <Root
-        onMouseLeave={this.onMouseLeave}
-        onMouseDown={this.onMouseDown}
-        ref={this.root}
-        style={style}
-      >
+      <Root onMouseLeave={this.onMouseLeave} onMouseDown={this.onMouseDown} ref={this.root} style={style}>
         <StyledRipple
           style={{
             transform: `translate3d(calc(-50.1% + ${rippleX}px), calc(-50.1% + ${rippleY}px), 0)`,
             width: rippleSize,
             height: rippleSize,
             transition: `0.3s background-color
-            ${
-              sizeTransition
-                ? `, ${rippleTime}s width ${easing}, ${rippleTime}s height ${easing}`
-                : ''
-            }
+            ${sizeTransition ? `, ${rippleTime}s width ${easing}, ${rippleTime}s height ${easing}` : ''}
             ${opacityTransition ? `, ${fadeOutTime}s opacity` : ''}`,
             backgroundColor: color,
             opacity: rippleOpacity,

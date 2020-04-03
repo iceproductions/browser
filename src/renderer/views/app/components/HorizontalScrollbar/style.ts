@@ -7,8 +7,7 @@ export const Root = styled.div`
   left: 0;
   z-index: 10;
   width: 100%;
-  display: ${({ visible }: { visible: boolean }) =>
-    visible ? 'block' : 'none'};
+  display: ${({ visible }: { visible: boolean }) => (visible ? 'block' : 'none')};
 `;
 
 export const Thumb = styled.div`

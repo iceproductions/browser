@@ -1,7 +1,7 @@
 export const createMount = (document) => {
-    const mount = document.createElement("div");
+  const mount = document.createElement('div');
 
-    mount.id = "app";
+  mount.id = 'app';
 
-    document.body.insertAdjacentElement('afterbegin', mount);
-}
+  document.body.insertAdjacentElement('afterbegin', mount);
+};

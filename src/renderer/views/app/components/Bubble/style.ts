@@ -32,13 +32,12 @@ export const Icon = styled.div`
   ${centerIcon(32)};
 
   ${({ isFavicon }: { isFavicon: boolean }) => {
-    if(isFavicon == true) {
+    if (isFavicon == true) {
       return css`
         filter: none;
         background-color: var(--bubble-icon-background-if-favicon) !important;
       `;
-    }
-    else {
+    } else {
       return css`
         filter: var(--bubble-should-invert);
       `;

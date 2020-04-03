@@ -2,13 +2,7 @@ import { observer } from 'mobx-react-lite';
 import * as React from 'react';
 
 import { transparency } from '~/renderer/constants';
-import {
-  StyledSuggestion,
-  PrimaryText,
-  Dash,
-  SecondaryText,
-  Icon,
-} from './style';
+import { StyledSuggestion, PrimaryText, Dash, SecondaryText, Icon } from './style';
 
 import store from '../../store';
 import { ipcRenderer } from 'electron';
@@ -28,7 +22,7 @@ const onMouseLeave = (suggestion: any) => () => {
 };
 
 const onClick = (suggestion: any) => () => {
-  if(suggestion) {
+  if (suggestion) {
     let url = suggestion.primaryText;
 
     if (suggestion.isSearch) {
@@ -36,13 +30,9 @@ const onClick = (suggestion: any) => () => {
     } else if (url.indexOf('://') === -1) {
       url = `http://${url}`;
     }
-  
-    callViewMethod(
-      store.tabId,
-      'webContents.loadURL',
-      url,
-    );
-  
+
+    callViewMethod(store.tabId, 'webContents.loadURL', url);
+
     setTimeout(() => {
       ipcRenderer.send(`hide-${store.id}`);
     });

@@ -7,13 +7,7 @@ import { makeId } from '~/shared/utils/string';
 
 let api: API;
 
-const sendStorageOperation = (
-  extensionId: string,
-  arg: any,
-  area: string,
-  type: string,
-  callback: any,
-) => {
+const sendStorageOperation = (extensionId: string, arg: any, area: string, type: string, callback: any) => {
   const id = makeId(32);
   ipcRenderer.send('api-storage-operation', {
     extensionId,
@@ -24,12 +18,9 @@ const sendStorageOperation = (
   });
 
   if (callback) {
-    ipcRenderer.once(
-      `api-storage-operation-${id}`,
-      (e: any, ...data: any[]) => {
-        callback(data[0]);
-      },
-    );
+    ipcRenderer.once(`api-storage-operation-${id}`, (e: any, ...data: any[]) => {
+      callback(data[0]);
+    });
   }
 };
 

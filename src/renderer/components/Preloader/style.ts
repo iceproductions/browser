@@ -34,8 +34,7 @@ export const StyledPreloader = styled.div`
 export const Path = styled.circle`
   stroke-dasharray: 1, 200;
   stroke-dashoffset: 0;
-  animation: preloader-dash 1.5s ease-in-out infinite,
-    color 6s ease-in-out infinite;
+  animation: preloader-dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
   stroke-linecap: square;
   transition: 0.3s stroke;
   ${({ color, thickness }: { color: string; thickness: number }) => css`

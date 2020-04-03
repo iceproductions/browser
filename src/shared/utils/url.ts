@@ -12,9 +12,7 @@ export const matchesPattern = (pattern: string, url: string) => {
     return true;
   }
 
-  const regexp = new RegExp(
-    `^${pattern.replace(/\*/g, '.*').replace('/', '\\/')}$`,
-  );
+  const regexp = new RegExp(`^${pattern.replace(/\*/g, '.*').replace('/', '\\/')}$`);
   return url.match(regexp) != null;
 };
 

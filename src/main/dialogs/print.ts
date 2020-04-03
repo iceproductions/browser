@@ -15,13 +15,13 @@ export class PrintDialog extends Dialog {
         height: HEIGHT,
         y: 36,
       },
-      devtools: true
+      devtools: true,
     });
   }
 
   public rearrange() {
     const { width } = this.appWindow.getContentBounds();
-    var x = Math.round(((width - WIDTH) / 2));
+    var x = Math.round((width - WIDTH) / 2);
     super.rearrange({ x });
   }
 
@@ -34,8 +34,8 @@ export class PrintDialog extends Dialog {
   public hide() {
     this.webContents.send('visible', false);
     setTimeout(() => {
-        super.hide();
-        this.visible = false;
+      super.hide();
+      this.visible = false;
     }, 100);
   }
 }

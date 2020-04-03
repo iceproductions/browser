@@ -37,26 +37,24 @@ export class FaviconsStore {
   };
 
   public addFavicon = async (url: string): Promise<string> => {
-    return new Promise(async resolve => {
+    return new Promise(async (resolve) => {
       if (!this.favicons[url]) {
         try {
           const res = await requestURL(url);
 
           if (res.statusCode === 404) {
-            return console.log("No favicon found")
+            return console.log('No favicon found');
           }
-    
+
           let data = Buffer.from(res.data, 'binary');
-    
+
           const type = await fromBuffer(data);
-    
+
           if (type && type.ext === 'ico') {
             data = Buffer.from(new Uint8Array(await convertIcoToPng(data)));
           }
-    
-          const str = `data:${(await fromBuffer(data)).ext};base64,${data.toString(
-            'base64',
-          )}`;
+
+          const str = `data:${(await fromBuffer(data)).ext};base64,${data.toString('base64')}`;
 
           this.db.insert({
             url,
@@ -79,7 +77,7 @@ export class FaviconsStore {
     await this.db.find({}, (err: any, docs: Favicon[]) => {
       if (err) return console.warn(err);
 
-      docs.forEach(favicon => {
+      docs.forEach((favicon) => {
         const { data } = favicon;
 
         if (this.favicons[favicon.url] == null) {

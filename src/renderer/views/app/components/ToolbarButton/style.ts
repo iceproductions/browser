@@ -9,15 +9,7 @@ export const Icon = styled.div`
   height: 100%;
   will-change: background-image;
   transition: 0.15s background-image;
-  ${({
-    size,
-    disabled,
-    opacity,
-  }: {
-    size: number;
-    disabled: boolean;
-    opacity: number;
-  }) => css`
+  ${({ size, disabled, opacity }: { size: number; disabled: boolean; opacity: number }) => css`
     ${centerIcon(size)};
     opacity: ${disabled ? 0.4 : opacity};
   `};
@@ -36,7 +28,7 @@ export const Button = styled.div`
 `;
 
 export const AbButton = styled.a`
-  filter: var(--toolbar-browser-action-filter)
+  filter: var(--toolbar-browser-action-filter);
 `;
 
 export const Circle = styled.div`

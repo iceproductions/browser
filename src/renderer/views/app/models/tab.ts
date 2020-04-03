@@ -1,7 +1,7 @@
 import { observable, computed, action } from 'mobx';
 import * as React from 'react';
 import { ipcRenderer } from 'electron';
-import Vibrant = require('node-vibrant')
+import Vibrant = require('node-vibrant');
 import { remote } from 'electron';
 
 import store from '~/renderer/views/app/store';
@@ -125,18 +125,12 @@ export class Tab {
 
   @computed
   public get borderVisible() {
-    const tabs = this.tabGroup.tabs
-      .slice()
-      .sort((a, b) => a.position - b.position);
+    const tabs = this.tabGroup.tabs.slice().sort((a, b) => a.position - b.position);
 
     const i = tabs.indexOf(this);
     const nextTab = tabs[i + 1];
 
-    if (
-      (nextTab && (nextTab.isHovered || nextTab.isSelected)) ||
-      this.isSelected ||
-      this.isHovered
-    ) {
+    if ((nextTab && (nextTab.isHovered || nextTab.isSelected)) || this.isSelected || this.isHovered) {
       return false;
     }
 
@@ -178,123 +172,104 @@ export class Tab {
       if (active) {
         this.select();
 
-        if(url == NEWTAB_URL) {
-          ipcRenderer.send("open-search");
+        if (url == NEWTAB_URL) {
+          ipcRenderer.send('open-search');
         }
       }
     });
 
-    ipcRenderer.on(
-      `browserview-data-updated-${this.id}`,
-      async (e: any, { title, url, zoomAmount }: any) => {
-        let updated = null;
+    ipcRenderer.on(`browserview-data-updated-${this.id}`, async (e: any, { title, url, zoomAmount }: any) => {
+      let updated = null;
 
-        const protocol = new URL(url).protocol;
+      const protocol = new URL(url).protocol;
 
-        if (url !== this.url) {
-          if(protocol !== 'dot:') {
-            this.lastHistoryId = await store.history.addItem({
-              title: this.title,
-              url,
-              favicon: this.favicon,
-              date: new Date().toString(),
-            });
+      if (url !== this.url) {
+        if (protocol !== 'dot:') {
+          this.lastHistoryId = await store.history.addItem({
+            title: this.title,
+            url,
+            favicon: this.favicon,
+            date: new Date().toString(),
+          });
 
-            updated = {
-              url,
-            };
-          }
-        }
-
-        if (title !== this.title) {
           updated = {
-            title,
+            url,
           };
         }
+      }
 
-        if (updated) {
-          this.emitOnUpdated(updated);
-        }
+      if (title !== this.title) {
+        updated = {
+          title,
+        };
+      }
 
-        this.title = title;
-        this.url = url;
-        this.zoomAmount = zoomAmount;
+      if (updated) {
+        this.emitOnUpdated(updated);
+      }
 
-        this.updateData();
-      },
-    );
+      this.title = title;
+      this.url = url;
+      this.zoomAmount = zoomAmount;
+
+      this.updateData();
+    });
 
     ipcRenderer.on(
       `load-commit-${this.id}`,
-      async (
-        e,
-        event,
-        url: string,
-        isInPlace: boolean,
-        isMainFrame: boolean,
-      ) => {
+      async (e, event, url: string, isInPlace: boolean, isMainFrame: boolean) => {
         if (isMainFrame) {
           this.blockedAds = 0;
           this.zoomAmount = 1;
         }
-      },
+      }
     );
 
-    ipcRenderer.on(
-      `browserview-tab-info-updated-${this.id}`, async (e) => {
-        this.background = colors.blue['500'];
-        this.hasThemeColor = false;
-        this.favicon = undefined;
-    })
+    ipcRenderer.on(`browserview-tab-info-updated-${this.id}`, async (e) => {
+      this.background = colors.blue['500'];
+      this.hasThemeColor = false;
+      this.favicon = undefined;
+    });
 
-    ipcRenderer.on(
-      `browserview-favicon-updated-${this.id}`,
-      async (e: any, favicon: string, theme: string) => {
-        try {
-          const fav = await store.favicons.addFavicon(favicon);
-          const buf = Buffer.from(fav.split('base64,')[1], 'base64');
+    ipcRenderer.on(`browserview-favicon-updated-${this.id}`, async (e: any, favicon: string, theme: string) => {
+      try {
+        const fav = await store.favicons.addFavicon(favicon);
+        const buf = Buffer.from(fav.split('base64,')[1], 'base64');
 
-          this.favicon = favicon;
+        this.favicon = favicon;
 
-          if (!this.hasThemeColor) {
-            const palette = await Vibrant.from(buf).getPalette();
+        if (!this.hasThemeColor) {
+          const palette = await Vibrant.from(buf).getPalette();
 
-            if (!palette.Vibrant) return;
+          if (!palette.Vibrant) return;
 
-            if (getColorBrightness(palette.Vibrant.hex) < 170) {
-              this.background =
-                theme == 'light'
-                  ? palette.Vibrant.hex
-                  : palette.DarkVibrant.hex;
-            } else {
-              this.background = colors.blue['500'];
-            }
+          if (getColorBrightness(palette.Vibrant.hex) < 170) {
+            this.background = theme == 'light' ? palette.Vibrant.hex : palette.DarkVibrant.hex;
+          } else {
+            this.background = colors.blue['500'];
           }
-        } catch (e) {
-          console.log(e)
-          this.favicon = '';
-          this.background = colors.blue['500'];
         }
-        this.updateData();
-      },
-    );
+      } catch (e) {
+        console.log(e);
+        this.favicon = '';
+        this.background = colors.blue['500'];
+      }
+      this.updateData();
+    });
 
     ipcRenderer.on(`blocked-ad-${this.id}`, () => {
       this.blockedAds++;
     });
 
-    ipcRenderer.on(
-      `browserview-theme-color-updated-${this.id}`,
-      (e: any, themeColor: string) => {
-        if (themeColor && getColorBrightness(themeColor) < 170) {
-          this.background = themeColor;
-          this.hasThemeColor = true;
-        } else {
-          this.background = colors.blue['500'];
-          this.hasThemeColor = false;
-        }
-      },
-    );
+    ipcRenderer.on(`browserview-theme-color-updated-${this.id}`, (e: any, themeColor: string) => {
+      if (themeColor && getColorBrightness(themeColor) < 170) {
+        this.background = themeColor;
+        this.hasThemeColor = true;
+      } else {
+        this.background = colors.blue['500'];
+        this.hasThemeColor = false;
+      }
+    });
 
     ipcRenderer.on(`view-loading-${this.id}`, (e: any, loading: boolean, url: string) => {
       this.loading = loading;
@@ -340,7 +315,7 @@ export class Tab {
             url,
             favicon,
           },
-        },
+        }
       );
     }
   }
@@ -375,9 +350,7 @@ export class Tab {
     }
 
     if (tabs === null) {
-      tabs = store.tabs.list.filter(
-        x => x.tabGroupId === this.tabGroupId && !x.isClosing,
-      );
+      tabs = store.tabs.list.filter((x) => x.tabGroupId === this.tabGroupId && !x.isClosing);
     }
 
     const width = containerWidth / tabs.length - TABS_PADDING;
@@ -439,7 +412,7 @@ export class Tab {
 
     ipcRenderer.send('browserview-destroy', this.id);
 
-    const notClosingTabs = tabs.filter(x => !x.isClosing);
+    const notClosingTabs = tabs.filter((x) => !x.isClosing);
     let index = notClosingTabs.indexOf(this);
 
     store.tabs.resetRearrangeTabsTimer();
@@ -459,11 +432,7 @@ export class Tab {
     if (selected) {
       index = tabs.indexOf(this);
 
-      if (
-        index + 1 < tabs.length &&
-        !tabs[index + 1].isClosing &&
-        !store.tabs.scrollable
-      ) {
+      if (index + 1 < tabs.length && !tabs[index + 1].isClosing && !store.tabs.scrollable) {
         const nextTab = tabs[index + 1];
         nextTab.select();
       } else if (index - 1 >= 0 && !tabs[index - 1].isClosing) {
@@ -486,7 +455,7 @@ export class Tab {
   };
 
   callViewMethod = (scope: string, ...args: any[]): Promise<any> => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const callId = makeId(32);
       ipcRenderer.send('browserview-call', {
         args,
@@ -495,12 +464,9 @@ export class Tab {
         callId,
       });
 
-      ipcRenderer.once(
-        `browserview-call-result-${callId}`,
-        (e: any, result: any) => {
-          resolve(result);
-        },
-      );
+      ipcRenderer.once(`browserview-call-result-${callId}`, (e: any, result: any) => {
+        resolve(result);
+      });
     });
   };
 

@@ -5,13 +5,7 @@ import { getPath } from '~/shared/utils/paths';
 import { countVisitedTimes, compareDates, getSectionLabel } from '../utils';
 import { ipcRenderer } from 'electron';
 
-export type QuickRange =
-  | 'all'
-  | 'today'
-  | 'yesterday'
-  | 'last-week'
-  | 'last-month'
-  | 'older';
+export type QuickRange = 'all' | 'today' | 'yesterday' | 'last-week' | 'last-month' | 'older';
 
 export class HistoryStore {
   public db = new Datastore({
@@ -56,16 +50,14 @@ export class HistoryStore {
   }
 
   public getById(id: string) {
-    return this.items.find(x => x._id === id);
+    return this.items.find((x) => x._id === id);
   }
 
   public async load() {
     await this.db.find({}).exec((err: any, items: HistoryItem[]) => {
       if (err) return console.warn(err);
 
-      items = items.sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-      );
+      items = items.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
       this.items = items;
 
@@ -74,13 +66,13 @@ export class HistoryStore {
 
         ipcRenderer.once('get-top-sites', () => {
           ipcRenderer.send('receive-top-sites', items);
-        })
+        });
       }, 2000);
     });
   }
 
   public addItem(item: HistoryItem) {
-    item.title.replace(/🔊 • /g, "");
+    item.title.replace(/🔊 • /g, '');
     return new Promise((resolve: (id: string) => void) => {
       this.db.insert(item, (err: any, doc: HistoryItem) => {
         if (err) return console.error(err);
@@ -92,9 +84,9 @@ export class HistoryStore {
   }
 
   public removeItem(id: string) {
-    this.items = this.items.filter(x => x._id !== id);
+    this.items = this.items.filter((x) => x._id !== id);
 
-    this.db.remove({ _id: id }, err => {
+    this.db.remove({ _id: id }, (err) => {
       if (err) return console.warn(err);
     });
   }
@@ -138,11 +130,9 @@ export class HistoryStore {
       loaded++;
     }
 
-    if(list.length) {
-      
+    if (list.length) {
     }
     return list;
-
   }
 
   @computed

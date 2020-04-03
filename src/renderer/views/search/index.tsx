@@ -33,4 +33,4 @@ styleElement.textContent = `
 
 document.head.appendChild(styleElement);
 
-render(<App />, document.getElementById('app'),);
+render(<App />, document.getElementById('app'));

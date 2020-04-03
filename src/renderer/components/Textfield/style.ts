@@ -46,7 +46,6 @@ export const Input = styled.input`
     &[type='number']::-webkit-outer-spin-button {
       -webkit-appearance: none;
     }
-
   `}
 `;
 
@@ -77,7 +76,6 @@ export const Textarea = styled.textarea`
     &[type='number']::-webkit-outer-spin-button {
       -webkit-appearance: none;
     }
-
   `}
 `;
 

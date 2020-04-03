@@ -8,8 +8,7 @@ import { resolve } from 'path';
 import { readFileSync } from 'fs';
 import colors from 'colors';
 
-export type SettingsSection =
-  | 'appearance'
+export type SettingsSection = 'appearance';
 
 export class PreferencesStore {
   @observable
@@ -25,18 +24,18 @@ export class PreferencesStore {
       this.updatePreferences(settings);
     });
 
-    let userData = remote.app.getPath('userData')
+    let userData = remote.app.getPath('userData');
 
     const self = this;
 
     watch(resolve(userData, 'preferences.json'), () => {
-        console.log(`${colors.blue.bold('Preferences')} Preferences file updated`);
+      console.log(`${colors.blue.bold('Preferences')} Preferences file updated`);
 
-        const file = readFileSync(resolve(userData, 'preferences.json'), 'utf-8');
-        const newPrefs = JSON.parse(file)
+      const file = readFileSync(resolve(userData, 'preferences.json'), 'utf-8');
+      const newPrefs = JSON.parse(file);
 
-        self.conf = newPrefs;
-        self.updatePreferences(newPrefs)
+      self.conf = newPrefs;
+      self.updatePreferences(newPrefs);
     });
   }
 

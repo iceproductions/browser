@@ -20,8 +20,7 @@ export const Button = styled.div`
     margin-right: 0;
   }
   &:hover {
-    background-color: ${({ isClose }: ButtonProps) =>
-      !isClose ? 'rgba(196, 196, 196, 0.4)' : '#e81123'};
+    background-color: ${({ isClose }: ButtonProps) => (!isClose ? 'rgba(196, 196, 196, 0.4)' : '#e81123')};
   }
 
   ${({ visible }: ButtonProps) => css`
@@ -41,7 +40,7 @@ export const Icon = styled.div`
   height: 100%;
   transition: 0.2s filter;
   ${centerIcon(11)};
-  
+
   ${({ icon, isClose, isDark, theme }: IconProps) => css`
     background-image: url(${icon});
     filter: ${theme['windows-controls-color']};

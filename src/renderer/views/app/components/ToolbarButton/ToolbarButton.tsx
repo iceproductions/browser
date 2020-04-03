@@ -30,17 +30,41 @@ export default class ToolbarButton extends React.Component<Props, {}> {
     };
   };
   public render() {
-    const { icon, onClick, size, disabled, className, divRef, children, opacity, invert, title, onContextMenu, } = this.props;
+    const {
+      icon,
+      onClick,
+      size,
+      disabled,
+      className,
+      divRef,
+      children,
+      opacity,
+      invert,
+      title,
+      onContextMenu,
+    } = this.props;
     let { style } = this.props;
     style = { ...style };
-    return (<Button onMouseDown={this.onMouseDown} onClick={onClick} onContextMenu={onContextMenu} className={className} style={style} invert={invert} title={title} ref={(r: HTMLDivElement) => {
-      this.ref = r;
-      if (typeof divRef === 'function') {
-        divRef(r);
-      }
-    }} disabled={disabled}>
-      <Icon style={{ backgroundImage: `url(${icon})` }} size={size} disabled={disabled} opacity={opacity} />
-      {children}
-    </Button>);
+    return (
+      <Button
+        onMouseDown={this.onMouseDown}
+        onClick={onClick}
+        onContextMenu={onContextMenu}
+        className={className}
+        style={style}
+        invert={invert}
+        title={title}
+        ref={(r: HTMLDivElement) => {
+          this.ref = r;
+          if (typeof divRef === 'function') {
+            divRef(r);
+          }
+        }}
+        disabled={disabled}
+      >
+        <Icon style={{ backgroundImage: `url(${icon})` }} size={size} disabled={disabled} opacity={opacity} />
+        {children}
+      </Button>
+    );
   }
 }

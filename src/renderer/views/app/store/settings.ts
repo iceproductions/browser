@@ -105,9 +105,7 @@ export class OptionsStore {
   }
 
   @action
-  public setSearchEngine(engine: string, engineURI?: string) {
-
-  }
+  public setSearchEngine(engine: string, engineURI?: string) {}
 
   @action
   public deleteSe(id: string) {
@@ -123,36 +121,30 @@ export class OptionsStore {
   }
 
   @action
-  public setTheme(theme: 'dark' | 'light') {
-
-  }
+  public setTheme(theme: 'dark' | 'light') {}
 
   @action
-  public emojiSkin(tone: string) {
- 
-  }
+  public emojiSkin(tone: string) {}
 
   public set changeDisplay(dis: any) {
     this.currentDisplay = dis;
   }
 
   public async load() {
-    await this.searchEnginesDB
-      .find({})
-      .exec(async (err: any, items: Engine[]) => {
-        if (err) return console.warn(err);
+    await this.searchEnginesDB.find({}).exec(async (err: any, items: Engine[]) => {
+      if (err) return console.warn(err);
 
-        this.seList = items;
+      this.seList = items;
 
-        var se = this.getById(this.currentSearchEngine);
-        if (se) {
-          if (se.title) {
-            this.seIsCustom = true;
-          }
-        } else {
-          this.currentSearchEngine = 'google';
+      var se = this.getById(this.currentSearchEngine);
+      if (se) {
+        if (se.title) {
+          this.seIsCustom = true;
         }
-      });
+      } else {
+        this.currentSearchEngine = 'google';
+      }
+    });
   }
 
   public getSeTitle() {

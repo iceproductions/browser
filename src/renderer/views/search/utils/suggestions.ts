@@ -2,8 +2,8 @@ import store from '../store';
 import { HistoryItem } from '../../app/models';
 
 interface HistorySuggestion extends HistoryItem {
-    canSuggest?: boolean;
-    isSearch?: boolean;
+  canSuggest?: boolean;
+  isSearch?: boolean;
 }
 
 export const getHistorySuggestions = (filter: string) => {
@@ -21,7 +21,7 @@ export const getHistorySuggestions = (filter: string) => {
 
   const filterPart = filter.replace(regex, '');
 
-  const history = (Array.from(store.history) as HistoryItem[]);
+  const history = Array.from(store.history) as HistoryItem[];
 
   for (const i in history) {
     let item = history[i];
@@ -43,17 +43,11 @@ export const getHistorySuggestions = (filter: string) => {
         .split('&')[0]
         .replace(/\+/g, ' ')
         .replace(/%20/g, ' ');
-      if (
-        query.startsWith(filter) &&
-        urlMatchedItems.filter(x => x.url === query).length === 0
-      ) {
+      if (query.startsWith(filter) && urlMatchedItems.filter((x) => x.url === query).length === 0) {
         itemToPush.url = query;
         urlMatchedItems.push({ url: query, canSuggest: true, isSearch: true });
       }
-    } else if (
-      urlPart.toLowerCase().startsWith(filterPart) ||
-      `www.${urlPart}`.startsWith(filterPart)
-    ) {
+    } else if (urlPart.toLowerCase().startsWith(filterPart) || `www.${urlPart}`.startsWith(filterPart)) {
       urlMatchedItems.push({ ...itemToPush, canSuggest: true });
     } else if (itemToPush.title.toLowerCase().includes(filter)) {
       titleMatchedItems.push({ ...itemToPush, canSuggest: false });

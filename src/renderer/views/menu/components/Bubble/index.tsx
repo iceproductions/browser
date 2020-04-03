@@ -30,11 +30,7 @@ export const Bubble = ({
   const width = getSize(itemsPerRow);
 
   return (
-    <StyledBubble
-      style={{ minWidth: width, maxWidth: width }}
-      disabled={disabled}
-      onClick={onClick}
-    >
+    <StyledBubble style={{ minWidth: width, maxWidth: width }} disabled={disabled} onClick={onClick}>
       <Circle toggled={toggled}>
         <Icon
           invert={invert}

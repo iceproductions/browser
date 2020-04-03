@@ -31,6 +31,6 @@ export const AddTab = styled(ToolbarButton)`
   top: 0;
 
   ${({ theme }: { theme?: ITheme }) => css`
-    filter: ${theme['toolbar-addtab-filter']}
+    filter: ${theme['toolbar-addtab-filter']};
   `};
 `;

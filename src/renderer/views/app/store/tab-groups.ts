@@ -9,7 +9,6 @@ import { closeWindow } from '../utils';
 import { getPath } from '~/shared/utils/paths';
 
 export class TabGroupsStore {
-
   public db = new Datastore({
     filename: getPath('storage/tab-groups.db'),
     autoload: true,
@@ -80,14 +79,13 @@ export class TabGroupsStore {
       return this.addGroup();
     }
 
-    this.db.remove({ id: group.id }, err => {
+    this.db.remove({ id: group.id }, (err) => {
       if (err) return console.warn(err);
     });
-
   }
 
   public getGroupById(id: number) {
-    return this.list.find(x => x.id === id);
+    return this.list.find((x) => x.id === id);
   }
 
   @action
@@ -102,7 +100,6 @@ export class TabGroupsStore {
         resolve(`${doc.id}`);
       });
     });
-
   }
 
   @action
@@ -114,7 +111,6 @@ export class TabGroupsStore {
     });
   }
 
-
   @action
   public editGroupName(name: string, id: number) {
     const group = this.getGroupById(id);
@@ -125,5 +121,4 @@ export class TabGroupsStore {
       if (err) return console.error(err);
     });
   }
-
 }

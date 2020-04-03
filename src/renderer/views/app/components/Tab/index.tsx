@@ -58,11 +58,11 @@ const onMouseLeave = () => {
 };
 
 const onClick = (tab: Tab) => (e: React.MouseEvent<HTMLDivElement>) => {
-  if(store.canToggleMenu) {
+  if (store.canToggleMenu) {
     store.canToggleMenu = false;
     ipcRenderer.send('open-search');
   }
-}
+};
 
 const contextMenu = (tab: Tab) => () => {
   const { tabs } = store.tabGroups.currentGroup;
@@ -78,9 +78,7 @@ const contextMenu = (tab: Tab) => () => {
     },
     {
       label: 'Navigate here',
-      click: () => {
-
-      },
+      click: () => {},
     },
     {
       type: 'separator',
@@ -166,26 +164,19 @@ const Content = observer(({ tab }: { tab: Tab }) => {
         <StyledIcon
           isIconSet={tab.favicon == undefined}
           style={{ backgroundImage: `url(${tab.favicon == undefined ? '' : tab.favicon})` }}
-        ></StyledIcon>
+        />
       )}
 
       {tab.loading && (
-        <Preloader
-          color={tab.background}
-          thickness={6}
-          size={16}
-          style={{ minWidth: 16, marginLeft: '12px' }}
-        />
+        <Preloader color={tab.background} thickness={6} size={16} style={{ minWidth: 16, marginLeft: '12px' }} />
       )}
       <StyledTitle
         isIcon={tab.isIconSet}
         tab={tab}
-        style={{ 
-          color: tab.isSelected ?
-            shadeBlendConvert(
-              store.theme['tab-text-vibrant-opacity'],
-              tab.background,
-            ) : store.theme["tab-text-color"]
+        style={{
+          color: tab.isSelected
+            ? shadeBlendConvert(store.theme['tab-text-vibrant-opacity'], tab.background)
+            : store.theme['tab-text-color'],
         }}
       >
         <span>{tab.title}</span>
@@ -216,7 +207,7 @@ const Overlay = observer(({ tab }: { tab: Tab }) => {
     <StyledOverlay
       hovered={tab.isHovered}
       style={{
-        backgroundColor: store.theme["tab-overlay-color"],
+        backgroundColor: store.theme['tab-overlay-color'],
       }}
     />
   );
@@ -239,23 +230,16 @@ export default observer(({ tab }: { tab: Tab }) => {
       <TabContainer
         selected={tab.isSelected}
         style={{
-          backgroundColor: tab.isSelected 
-          ? shadeBlendConvert(
-            store.theme['tab-vibrant-opacity'],
-            tab.background,
-          ) : store.theme['tab-inactive-color']
+          backgroundColor: tab.isSelected
+            ? shadeBlendConvert(store.theme['tab-vibrant-opacity'], tab.background)
+            : store.theme['tab-inactive-color'],
         }}
       >
         <Content tab={tab} />
         <Close tab={tab} />
 
         <Overlay tab={tab} />
-        <Ripple
-          rippleTime={0.4}
-          opacity={0.15}
-          color={tab.background}
-          style={{ zIndex: 9 }}
-        />
+        <Ripple rippleTime={0.4} opacity={0.15} color={tab.background} style={{ zIndex: 9 }} />
       </TabContainer>
       <Border tab={tab} />
     </StyledTab>

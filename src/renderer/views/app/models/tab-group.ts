@@ -34,7 +34,7 @@ export class TabGroup {
   }
 
   public get tabs() {
-    return store.tabs.list.filter(x => x.tabGroupId === this.id);
+    return store.tabs.list.filter((x) => x.tabGroupId === this.id);
   }
 
   @action
