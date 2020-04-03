@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 <p align="center">
   <img src="https://i.imgur.com/Gdko6yP.png" style="display: block;margin-left: auto;margin-right: auto;" data-canonical-src="https://i.imgur.com/Gdko6yP.png" width="300" height="50" align="center"/>
   <br><a href="https://dotbrowser.me">dotbrowser.me</a>
@@ -51,7 +52,7 @@ A privacy-centric web browser, with an elegant UI and a robust built-in ad block
 
 |  [<img src="https://i.imgur.com/POJjnum.png" alt="Windows" width="24px" height="24px" />]()</br> Windows  |          [<img src="https://i.imgur.com/V0YkvU5.png" alt="Mac" width="24px" height="24px" />]()</br> Mac          |         [<img src="https://i.imgur.com/khCS5Ll.png" alt="Linux" width="24px" height="24px" />]()</br> Linux         |
 |:---------:|:---------------------:|:---------------------:|
-| [Download](https://edge.dotbrowser.me/stable/download/windows) | [Download](https://edge.dotbrowser.me/stable/download/mac) | [Download](https://edge.dotbrowser.me/stable/download/linux) |
+| Not available | Not available | Not available |
 
 ####
 
@@ -77,13 +78,14 @@ Please head over to our Wiki page for build instructions if you are planning to 
 
 For support, join our support discord server.
 
-[![Discord](https://discordapp.com/api/guilds/525056817399726102/widget.png?style=banner2)](https://discord.gg/wAh7thM)
+[![Discord](https://discordapp.com/api/guilds/692837502117216307/widget.png?style=banner2)](https://discord.gg/JUTFUKH)
 
 ## 🧱 Built With
 
 - [NodeJS](https://nodejs.org/en/) - The server environment
 - [Electron](https://electronjs.org/) - Desktop App environment
 - [Wexond](https://github.com/wexond/wexond) - Software used to create browser
+- [Dot](https://github.com/dothq/browser) - Browser this fork is based on
 - [npm](https://npmjs.org) - Installing packages
 - [mobx-react](https://github.com/mobxjs/mobx-react) - For building observers
 - [Material UI Icons](https://material.io/) - For the icons
@@ -91,16 +93,13 @@ For support, join our support discord server.
 
 ## 🖋 Authors
 
-- **Ender** _aka EnderDev_ - _Main Developer_ - [EnderDev](https://github.com/EnderDev)
-- **Lee** _aka LOHT03_ - _Main Developer_ - [LOHT03](https://github.com/LOHT03)
-- **Geek** _aka GamingGeek_ - _Main Developer_ - [GamingGeek](https://github.com/GamingGeek)
+- **Daniel** _aka Techmandan_ - _Main developer of fork_ - [danbulant](https://github.com/danbulant)
 
 ## 🤵 License
 
 This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) file for details
 
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdot-browser%2Fdesktop.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdot-browser%2Fdesktop?ref=badge_large)
-
 ## 💝 Acknowledgments
 
 - Thanks to the authors of Wexond for this wonderful piece of kit.
+- Thanks to the authors of Dot for this wonderful piece of browser.

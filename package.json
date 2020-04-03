@@ -1,7 +1,7 @@
 {
-  "name": "dot",
+  "name": "ice-browser",
   "version": "3.0.0",
-  "description": "A beautiful browser with darn-simple UI, based on Wexond.",
+  "description": "A beautiful browser with darn-simple UI, based on Dot.",
   "keywords": [
     "web-browser",
     "material",
@@ -13,8 +13,8 @@
   "homepage": "https://github.com/dothq/browser#readme",
   "main": "build/main.js",
   "author": {
-    "name": "Dot Technologies",
-    "email": "hello@dotbrowser.me"
+    "name": "Daniel Bulant",
+    "email": "admin@iceproductions.dev"
   },
   "contributors": [
     {
@@ -32,6 +32,10 @@
     {
       "name": "Mikolaj Palkiewicz",
       "email": "xnerhu@gmail.com"
+    },
+    {
+      "name": "Daniel Bulant",
+      "email": "admin@iceproductions.dev"
     }
   ],
   "repository": {
