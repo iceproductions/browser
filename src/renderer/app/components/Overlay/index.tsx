@@ -103,7 +103,7 @@ ipcRenderer.on(NOTIFICATION_RECEIVED, (_: any, serverNotificationPayload: any) =
 })
 
 //Discord Rich Presence
-const clientId = '565573138146918421';
+const clientId = '527453262639792138';
 
 const rpclient = new Client({ transport: 'ipc'});
 const startTimestamp = Math.round(+new Date()/1000)
@@ -132,14 +132,14 @@ async function setActivity() {
     // }
     
     var state = `${store.tabs.getHostname(store.tabs.selectedTab.url)}`;
-    var largeImageKey = 'dlogo';
-    var smallImageKey = 'dot-online';
+    var largeImageKey = 'ice-logo';
+    var smallImageKey = 'ice-idle';// use ice online
     var smallImageText:string = store.locale.lang.rich_presence[0].active_small_text;
   } catch(e) {
     var details = store.locale.lang.rich_presence[0].idle_details;
     var state:string = store.locale.lang.rich_presence[0].idle_small_text;
-    var largeImageKey = 'dlogo';
-    var smallImageKey = 'dot-idle';
+    var largeImageKey = 'ice-logo';
+    var smallImageKey = 'ice-idle';
     var smallImageText:string = store.locale.lang.rich_presence[0].idle_small_text;
   }
   rpclient.setActivity({
