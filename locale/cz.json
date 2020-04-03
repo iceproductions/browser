@@ -1,0 +1,200 @@
+{
+    "standard": [
+        {
+            "dot": "Ice",
+            "dot_with_version": "Ice {appVersion}",
+            "dot_full": "Prohlížeč Ice",
+            "dot_full_with_version": "Prohlížeč Ice {appVersion}",
+            "button_open": "Otevřít",
+            "button_run": "Spustit",
+            "button_send": "Odeslat",
+            "button_download": "Stáhnout",
+            "search_placeholder": "Hledat",
+            "quit": "Zavřít",
+            "quit_dot": "Zavřít Ice",
+            "quit_dot_with_version": "Zavřít Ice {appVersion}"
+        }
+    ],
+    "languages": [
+        {
+            "en": "Angličtina",
+            "es": "Španělština",
+            "de": "Němčina",
+            "fr": "Francouzština",
+            "fi": "Finština",
+            "ru": "Ruština",
+            "no": "Norweigan",
+            "ie": "Irština",
+            "se": "Švédština",
+            "cz": "Čeština"
+        }
+    ],
+    "rich_presence": [
+        {
+            "default_details": "Prohlíží na",
+            "audio_details": "Poslouchá na",
+            "file_details": "Prohlíží {fileType}",
+            "active_small_text": "Prohlíží stránku",
+            "idle_small_text": "Nic nedělá",
+            "idle_details": "Prohlížeč Ice",
+            "large_text": "Prohlížeč Ice"
+        }
+    ],
+    "overlay": [
+        {
+            "dial_top_sites": "Top stránky",
+            "dial_bookmarks": "Záložky",
+            "overview": "Přehled",
+            "menu": "Menu",
+            "tab_groups": "Skupiny",
+            "default_tab_group": "Nová skupina",
+            "world": "Svět",
+            "history_bubble": "Historie",
+            "bookmarks_bubble": "Záložky",
+            "downloads_bubble": "Stažené",
+            "settings_bubble": "Nastavení",
+            "extensions_bubble": "Rozšíření",
+            "find_bubble": "Hledat",
+            "more_tools_bubble": "Více",
+            "welcome_snackbar": "Vítej zpět, {username}"
+        }
+    ],
+    "search_bar": [
+        {
+            "logged_in": [
+                {
+                    "message_1": "Kam chcete jít?",
+                    "message_2": "Co máš na mysli, {username}?",
+                    "message_3": "Pro začátek napiš URL či něco vyhledej",
+                    "message_4": "{currentTimeType}, {username}"
+                }
+            ],
+            "guest": [
+                {
+                    "message_1": "Kam chcete jít?",
+                    "message_2": "Co máš na mysli_?",
+                    "message_3": "Pro začátek napiš URL či něco vyhledej",
+                    "message_4": "{currentTimeType}"
+                }
+            ],
+            "timeTypes": [
+                {
+                    "morning": "Dobré ráno",
+                    "afternoon": "Dobré odpoledne",
+                    "evening": "Dobrý večer"
+                }
+            ]
+        }
+    ],
+    "settings": [
+        {
+            "title": "nastavení",
+            "google_searchEngine": "Google",
+            "bing_searchEngine": "Bing",
+            "yahoo_searchEngine": "Yahoo",
+            "ddg_searchEngine": "DuckDuckGo",
+            "ecosia_searchEngine": "Ecosia",
+            "my_profile": [
+                {
+                    "title": "Můj profil",
+                    "sign_in_btn": "Přihlásit se",
+                    "sign_out_btn": "Odhlásit se",
+                    "guest_user": "Návštěvník"
+                }
+            ],
+            "appearance": [
+                {
+                    "title": "Vzhled",
+                    "toggle_dot": "Přepnout tlačítko",
+                    "search_engine": "Vyhledávač",
+                    "temp_type": "Typ teploty",
+                    "guest_user": "Návštěvník"
+                }
+            ],
+            "downloads": [
+                {
+                    "title": "Stažené",
+                    "download_loc": "Lokace stažených souborů"
+                }
+            ],
+            "dev_tools": [
+                {
+                    "title": "Vývojářské experimenty",
+                    "chromium_dt": "Chromium Developer Tools",
+                    "send_test_notif": "Odeslat testovací notifikaci",
+                    "open_log": "Otevřít log"
+                }
+            ],
+            "about_dot": [
+                {
+                    "title": "O prohlížeči Ice",
+                    "thanks_message": "Prohlížeč Ice byl vytvořen pomocí",
+                    "wxnd_coffee": "a ☕.",
+                    "made_in": "Vytvořeno ve",
+                    "gb_with": "Velké británii s ",
+                    "end": ".",
+                    "developers_title": "Vývojáři",
+                    "beta_testers_title": "Beta Testeři",
+                    "special_thanks_title": "Speciální poděkování",
+                    "translators_title": "Překladatelé",
+                    "verbose_loaded_fcm": "Načteno FCM notifikační služby",
+                    "about_page_btn": "Otevřít debug stránku",
+                    "copyright_notice": "© 2020 Ice productions"
+                }
+            ],
+            "feedback": [
+                {
+                    "title": "Odeslat zpětnou vazbu",
+                    "feedback_title": "Odeslat zpětnou vazbu vývojářům",
+                    "bug_report_title": "Otevřít nahlášení chyby",
+                    "describe_issue": "Popište svůj problém"
+                }
+            ],
+            "languages": [
+                {
+                    "title": "Jazyky",
+                    "download_languages": "Stáhnout poslední balíček jazyků"
+                }
+            ]
+        }
+    ],
+    "history": [
+        {
+            "title": "Historie",
+            "clear_browsing_history": "Smazat data o prohlížení",
+            "sort": [
+                {
+                    "range_all": "Vše",
+                    "range_today": "Dnes",
+                    "range_yesterday": "Včera",
+                    "range_last_week": "Tento týden",
+                    "range_last_month": "Tento měsíc",
+                    "range_older": "Starší"
+                }
+            ]
+        }
+    ],
+    "bookmarks": [
+        {
+            "title": "Záložky",
+            "import": "Importovat záložky",
+            "export": "Exportovat záložky",
+            "add_bookmark": "Nová záložka"
+        }
+    ],
+    "extensions": [
+        {
+            "title": "Rozšíření"
+        }
+    ],
+    "window": [
+        {
+            "find_on_page": "Najít na stránce",
+            "navigate_back": "Zpět",
+            "navigate_forward": "Vpřed",
+            "navigate_refresh": "Znovu načíst (F5)",
+            "navigate_close": "Zavřít (Ctrl+W)",
+            "open_dot": "Otevřít spouštěč Ice"
+        }
+    ]
+}
