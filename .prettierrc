@@ -1,19 +1,21 @@
 {
   "arrowParens": "always",
   "trailingComma": "es5",
-  "tabWidth": 2,
+  "tabWidth": 4,
   "useTabs": false,
   "overrides": [
     {
       "files": ["*.css", "*.scss", "*.sass"],
       "options": {
-        "singleQuote": true
+        "singleQuote": false,
+        "doubleQuote": true
       }
     },
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "options": {
-        "singleQuote": true,
+        "singleQuote": false,
+        "doubleQuote": true,
         "printWidth": 120
       }
     }
