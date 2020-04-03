@@ -1,37 +1,74 @@
+<!-- markdownlint-disable -->
 <p align="center">
-  <img src="https://bot.ender.site/img/dot.png" style="display: block;margin-left: auto;margin-right: auto;" data-canonical-src="https://bot.ender.site/img/dot.png" width="200" height="200" align="center"/>
+  <img src="https://i.imgur.com/Gdko6yP.png" style="display: block;margin-left: auto;margin-right: auto;" data-canonical-src="https://i.imgur.com/Gdko6yP.png" width="300" height="50" align="center"/>
+  <br><a href="https://dotbrowser.me">dotbrowser.me</a>
 </p>
 
-<h1 align="center">Dot</h1>
-<h3 align="center">A beautiful browser with material UI, with built-in adblock, based on Wexond.</h3>
+<div align="center">
+<p align="center">
+    <a href="https://github.com/dothq/browser/releases">
+        <img src="https://img.shields.io/github/downloads/dothq/browser/total.svg" alt="Downloads">
+    </a>
+    <a href="https://github.com/dothq/browser/releases">
+        <img src="http://hits.dwyl.io/dothq/browser.svg" alt="Hits">
+    </a>
+    <a href="https://invite.gg/dot">
+        <img src="https://discordapp.com/api/guilds/307605794680209409/widget.png?style=shield" alt="Discord">
+    </a>
+    <a href="https://github.com/styled-components/styled-components">
+        <img src="https://img.shields.io/badge/style-%F0%9F%92%85%20styled--components-orange.svg?colorB=daa357&amp;colorA=db748e" alt="style: styled-components" />
+    </a>
+    <a href="https://github.com/dothq/browser">
+        <img src="https://travis-ci.org/dothq/browser.svg?branch=master" alt="Travis">
+    </a>
+    <a href="https://github.com/dothq/browser/issues">
+        <img src="https://img.shields.io/github/issues-raw/dothq/browser.svg" alt="Issues Open">
+    </a>
+    <a href="https://github.com/dothq/browser/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aclosed">
+        <img src="https://img.shields.io/github/issues-closed-raw/dothq/browser.svg" alt="Issues Closed">
+    </a>
+    <a href="/LICENSE">
+        <img src="https://img.shields.io/github/license/dothq/browser.svg" alt="License">
+    </a>
+</p>
+
+A privacy-centric web browser, with an elegant UI and a robust built-in ad blocker, all designed with anonymity in mind.
+
+![](https://dotbrowser.me/static/Dot-landing.png)
+
+</div>
 
 ## 👾 Features
 
-* **🚫 Built in ad-blocker** - We all hate ads, so we releave the pain by having a ad-blocker built in. No downloads, nothing.
-* **💬 Fancy Discord Rich Presence** - Tell your Discord Friends what page you're looking at, or if you're just Idle on the home screen...
-* **💻 Minimalistic UI** - Forget Chrome, bye bye Firefox, see you later IE and Edge. Our UI beats all of them.
-* **🖼 Dot Overlay** - A neat little overlay, which has bookmarks, a search box, downloads and more.
-* **🚩 Tab Groups** - Organize your tabs in a breeze.
-* **🎨 Customization** - Edit your Dot experience to what you want.
-* **🔖 Bookmarks & History** - Keep track of your favourite pages and your browsing history.
-* **🌥 Weather Updates** - A little card on the overlay telling you about the weather in your location.
-* **⚪ Dot Account** - Login to your Dot Account to keep your bookmarks, history, settings and location saved.
+- **🚫 Built in ad-blocker** - We all hate ads, so we relieve the pain by having an ad-blocker built in. No downloads, nothing.
+- **💬 Fancy Discord Rich Presence** - Tell your Discord Friends what page you're looking at, or if you're just Idle on the home screen...
+- **💻 Minimalistic UI** - Forget Chrome, bye bye Firefox, see you later IE and Edge. Our UI beats all of them.
+- **🚩 Tab Groups** - Organize your tabs in a breeze.
+- **🎨 Customization** - Edit your Dot experience to what you want.
+- **🔖 Bookmarks & History** - Keep track of your favourite pages and your browsing history.
+- **⚪ Dot ID** - Login to your Dot ID to keep your bookmarks, history, settings and location saved.
 
-## 💻 Downloads
+## 🦄 Downloads
 
-   ### ✔ Latest Release
-   #### [![](https://img.shields.io/github/release/dot-browser/desktop.svg?style=flat-square)](https://github.com/dot-browser/desktop/releases/latest)
+|  [<img src="https://i.imgur.com/POJjnum.png" alt="Windows" width="24px" height="24px" />]()</br> Windows  |          [<img src="https://i.imgur.com/V0YkvU5.png" alt="Mac" width="24px" height="24px" />]()</br> Mac          |         [<img src="https://i.imgur.com/khCS5Ll.png" alt="Linux" width="24px" height="24px" />]()</br> Linux         |
+|:---------:|:---------------------:|:---------------------:|
+| Not available | Not available | Not available |
+
+####
 
 ## 🖼 Screenshots
 
 ### Browsing a webpage
-[![Browsing](https://i.imgur.com/kw8f5KB.png)]()
+
+![](https://i.imgur.com/kw8f5KB.png)
 
 ### The Launcher
-[![Launcher](https://i.imgur.com/ZMVBnNm.png)]()
+
+![](https://i.imgur.com/ZMVBnNm.png)
 
 ### Rich Presence
-[![RP](https://i.imgur.com/Nsekr6W.png)]()
+
+![](https://i.imgur.com/Nsekr6W.png)
 
 ## ⚙ Build Information
 
@@ -41,22 +78,22 @@ Please head over to our Wiki page for build instructions if you are planning to 
 
 For support, join our support discord server.
 
-[![Discord](https://discordapp.com/api/guilds/525056817399726102/widget.png?style=banner2)](https://discord.gg/wAh7thM)
+[![Discord](https://discordapp.com/api/guilds/692837502117216307/widget.png?style=banner2)](https://discord.gg/JUTFUKH)
 
 ## 🧱 Built With
 
-* [NodeJS](https://nodejs.org/en/) - The server environment
-* [Electron](https://electronjs.org/) - Desktop App environment
-* [Wexond](https://github.com/wexond/wexond) - Software used to create browser
-* [npm](https://npmjs.org) - Installing packages
-* [mobx-react](https://github.com/mobxjs/mobx-react) - For building observers
-* [Material UI Icons](https://material.io/) - For the icons
-* [nersent-ui](https://github.com/nersent/nersent-ui) - Material design framework
+- [NodeJS](https://nodejs.org/en/) - The server environment
+- [Electron](https://electronjs.org/) - Desktop App environment
+- [Wexond](https://github.com/wexond/wexond) - Software used to create browser
+- [Dot](https://github.com/dothq/browser) - Browser this fork is based on
+- [npm](https://npmjs.org) - Installing packages
+- [mobx-react](https://github.com/mobxjs/mobx-react) - For building observers
+- [Material UI Icons](https://material.io/) - For the icons
+- [nersent-ui](https://github.com/nersent/nersent-ui) - Material design framework
 
 ## 🖋 Authors
 
-* **Ender** *aka EnderDev* - *Main Developer* - [EnderDev](https://github.com/EnderDev)
-* **Geek** *aka GamingGeek* - *Main Developer* - [GamingGeek](https://github.com/GamingGeek)
+- **Daniel** _aka Techmandan_ - _Main developer of fork_ - [danbulant](https://github.com/danbulant)
 
 ## 🤵 License
 
@@ -64,5 +101,5 @@ This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) 
 
 ## 💝 Acknowledgments
 
-* Thanks to the authors of Wexond for this wonderful piece of kit.
-
+- Thanks to the authors of Wexond for this wonderful piece of kit.
+- Thanks to the authors of Dot for this wonderful piece of browser.
