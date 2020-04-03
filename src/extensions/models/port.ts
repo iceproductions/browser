@@ -9,7 +9,11 @@ export class Port {
 
   private portId: string;
 
-  constructor(portId: string, name: string = null, sender: chrome.runtime.MessageSender = null) {
+  constructor(
+    portId: string,
+    name: string = null,
+    sender: chrome.runtime.MessageSender = null,
+  ) {
     if (sender) {
       this.sender = sender;
     }

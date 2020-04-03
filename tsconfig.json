@@ -1,42 +1,27 @@
 {
   "compilerOptions": {
-    "target": "es2018",
+    "outDir": "./build/",
+
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+
     "module": "commonjs",
-    "lib": ["dom", "es2018"],
-
-    "outDir": "build",
-    "sourceMap": true,
-
-    "esModuleInterop": true,
-
-    "noImplicitAny": false,
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": false,
-
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-
-    "forceConsistentCasingInFileNames": true,
-
+    "target": "es6",
     "jsx": "react",
     "allowJs": true,
-
-    "watch": false,
-    "pretty": true,
-    "importHelpers": true,
-
+    "sourceMap": true,
     "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["dom", "esnext"],
+    "experimentalDecorators": true,
 
     "baseUrl": "./",
 
     "paths": {
-      "~/*": [
-        "./src/*"
-      ]
+      "~/*": ["./src/*"]
     }
   },
-  "include": ["./src/**/*", "./custom.d.ts"],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }

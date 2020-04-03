@@ -27,11 +27,17 @@ export class WebRequestEvent {
     const id = hashCode(callback.toString());
     this.listeners.push(id);
 
-    ipcRenderer.on(`api-webRequest-intercepted-${this.name}-${id}`, (e: any, details: any, requestId: string) => {
-      const response = callback(details);
+    ipcRenderer.on(
+      `api-webRequest-intercepted-${this.name}-${id}`,
+      (e: any, details: any, requestId: string) => {
+        const response = callback(details);
 
-      ipcRenderer.send(`api-webRequest-response-${this.name}-${id}-${requestId}`, response);
-    });
+        ipcRenderer.send(
+          `api-webRequest-response-${this.name}-${id}-${requestId}`,
+          response,
+        );
+      },
+    );
 
     ipcRenderer.send('api-add-webRequest-listener', {
       id,
@@ -42,9 +48,11 @@ export class WebRequestEvent {
 
   public removeListener(callback: Function) {
     const id = hashCode(callback.toString());
-    this.listeners = this.listeners.filter((c) => c !== id);
+    this.listeners = this.listeners.filter(c => c !== id);
 
-    ipcRenderer.removeAllListeners(`api-webRequest-intercepted-${this.name}-${id}`);
+    ipcRenderer.removeAllListeners(
+      `api-webRequest-intercepted-${this.name}-${id}`,
+    );
 
     ipcRenderer.send('api-remove-webRequest-listener', { id, name: this.name });
   }

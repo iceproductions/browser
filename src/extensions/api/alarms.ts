@@ -12,7 +12,10 @@ export class Alarms {
     api = _api;
   }
 
-  public create = (name: string | chrome.alarms.AlarmCreateInfo, alarmInfo: chrome.alarms.AlarmCreateInfo) => {};
+  public create = (
+    name: string | chrome.alarms.AlarmCreateInfo,
+    alarmInfo: chrome.alarms.AlarmCreateInfo,
+  ) => {};
 
   public get = (name: string, cb: any) => {};
 

@@ -31,7 +31,11 @@ export class I18n {
 
     if (typeof item.placeholders === 'object') {
       for (const placeholder in item.placeholders) {
-        message = replaceAll(message, `$${placeholder}$`, item.placeholders[placeholder].content);
+        message = replaceAll(
+          message,
+          `$${placeholder}$`,
+          item.placeholders[placeholder].content,
+        );
       }
     }
 

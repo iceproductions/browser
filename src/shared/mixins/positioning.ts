@@ -1,7 +1,5 @@
 import { css } from 'styled-components';
 
-export const getLetterSpacing = (fontSize: number, tracking: number) => tracking / fontSize;
-
 export const centerHorizontal = () => {
   return css`
     left: 50%;

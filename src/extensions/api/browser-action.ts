@@ -18,11 +18,17 @@ export class BrowserAction {
     if (cb) cb();
   };
 
-  public setBadgeBackgroundColor = (details: chrome.browserAction.BadgeBackgroundColorDetails, cb: any) => {
+  public setBadgeBackgroundColor = (
+    details: chrome.browserAction.BadgeBackgroundColorDetails,
+    cb: any,
+  ) => {
     if (cb) cb();
   };
 
-  public setBadgeText = (details: chrome.browserAction.BadgeTextDetails, cb: any) => {
+  public setBadgeText = (
+    details: chrome.browserAction.BadgeTextDetails,
+    cb: any,
+  ) => {
     ipcRenderer.send('api-browserAction-setBadgeText', api.runtime.id, details);
 
     if (cb) {

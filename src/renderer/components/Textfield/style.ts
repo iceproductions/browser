@@ -46,6 +46,7 @@ export const Input = styled.input`
     &[type='number']::-webkit-outer-spin-button {
       -webkit-appearance: none;
     }
+
   `}
 `;
 
@@ -53,7 +54,7 @@ export const Textarea = styled.textarea`
   width: 100%;
   height: 48px;
   font-size: 16px;
-  color: var(--send-feedback-placeholder-color);
+  color: #000;
   padding-left: 12px;
   border: none;
   outline: none;
@@ -64,18 +65,19 @@ export const Textarea = styled.textarea`
     padding-top: ${hasLabel ? 12 : 0}px;
     padding-right: ${hasIcon ? 48 : 12}px;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0px 0px 0px var(--send-feedback-placeholder-color);
+    text-shadow: 0px 0px 0px ${fontColor};
 
-    color: var(--send-feedback-placeholder-color);
+    color: ${color};
 
     &::placeholder {
-      text-shadow: 0px 0px 0px var(--send-feedback-placeholder-color);
+      text-shadow: 0px 0px 0px ${fontColor};
       opacity: 0.4;
     }
     &[type='number']::-webkit-inner-spin-button,
     &[type='number']::-webkit-outer-spin-button {
       -webkit-appearance: none;
     }
+
   `}
 `;
 

@@ -14,7 +14,7 @@ export class IpcEvent {
   }
 
   public emit = (e: IpcMessageEvent, ...args: any[]) => {
-    this.callbacks.forEach((callback) => {
+    this.callbacks.forEach(callback => {
       callback(...args);
     });
   };
@@ -29,10 +29,13 @@ export class IpcEvent {
   }
 
   public removeListener(callback: Function) {
-    this.callbacks = this.callbacks.filter((x) => x !== callback);
+    this.callbacks = this.callbacks.filter(x => x !== callback);
 
     if (this.callbacks.length === 0) {
-      ipcRenderer.removeListener(`api-emit-event-${this.scope}-${this.name}`, this.emit);
+      ipcRenderer.removeListener(
+        `api-emit-event-${this.scope}-${this.name}`,
+        this.emit,
+      );
       this.listener = false;
     }
   }

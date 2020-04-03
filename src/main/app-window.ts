@@ -1,67 +1,29 @@
-import { BrowserWindow, app, nativeImage, session, ipcRenderer } from 'electron';
-
-import { resolve } from 'path';
+import { BrowserWindow, app, nativeImage, dialog, dialog, remote } from 'electron';
+import { resolve, join } from 'path';
 import { platform } from 'os';
 
 import { ViewManager } from './view-manager';
+import { getPath } from '~/shared/utils/paths';
+import { existsSync, readFileSync, writeFileSync, appendFile } from 'fs';
+import store from '~/renderer/app/store';
 import console = require('console');
-import colors from 'colors';
-
-import { MenuDialog } from './dialogs/menu';
-import { PrintDialog } from './dialogs/print';
-import { AlertDialog } from './dialogs/alert';
-import { SearchDialog } from './dialogs/search';
-import { PermissionsDialog } from './dialogs/permissions';
-import { QuickMenuDialog } from './dialogs/quickmenu';
-
-import { startMessagingService, runAdblockService } from './services';
-import { windowsManager } from '.';
-import { defaultTabOptions } from '~/renderer/views/app/constants';
-import { Dialog } from './dialogs/dialog';
-
-const showSearchOnStartup = (window: AppWindow) => {
-  const { search } = window.dialogs;
-
-  const url = '';
-  const tabId = 0;
-
-  search.show({
-    url,
-    tabId,
-  });
-
-  search.webContents.focus();
-};
-
-interface IDialogs {
-  search?: SearchDialog;
-
-  menu?: MenuDialog;
-  print?: PrintDialog;
-
-  alert?: AlertDialog;
-  permissions?: PermissionsDialog;
-
-  [key: string]: Dialog;
-}
+const { setup: setupPushReceiver } = require('electron-push-receiver');
 
 export class AppWindow extends BrowserWindow {
   public viewManager: ViewManager = new ViewManager();
-  public dialogs: IDialogs = {
-    search: new SearchDialog(this),
-  };
-
+  
   constructor() {
     super({
       frame: false,
-      minWidth: 500,
+      minWidth: 400,
       minHeight: 450,
       width: 1280,
       height: 720,
       show: false,
+      backgroundColor: '#1c1c1c',
       title: 'Dot Browser',
       titleBarStyle: 'hiddenInset',
-      maximizable: true,
+      maximizable: false,
       webPreferences: {
         plugins: true,
         nodeIntegration: true,
@@ -69,112 +31,124 @@ export class AppWindow extends BrowserWindow {
         experimentalFeatures: true,
         enableBlinkFeatures: 'OverlayScrollbars',
         webviewTag: true,
-        webSecurity: false,
-        enableRemoteModule: true,
       },
+      icon: resolve(app.getAppPath(), '/icon.png'),
     });
 
-    process.traceDeprecation = true;
+    app.commandLine.appendSwitch('enable-features', 'OverlayScrollbar')
+    app.commandLine.appendSwitch('auto-detect', 'false')
+    app.commandLine.appendSwitch('no-proxy-server')
 
-    startMessagingService(this);
+    let pluginName
+    switch (process.platform) {
+      case 'win32':
+        pluginName = 'pepflashplayer.dll'
+        break
+      case 'darwin':
+        pluginName = 'PepperFlashPlayer.plugin'
+        break
+      case 'linux':
+        pluginName = 'libpepflashplayer.so'
+        break
+    }
 
-    this.setBackgroundColor('#fff');
+    // Adobe Flash Player will be deprecated January 2020
+    app.commandLine.appendSwitch('ppapi-flash-path', join(__dirname, pluginName))
 
-    app.commandLine.appendSwitch('enable-features', 'OverlayScrollbar');
-    app.commandLine.appendSwitch('--enable-transparent-visuals');
-    app.commandLine.appendSwitch('auto-detect', 'false');
+    const windowDataPath = getPath('window-data.json');
 
-    this.webContents.once('dom-ready', () => {
-      this.dialogs.menu = new MenuDialog(this);
-      this.dialogs.print = new PrintDialog(this);
+    const errorLogPath = getPath('dot-errors.log');
 
-      this.dialogs.alert = new AlertDialog(this);
-      this.dialogs.permissions = new PermissionsDialog(this);
+    var time = new Date().toUTCString();
 
-      showSearchOnStartup(this);
-    });
+    setupPushReceiver(this.webContents);
 
+    let windowState: any = {};
+
+    if (existsSync(windowDataPath)) {
+      try {
+        // Read the last window state from file.
+        windowState = JSON.parse(readFileSync(windowDataPath, 'utf8'));
+      } catch (e) {
+        writeFileSync(windowDataPath, JSON.stringify({}));
+      }
+    }
+
+    if (existsSync(errorLogPath)) {
+      appendFile(errorLogPath, `// Error log effective of 2.1.0, ${time}. Running ${platform()}, started main app.\n`, function(err) {
+
+      });
+    }
+
+    // Merge bounds from the last window state to the current window options.
+    if (windowState) {
+      this.setBounds({ ...windowState.bounds });
+    }
+
+    if (windowState) {
+      if (windowState.maximized) {
+        this.maximize();
+      }
+      if (windowState.fullscreen) {
+        this.setFullScreen(true);
+      }
+    }
+
+    // systemPreferences.on('accent-color-changed', (event: any, newColor: string) => {
+    //   console.log(newColor)
+    // });
+
+    // Update window bounds on resize and on move when window is not maximized.
     this.on('resize', () => {
-      this.viewManager.fixBounds();
+      if (!this.isMaximized()) {
+        windowState.bounds = this.getBounds();
+      }
     });
-
-    this.on('maximize', () => {
-      this.viewManager.fixBounds();
-      this.dialogs.search.rearrange();
-      this.dialogs.alert.rearrange();
-      this.dialogs.print.rearrange();
-      this.dialogs.permissions.rearrange();
-      this.dialogs.menu.hide();
-    });
-
-    this.on('unmaximize', () => {
-      this.viewManager.fixBounds();
-      this.dialogs.search.rearrange();
-      this.dialogs.alert.rearrange();
-      this.dialogs.print.rearrange();
-      this.dialogs.permissions.rearrange();
-      this.dialogs.menu.hide();
-    });
-
-    this.on('resize', () => {
-      this.dialogs.menu.hide();
-      this.viewManager.fixBounds();
-      this.dialogs.permissions.hide();
-      this.dialogs.alert.rearrange();
-      this.dialogs.print.rearrange();
-      this.dialogs.search.hide();
-    });
-
     this.on('move', () => {
-      this.dialogs.menu.hide();
-      this.viewManager.fixBounds();
-      this.dialogs.permissions.hide();
-      this.dialogs.alert.rearrange();
-      this.dialogs.print.rearrange();
-      this.dialogs.search.hide();
+      if (!this.isMaximized()) {
+        windowState.bounds = this.getBounds();
+      }
     });
+
+    if(this.webContents.getURL().split("https://dot.ender.site/api/")[0] != `https://dot.ender.site/api/`) {
+      this.webContents.setUserAgent(`Dot Fetcher/${app.getVersion()}`);
+    }
+    
 
     const resize = () => {
       this.viewManager.fixBounds();
       this.webContents.send('tabs-resize');
-      this.dialogs.permissions.hide();
-      this.dialogs.alert.rearrange();
-      this.dialogs.print.rearrange();
-      this.dialogs.search.hide();
     };
 
     this.on('maximize', resize);
     this.on('restore', resize);
     this.on('unmaximize', resize);
 
-    process.on('uncaughtException', (error) => {
-      console.log(`${colors.blue.bold('Exception')}`, error);
+    process.on('uncaughtException', error => {
+      console.error(error);
     });
 
-    if (process.env.ENV == 'dev') {
-      this.setIcon(
-        nativeImage.createFromPath(
-          resolve(
-            app.getAppPath(),
-            `/static/icon.${platform() == 'win32' ? 'icon' : platform() == 'darwin' ? 'icns' : 'png'}`
-          )
-        )
-      );
+    // Save current window state to file.
+    this.on('close', () => {
+      windowState.maximized = this.isMaximized();
+      windowState.fullscreen = this.isFullScreen();
+      writeFileSync(windowDataPath, JSON.stringify(windowState));
+    });
+
+    this.webContents.on('crashed', (event: any, crashed: boolean) => {
+      this.loadURL(app.getAppPath() + 'static\\pages\\crash.html')
+    });   
+
+    if (process.env.ENV === 'dev') {
+      this.setIcon(nativeImage.createFromPath(resolve(app.getAppPath() + '\\static\\icon.png')))
       this.webContents.openDevTools({ mode: 'detach' });
       this.loadURL('http://localhost:4444/app.html');
     } else {
-      this.loadURL('file://' + resolve(__dirname, 'renderer', 'app.html'));
+      this.loadURL(join('file://', app.getAppPath(), 'build/app.html'));
     }
 
-    this.once('ready-to-show', async () => {
+    this.once('ready-to-show', () => {
       this.show();
-      runAdblockService(session.fromPartition('persist:view'));
-
-      console.log(
-        `${colors.blue.bold('Performance')} Loaded application in ${Date.now() - windowsManager.performanceStart}ms`
-      );
-
-      this.focus();
     });
 
     this.on('enter-full-screen', () => {
@@ -206,14 +180,43 @@ export class AppWindow extends BrowserWindow {
       this.webContents.send('scroll-touch-end');
     });
 
-    this.on('app-command', (e, cmd) => {
-      if (cmd === 'browser-backward' && this.viewManager.selected.webContents.canGoBack()) {
-        this.viewManager.selected.webContents.goBack();
-      }
+    if(process.env.ENV != "dev") {
+      var oldConsole = console.log;
+      console.log = function(msg: any) {
+        appendFile(errorLogPath, `[${time}] [App] [DEBUG] ` + msg + '\n', function(err) {
+          if(err) {
+              return oldConsole(err);
+          }
+        });
+      };
+  
+      var oldError = console.error;
+      console.error = function(msg: any) {
+        appendFile(errorLogPath, `[${time}] [App] [ERROR] ` + msg + '\n', function(err) {
+          if(err) {
+              return oldError(err);
+          }
+        });
+      };
+  
+      var oldInfo = console.info;
+      console.info = function(msg: any) {
+        appendFile(errorLogPath, `[${time}] [App] [INFO] ` + msg + '\n', function(err) {
+          if(err) {
+              return oldInfo(err);
+          }
+        });
+      };
+  
+      var oldWarn = console.warn;
+      console.warn = function(msg: any) {
+        appendFile(errorLogPath, `[${time}] [App] [WARN] ` + msg + '\n', function(err) {
+          if(err) {
+              return oldWarn(err);
+          }
+        });
+      };
+    }
 
-      if (cmd === 'browser-forward' && this.viewManager.selected.webContents.canGoBack()) {
-        this.viewManager.selected.webContents.goBack();
-      }
-    });
   }
 }

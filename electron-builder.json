@@ -1,6 +1,6 @@
 {
   "appId": "org.dotinc.browser",
-  "productName": "Dot Browser",
+  "productName": "Dot",
   "asar": true,
   "directories": {
     "output": "dist",
@@ -19,9 +19,7 @@
     "locale/**/*",
     "static/icon-inverted.png",
     "static/notification.mp3",
-    "static/tray-icon.png",
-    "build/*",
-    "src/renderer/views/app/locale/**/*"
+    "static/tray-icon.png"
   ],
   "publish": "github",
   "nsis": {
@@ -33,8 +31,7 @@
     "installerIcon": "icon.ico",
     "uninstallerIcon": "icon.ico",
     "installerHeader": "./app-icons/dot-header.bmp",
-    "installerHeaderIcon": "icon.ico",
-    "include": "static/setup.nsh"
+    "installerHeaderIcon": "icon.ico"
   },
   "nsisWeb": {
     "oneClick": false,
@@ -45,22 +42,13 @@
     "installerIcon": "icon.ico",
     "uninstallerIcon": "icon.ico",
     "installerHeader": "./app-icons/dot-header.bmp",
-    "installerHeaderIcon": "icon.ico",
-    "include": "static/setup.nsh"
+    "installerHeaderIcon": "icon.ico"
   },
   "linux": {
     "category": "Network",
     "target": [
       {
-        "target": "deb",
-        "arch": ["ia32", "x64"]
-      },
-      {
-        "target": "rpm",
-        "arch": ["ia32", "x64"]
-      },
-      {
-        "target": "tar.xz",
+        "target": "AppImage",
         "arch": ["ia32", "x64"]
       }
     ]

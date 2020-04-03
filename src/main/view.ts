@@ -1,45 +1,52 @@
-import { BrowserView, BrowserWindow, shell, Menu, clipboard, nativeImage, dialog } from 'electron';
-import { windowsManager } from '.';
+import { BrowserView, app, Menu, nativeImage, clipboard, Tray, remote, dialog, BrowserWindow } from 'electron';
+import { appWindow } from '.';
+import { sendToAllExtensions } from './extensions';
+import { engine } from './services/web-request';
+import { parse } from 'tldts';
+import console = require('console');
+import store from '~/renderer/app/store';
 import { resolve } from 'path';
-import { ViewError } from '../renderer/views/app/models/error';
-import { truncateStr } from '~/shared/mixins';
-import { writeFileSync } from 'fs';
-import colors from 'colors';
-import { zoom } from '~/shared/events';
+const path = require("path");
+const { setup: setupPushReceiver } = require('electron-push-receiver');
+import { Client } from 'discord-rpc';
+import { getCurrentWindow } from '~/renderer/app/utils';
+var modal = require('electron-modal');
 
 export class View extends BrowserView {
   public title: string = '';
   public url: string = '';
-  public favicon: string = '';
   public tabId: number;
-  public homeUrl: string = 'dot://newtab';
-  public error: ViewError;
+  public homeUrl: string;
 
   constructor(id: number, url: string) {
     super({
       webPreferences: {
-        sandbox: true,
-        preload: `${process.cwd()}/build/preloads/view-preload.js`,
+        preload: `${app.getAppPath()}/build/view-preload.js`,
         nodeIntegration: false,
         additionalArguments: [`--tab-id=${id}`],
         contextIsolation: true,
         partition: 'persist:view',
-        scrollBounce: true,
         plugins: true,
-        javascript: true,
-        enableRemoteModule: true,
       },
     });
+    
 
     this.homeUrl = url;
     this.tabId = id;
 
-    this.setBackgroundColor('#fff');
-
-    this.webContents.userAgent = this.webContents.userAgent
-      .replace(/ dot\\?.([^\s]+)/g, '')
-      .replace(/ Electron\\?.([^\s]+)/g, '')
-      .replace(/Chrome\\?.([^\s]+)/g, `Chrome/${windowsManager.versions.chromium}`);
+    var truncateStr = function(str: any, length: any, ending: any) {
+      if (length == null) {
+        length = 100;
+      }
+      if (ending == null) {
+        ending = '...';
+      }
+      if (str.length > length) {
+        return str.substring(0, length - ending.length) + ending;
+      } else {
+        return str;
+      }
+    };
 
     this.webContents.on('context-menu', (e, params) => {
       let menuItems: Electron.MenuItemConstructorOptions[] = [];
@@ -48,8 +55,10 @@ export class View extends BrowserView {
         menuItems = menuItems.concat([
           {
             label: 'Open ' + params.mediaType + ' in new tab',
+            enabled: params.srcURL.includes("blob:") == false,
+            icon: app.getAppPath() + '\\static\\app-icons\\add.png',
             click: () => {
-              windowsManager.window.webContents.send('api-tabs-create', {
+              appWindow.webContents.send('api-tabs-create', {
                 url: params.srcURL,
                 active: false,
               });
@@ -57,12 +66,14 @@ export class View extends BrowserView {
           },
           {
             label: 'Save ' + params.mediaType,
+            enabled: params.srcURL.includes("blob:") == false,
             click: () => {
-              this.webContents.downloadURL(params.srcURL);
+              this.webContents.downloadURL(params.srcURL)
             },
           },
           {
             label: 'Copy link',
+            enabled: params.srcURL.includes("blob:") == false,
             click: () => {
               clipboard.clear();
               clipboard.writeText(params.srcURL);
@@ -78,8 +89,9 @@ export class View extends BrowserView {
         menuItems = menuItems.concat([
           {
             label: 'Open link in new tab',
+            icon: app.getAppPath() + '\\static\\app-icons\\add.png',
             click: () => {
-              windowsManager.window.webContents.send('api-tabs-create', {
+              appWindow.webContents.send('api-tabs-create', {
                 url: params.linkURL,
                 active: false,
               });
@@ -105,8 +117,9 @@ export class View extends BrowserView {
         menuItems = menuItems.concat([
           {
             label: 'Open image in new tab',
+            icon: app.getAppPath() + '\\static\\app-icons\\add.png',
             click: () => {
-              windowsManager.window.webContents.send('api-tabs-create', {
+              appWindow.webContents.send('api-tabs-create', {
                 url: params.srcURL,
                 active: false,
               });
@@ -115,7 +128,9 @@ export class View extends BrowserView {
           {
             label: 'Save image',
             click: () => {
-              this.webContents.downloadURL(params.srcURL);
+              
+              this.webContents.downloadURL(params.srcURL)
+
             },
           },
           {
@@ -144,11 +159,13 @@ export class View extends BrowserView {
         menuItems = menuItems.concat([
           {
             role: 'undo',
-            accelerator: 'CmdOrCtrl+Z',
+            icon: resolve(app.getAppPath() + '\\static\\app-icons\\undo.png'),
+            accelerator: 'Ctrl+Z'
           },
           {
             role: 'redo',
-            accelerator: 'CmdOrCtrl+Y',
+            icon: resolve(app.getAppPath() + '\\static\\app-icons\\redo.png'),
+            accelerator: 'Ctrl+Y'
           },
           {
             type: 'separator',
@@ -159,16 +176,18 @@ export class View extends BrowserView {
           },
           {
             role: 'copy',
-            accelerator: 'CmdOrCtrl+C',
+            accelerator: 'Ctrl+C',
             enabled: params.selectionText.length >= 1,
+            icon: resolve(app.getAppPath() + '\\static\\app-icons\\copy.png')
           },
           {
             role: 'paste',
-            accelerator: 'CmdOrCtrl+V',
+            accelerator: 'Ctrl+V',
+            icon: resolve(app.getAppPath() + '\\static\\app-icons\\paste.png')
           },
           {
             role: 'selectAll',
-            accelerator: 'CmdOrCtrl+A',
+            accelerator: 'Ctrl+A'
           },
           {
             type: 'separator',
@@ -176,14 +195,16 @@ export class View extends BrowserView {
         ]);
       }
 
-      if (!params.isEditable && params.selectionText !== '' && !params.hasImageContents) {
+      if (!params.isEditable && params.selectionText !== '') {
         menuItems = menuItems.concat([
           {
             role: 'copy',
-            accelerator: 'CmdOrCtrl+C',
+            accelerator: 'Ctrl+C',
+            icon: resolve(app.getAppPath() + '\\static\\app-icons\\copy.png')
           },
           {
             label: `Search the web for "${truncateStr(params.selectionText, 16, '...')}"`,
+            icon: resolve(app.getAppPath() + '\\static\\app-icons\\search.png'),
             click: () => {
               var url = `https://google.com/search?q=${params.selectionText}`;
 
@@ -193,11 +214,17 @@ export class View extends BrowserView {
         ]);
       }
 
-      if (!params.hasImageContents && params.linkURL === '' && params.selectionText === '' && !params.isEditable) {
+      if (
+        !params.hasImageContents &&
+        params.linkURL === '' &&
+        params.selectionText === '' &&
+        !params.isEditable
+      ) {
         menuItems = menuItems.concat([
           {
             label: 'Back              ',
             accelerator: 'Alt+Left',
+            icon: resolve(app.getAppPath() + '\\static\\app-icons\\bck.png'),
             enabled: this.webContents.canGoBack(),
             click: () => {
               this.webContents.goBack();
@@ -206,6 +233,7 @@ export class View extends BrowserView {
           {
             label: 'Forward         ',
             accelerator: 'Alt+Right',
+            icon: resolve(app.getAppPath() + '\\static\\app-icons\\fwd.png'),
             enabled: this.webContents.canGoForward(),
             click: () => {
               this.webContents.goForward();
@@ -214,6 +242,7 @@ export class View extends BrowserView {
           {
             label: 'Refresh',
             accelerator: 'F5',
+            icon: resolve(app.getAppPath() + '\\static\\app-icons\\refresh.png'),
             click: () => {
               this.webContents.reload();
             },
@@ -221,153 +250,86 @@ export class View extends BrowserView {
           {
             type: 'separator',
           },
-          {
-            label: 'Save as',
-            accelerator: 'CmdOrCtrl+S',
-            click: () => {
-              dialog
-                .showSaveDialog(windowsManager.window, {
-                  defaultPath: `${windowsManager.window.viewManager.selected.title}.html`,
-                  filters: [
-                    {
-                      name: 'Web Page, HTML Only',
-                      extensions: ['html', 'htm'],
-                    },
-                    {
-                      name: 'Web Page, Single File',
-                      extensions: ['mhtml'],
-                    },
-                    {
-                      name: 'Web Page, Complete',
-                      extensions: ['htm', 'html'],
-                    },
-                    { name: 'All Files', extensions: ['*'] },
-                  ],
-                })
-                .then((result) => {
-                  if (result.filePath == undefined) return;
-
-                  windowsManager.window.viewManager.selected.webContents.savePage(result.filePath, 'HTMLComplete');
-                })
-                .catch((err) => {
-                  console.log(`${colors.blue.bold('View')} Failed to save page`, err);
-                });
-            },
-          },
-          {
-            label: 'Print',
-            accelerator: 'CmdOrCtrl+P',
-            click: () => {
-              windowsManager.window.dialogs.alert.show();
-              windowsManager.window.dialogs.alert.action = 'alert';
-              windowsManager.window.dialogs.alert.send(
-                'Print is disabled right now. However, you can expect it to return soon!'
-              );
-            },
-          },
         ]);
       }
-
+     
       menuItems.push(
         {
-          type: 'separator',
+            type: 'separator',
         },
         {
-          label: 'View source',
-          click: () => {
-            if (this.webContents.getURL().substr(0, 12) != 'view-source:') {
-              var url = `view-source:${this.webContents.getURL()}`;
+        label: 'View source',
+        click: () => {
 
-              this.webContents.loadURL(url);
-            }
-          },
+          if(this.webContents.getURL().substr(0, 12) != "view-source:") {
+            var url = `view-source:${this.webContents.getURL()}`;
+
+            this.webContents.loadURL(url);
+          }
+
         },
-        {
-          label: 'Inspect',
-          accelerator: 'F12',
-          click: () => {
-            if (this.webContents.getURL()) {
+      },
+      {
+        label: 'Inspect',
+        accelerator: 'F12',
+        icon: resolve(app.getAppPath() + '\\static\\app-icons\\dev.png'),
+        click: () => {
+
+            if(this.webContents.getURL()) {
               this.webContents.inspectElement(params.x, params.y);
 
               if (this.webContents.isDevToolsOpened()) {
                 this.webContents.devToolsWebContents.focus();
-                this.webContents.devToolsWebContents.toggleDevTools();
               }
             }
-          },
-        }
-      );
+
+        },
+      });
 
       const menu = Menu.buildFromTemplate(menuItems);
 
       menu.popup();
     });
 
-    this.webContents.addListener('zoom-changed', (e, zoomDirection) => zoom(zoomDirection, windowsManager.window));
-
     this.webContents.addListener('found-in-page', (e, result) => {
-      windowsManager.window.webContents.send('found-in-page', result);
+      appWindow.webContents.send('found-in-page', result);
     });
 
-    this.webContents.once('media-started-playing', (listener: any) => {
-      windowsManager.window.webContents.send(`audio-playing-${this.tabId}`);
+    this.webContents.on('media-started-playing', (listener: any) => {
+      appWindow.webContents.send(`audio-playing-${this.tabId}`);
     });
 
-    this.webContents.once('media-paused', (listener: any) => {
-      windowsManager.window.webContents.send(`audio-stopped-${this.tabId}`);
+    this.webContents.on('media-paused', (listener: any) => {
+      appWindow.webContents.send(`audio-stopped-${this.tabId}`);
     });
 
     this.webContents.addListener('did-stop-loading', () => {
       this.updateNavigationState();
-      windowsManager.window.webContents.send(`view-loading-${this.tabId}`, false, this.url);
+      appWindow.webContents.send(`view-loading-${this.tabId}`, false);
     });
 
     this.webContents.addListener('did-start-loading', () => {
       this.updateNavigationState();
-      windowsManager.window.webContents.send(`view-loading-${this.tabId}`, true, this.url);
+      appWindow.webContents.send(`view-loading-${this.tabId}`, true);
     });
 
-    this.webContents.addListener(
-      'did-fail-load',
-      (
-        event: Electron.Event,
-        errorCode: number,
-        errorDescription: string,
-        validatedURL: string,
-        isMainFrame: boolean
-      ) => {
-        if (isMainFrame == true) {
-          this.error = {
-            code: errorCode,
-            description: errorDescription,
-            url: validatedURL,
-          };
-
-          if (!windowsManager.window.viewManager.viewErrors[this.id]) {
-            windowsManager.window.viewManager.viewErrors[this.id] = true;
-
-            return this.webContents.reload();
-          } else {
-            delete windowsManager.window.viewManager.viewErrors[this.id];
-
-            const url = this.webContents.getURL();
-
-            return this.webContents.loadURL(`dot://error#${url}`);
-          }
-        }
-      }
-    );
-
-    this.webContents.addListener('did-start-navigation', async (...args) => {
+    this.webContents.addListener('did-start-navigation', (...args: any[]) => {
       this.updateNavigationState();
 
-      if (args[3] == true) {
-        windowsManager.window.webContents.send(`browserview-tab-info-updated-${this.tabId}`);
+      const url = this.webContents.getURL();
+
+      const { styles, scripts } = engine.getCosmeticsFilters({
+        url,
+        ...parse(url),
+      });
+
+      this.webContents.insertCSS(styles);
+
+      for (const script of scripts) {
+        this.webContents.executeJavaScript(script);
       }
 
-      let url = this.webContents.getURL();
-
-      windowsManager.window.webContents.send(`load-commit-${this.tabId}`, ...args);
+      appWindow.webContents.send(`load-commit-${this.tabId}`, ...args);
 
       this.emitWebNavigationEvent('onBeforeNavigate', {
         tabId: this.tabId,
@@ -389,139 +351,277 @@ export class View extends BrowserView {
       });
     });
 
-    this.webContents.addListener('did-navigate', async (e, url) => {
-      windowsManager.window.webContents.send(`view-did-navigate-${this.webContents.id}`, url);
-
-      this.emitWebNavigationEvent('onCreatedNavigationTarget', {
-        tabId: this.tabId,
-        url,
-        sourceFrameId: 0,
-        timeStamp: Date.now(),
-      });
-    });
-
-    this.webContents.addListener('dom-ready', () => {
-      this.emitWebNavigationEvent('onDOMContentLoaded', {
-        tabId: this.tabId,
-        url: this.webContents.getURL(),
-        frameId: 0,
-        timeStamp: Date.now(),
-        processId: process.pid,
-      });
-    });
-
-    this.webContents.addListener('did-navigate-in-page', async (e, url, isMainFrame) => {
-      if (isMainFrame) {
-        windowsManager.window.webContents.send(`view-did-navigate-${this.webContents.id}`, url);
-      }
-    });
-
     this.webContents.addListener('did-finish-load', async () => {
+
       this.emitWebNavigationEvent('onCompleted', {
         tabId: this.tabId,
         url: this.webContents.getURL(),
         frameId: 0,
         timeStamp: Date.now(),
         processId: process.pid,
+        screenshot: this.getScreenshot()
+      });
+
+    });
+
+    this.webContents.addListener(
+      'will-navigate',
+      (e, url) => {
+        e.preventDefault();
+        appWindow.viewManager.selected.webContents.loadURL(url);     
+        
+        //Discord Rich Presence
+        const clientId = '565573138146918421';
+
+        const rpclient = new Client({ transport: 'ipc'});
+        const startTimestamp = Math.round(+new Date()/1000)
+
+        async function setActivity() {
+          if (!rpclient) {
+            return;
+          }
+          try {
+
+            var details = 'Browsing on';
+
+            if(appWindow.webContents.isCurrentlyAudible() == true) {
+              details = 'Listening to audio on'
+            }
+
+            var pattern = /(.+:\/\/)?([^\/]+)(\/.*)*/i;
+            var arr = pattern.exec(url);
+            var state = arr[2];
+            var largeImageKey = 'dlogo';
+            var smallImageKey = 'dot-online';
+            var smallImageText = `Browsing a webpage`;
+          } catch(e) {
+            var details = 'Dot Browser';
+            var state = 'Idle';
+            var largeImageKey = 'dlogo';
+            var smallImageKey = 'dot-idle';
+            var smallImageText = 'Idle';
+          }
+          rpclient.setActivity({
+            details: details,
+            state: state,
+            startTimestamp,
+            largeImageKey,
+            smallImageKey,
+            largeImageText: `Dot Browser ${app.getVersion()}`,
+            smallImageText,
+            instance: false
+          })
+        };
+
+        rpclient.on('ready', () => {
+          setActivity();
+
+          setInterval(() => {
+            setActivity();
+          }, 3e3);
+        });
+
+        rpclient.login({ clientId }).catch(console.error);
+        //Discord Rich Presence        
+      }
+    )
+
+    this.webContents.addListener(
+      'new-window',
+      (e, url, frameName, disposition, options, referrer) => {
+
+        //Discord Rich Presence
+        const clientId = '565573138146918421';
+
+        const rpclient = new Client({ transport: 'ipc'});
+        const startTimestamp = Math.round(+new Date()/1000)
+
+        async function setActivity() {
+          if (!rpclient) {
+            return;
+          }
+          try {
+
+            var details = 'Browsing on';
+
+            if(appWindow.webContents.isCurrentlyAudible() == true) {
+              details = 'Listening to audio on'
+            }
+
+            var pattern = /(.+:\/\/)?([^\/]+)(\/.*)*/i;
+            var arr = pattern.exec(url);
+            var state = arr[2];
+            var largeImageKey = 'dlogo';
+            var smallImageKey = 'dot-online';
+            var smallImageText = `Browsing a webpage`;
+          } catch(e) {
+            var details = 'Dot Browser';
+            var state = 'Idle';
+            var largeImageKey = 'dlogo';
+            var smallImageKey = 'dot-idle';
+            var smallImageText = 'Idle';
+          }
+          rpclient.setActivity({
+            details: details,
+            state: state,
+            startTimestamp,
+            largeImageKey,
+            smallImageKey,
+            largeImageText: `Dot Browser ${app.getVersion()}`,
+            smallImageText,
+            instance: false
+          })
+        };
+
+        rpclient.on('ready', () => {
+          setActivity();
+
+          setInterval(() => {
+            setActivity();
+          }, 3e3);
+        });
+
+        rpclient.login({ clientId }).catch(console.error);
+        //Discord Rich Presence
+
+        if (disposition === 'new-window') {
+          console.log(frameName)
+          console.log(disposition)
+          console.log(options)
+          if (disposition === 'new-window') {
+            if(appWindow.viewManager.selected.title != `Dot - ${options.title}`) {
+              e.preventDefault();
+              let child = new BrowserWindow({ show: false, frame: false, title: `Dot - ${options.title}`, width: options.width, height: options.height, icon: resolve(app.getAppPath() + '/static/icon.png') })
+              child.loadURL(app.getAppPath() + '/static/pages/window.html')
+              child.once('ready-to-show', () => {
+                child.show()
+                child.webContents.send('load-url', url);
+                if(process.env.ENV == "dev") {
+                  child.webContents.toggleDevTools()
+                }
+              })
+            }
+            
+          }
+          if (frameName === 'link') {
+            e.preventDefault();
+            appWindow.viewManager.selected.webContents.loadURL(url);   
+          }
+          if (frameName === '_self') {
+            e.preventDefault();
+            appWindow.viewManager.selected.webContents.loadURL(url);
+            appWindow.viewManager.selected.webContents.setUserAgent(appWindow.viewManager.selected.webContents.getUserAgent() + " Dot Browser/getdot.js.org");
+          }
+          if (frameName === '_top') {
+            e.preventDefault();
+            appWindow.viewManager.selected.webContents.loadURL(url);
+            appWindow.viewManager.selected.webContents.setUserAgent(appWindow.viewManager.selected.webContents.getUserAgent() + " Dot Browser/getdot.js.org");
+          }
+          if (frameName === '_blank') {
+            e.preventDefault();
+            appWindow.viewManager.selected.webContents.loadURL(url);
+          }
+          if (frameName === 'modal') {
+            e.preventDefault();
+            appWindow.webContents.send('api-tabs-create', {
+              url,
+              active: true,
+            });
+          }
+        } else if (disposition === 'foreground-tab') {
+          e.preventDefault();
+          appWindow.webContents.send('api-tabs-create', { url, active: true });
+        } else if (disposition === 'background-tab') {
+          e.preventDefault();
+          appWindow.webContents.send('api-tabs-create', { url, active: false });
+        }
+
+        this.emitWebNavigationEvent('onCreatedNavigationTarget', {
+          tabId: this.tabId,
+          url,
+          sourceFrameId: 0,
+          timeStamp: Date.now(),
+        });
+      },
+    );
+
+    this.webContents.addListener('dom-ready', () => {
+
+      this.emitWebNavigationEvent('onDOMContentLoaded', {
+        tabId: this.tabId,
+        url: this.webContents.getURL(),
+        frameId: 0,
+        timeStamp: Date.now(),
+        processId: process.pid,
+        screenshot: this.getScreenshot()
       });
     });
 
-    this.webContents.addListener('new-window', (e, url, frameName, disposition, options, referrer) => {
-      if (disposition === 'new-window') {
-        if (disposition === 'new-window') {
-          if (windowsManager.window.viewManager.selected.title != `Dot - ${options.title}`) {
-            e.preventDefault();
-            if (url.split('://')[0] != 'http' || url.split('://')[0] != 'https') {
-              return shell.openExternal(url);
-            }
-            let child = new BrowserWindow({
-              show: false,
-              frame: false,
-              title: `Dot - ${options.title}`,
-              width: options.width,
-              height: options.height,
-              icon: resolve(process.cwd() + '/static/icon.png'),
-            });
-            child.loadURL(process.cwd() + '/static/pages/util/window.html');
-            child.once('ready-to-show', () => {
-              child.show();
-              child.webContents.send('load-url', url);
-            });
-          }
-        }
-        if (frameName === 'link') {
-          e.preventDefault();
-          windowsManager.window.viewManager.selected.webContents.loadURL(url);
-        }
-        if (frameName === '_self' || options.title == '_self') {
-          e.preventDefault();
-          windowsManager.window.viewManager.selected.webContents.loadURL(url);
-        }
-        if (frameName === '_top' || options.title == '_top') {
-          e.preventDefault();
-          windowsManager.window.viewManager.selected.webContents.loadURL(url);
-        }
-        if (frameName === '_blank' || options.title == '_blank') {
-          e.preventDefault();
-          windowsManager.window.webContents.send('api-tabs-create', {
-            url,
-            active: true,
-          });
-        }
-        if (frameName === 'modal') {
-          e.preventDefault();
-          windowsManager.window.webContents.send('api-tabs-create', {
-            url,
-            active: true,
-          });
-        }
-      } else if (disposition === 'foreground-tab') {
-        e.preventDefault();
-        windowsManager.window.webContents.send('api-tabs-create', { url, active: true });
-      } else if (disposition === 'background-tab') {
-        e.preventDefault();
-        windowsManager.window.webContents.send('api-tabs-create', { url, active: false });
-      } else if (frameName == '_blank') {
-        e.preventDefault();
-        windowsManager.window.webContents.send('api-tabs-create', { url, active: true });
-      }
+    this.webContents.addListener(
+      'page-favicon-updated',
+      async (e, favicons) => {
+        appWindow.webContents.send(
+          `browserview-favicon-updated-${this.tabId}`,
+          favicons[0],
+        );
+      },
+    );
 
-      if (frameName == '_blank') {
-        e.preventDefault();
-        windowsManager.window.webContents.send('api-tabs-create', { url, active: true });
-      }
-    });
-
-    this.webContents.addListener('page-favicon-updated', async (e, favicons) => {
-      this.favicon = favicons[0];
-
-      windowsManager.window.webContents.send(
-        `browserview-favicon-updated-${this.tabId}`,
-        favicons[0],
-        windowsManager.settings.conf.appearance.theme
+    this.webContents.addListener('did-change-theme-color', (e, color) => {
+      appWindow.webContents.send(
+        `browserview-theme-color-updated-${this.tabId}`,
+        color,
       );
     });
 
-    this.webContents.addListener('did-change-theme-color', (e, color) => {
-      windowsManager.window.webContents.send(`browserview-theme-color-updated-${this.tabId}`, color);
-    });
+    (this.webContents as any).addListener(
+      'certificate-error',
+      (
+        event: Electron.Event,
+        url: string,
+        error: string,
+        certificate: Electron.Certificate,
+        callback: Function,
+      ) => {
+        if(`${this.webContents.getURL()}`.includes("#ise") == false) {
+          console.log(error);
+          this.webContents.loadURL(app.getAppPath() + '/static/pages/ssl-error.html?du=' + url + '&err=' + error);
+          event.preventDefault();
+          callback(true);
+        }
+        if(`${this.webContents.getURL()}`.includes("#ise") == true) {
+          this.webContents.loadURL(this.webContents.getURL().split("#ise")[0]);
+          callback(true);
+        }
+      },
+    );
 
-    this.setAutoResize({ width: true, height: true, horizontal: false, vertical: false });
+    this.setAutoResize({ width: true, height: true });
     this.webContents.loadURL(url);
   }
-
-  public emitWebNavigationEvent = (name: string, ...data: any[]) => {
-    this.webContents.send(`api-emit-event-webNavigation-${name}`, ...data);
-  };
 
   public updateNavigationState() {
     if (this.isDestroyed()) return;
 
-    if (windowsManager.window.viewManager.selectedId === this.webContents.id) {
-      windowsManager.window.webContents.send('update-navigation-state', {
+    if (appWindow.viewManager.selectedId === this.tabId) {
+      appWindow.webContents.send('update-navigation-state', {
         canGoBack: this.webContents.canGoBack(),
         canGoForward: this.webContents.canGoForward(),
       });
     }
+  }
+
+  public emitWebNavigationEvent = (name: string, ...data: any[]) => {
+    this.webContents.send(`api-emit-event-webNavigation-${name}`, ...data);
+
+    sendToAllExtensions(`api-emit-event-webNavigation-${name}`, ...data);
+  };
+
+  public async getScreenshot(): Promise<string> {
+    return new Promise(resolve => {
+      this.webContents.capturePage(img => {
+        resolve(img.toDataURL());
+      });
+    });
   }
 }

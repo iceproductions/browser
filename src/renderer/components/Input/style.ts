@@ -46,6 +46,7 @@ export const Input = styled.input`
     &[type='number']::-webkit-outer-spin-button {
       -webkit-appearance: none;
     }
+
   `}
 `;
 

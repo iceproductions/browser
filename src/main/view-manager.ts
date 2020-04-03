@@ -1,7 +1,10 @@
-import { ipcMain } from 'electron';
-import { TOOLBAR_HEIGHT } from '../renderer/views/app/constants';
-import { windowsManager } from '.';
+import { ipcMain, app, nativeImage } from 'electron';
+import { TOOLBAR_HEIGHT } from '~/renderer/app/constants/design';
+import { appWindow } from '.';
 import { View } from './view';
+import { sendToAllExtensions } from './extensions';
+import { resolve, join } from 'path';
+import console = require('console');
 
 declare const global: any;
 
@@ -10,7 +13,6 @@ global.viewsMap = {};
 export class ViewManager {
   public views: { [key: number]: View } = {};
   public selectedId = 0;
-  public viewErrors: { [key: number]: boolean } = {};
   public _fullscreen = false;
 
   public isHidden = false;
@@ -25,24 +27,40 @@ export class ViewManager {
   }
 
   constructor() {
-    ipcMain.on('browserview-create', (e: Electron.IpcMainEvent, { tabId, url }: any) => {
-      this.create(tabId, url);
+    ipcMain.on(
+      'browserview-create',
+      (e: Electron.IpcMessageEvent, { tabId, url }: any) => {
+        this.create(tabId, url);
 
-      windowsManager.window.webContents.send(`browserview-created-${tabId}`, this.views[tabId].id);
-    });
+        appWindow.webContents.send(
+          `browserview-created-${tabId}`,
+          this.views[tabId].id,
+        );
+      },
+    );
 
-    ipcMain.on('browserview-select', (e: Electron.IpcMainEvent, id: number) => {
-      const view = this.views[id];
-      this.select(id);
-      view.updateNavigationState();
-    });
+    ipcMain.on(
+      'browserview-select',
+      (e: Electron.IpcMessageEvent, id: number) => {
+        const view = this.views[id];
+        this.select(id);
+        view.updateNavigationState();
+      },
+    );
 
-    ipcMain.on('browserview-destroy', (e: Electron.IpcMainEvent, id: number) => {
-      this.destroy(id);
-    });
+    ipcMain.on('capture-page', (tabId: number) => {
+     
+    })
+
+    ipcMain.on(
+      'browserview-destroy',
+      (e: Electron.IpcMessageEvent, id: number) => {
+        this.destroy(id);
+      },
+    );
 
     ipcMain.on('browserview-call', async (e: any, data: any) => {
-      const view = this.views[data.tabId];
+      const view = this.views[data.tabId]
       let scope: any = view;
 
       if (data.scope && data.scope.trim() !== '') {
@@ -57,13 +75,21 @@ export class ViewManager {
           if (result instanceof Promise) {
             result = await result;
           }
-
+    
           if (data.callId) {
-            windowsManager.window.webContents.send(`browserview-call-result-${data.callId}`, result);
+            appWindow.webContents.send(
+              `browserview-call-result-${data.callId}`,
+              result,
+            );
           }
-        } catch (e) {}
+
+        }
+        catch (e) {
+
+        }
       }
     });
+
 
     ipcMain.on('browserview-hide', () => {
       this.hideView();
@@ -78,13 +104,11 @@ export class ViewManager {
         const view = this.views[key];
         const title = view.webContents.getTitle();
         const url = view.webContents.getURL();
-        const zoomAmount = view.webContents.zoomFactor;
 
         if (title !== view.title) {
-          windowsManager.window.webContents.send(`browserview-data-updated-${key}`, {
+          appWindow.webContents.send(`browserview-data-updated-${key}`, {
             title,
             url,
-            zoomAmount,
           });
           view.url = url;
           view.title = title;
@@ -94,6 +118,26 @@ export class ViewManager {
 
     ipcMain.on('browserview-clear', () => {
       this.clear();
+    });
+
+    ipcMain.on('is-light-mode', () => {
+      try {
+        var path = nativeImage.createFromPath(resolve(app.getAppPath() + '/static/icon-inverted.png'));
+        appWindow.setIcon(path)
+      }
+      catch(e) {
+        console.debug(e)
+      }
+    });
+
+    ipcMain.on('is-dark-mode', () => {
+      try {
+        var path = nativeImage.createFromPath(resolve(app.getAppPath() + '/static/icon.png'));
+        appWindow.setIcon(path)
+      }
+      catch(e) {
+        console.debug(e)
+      }
     });
   }
 
@@ -108,17 +152,9 @@ export class ViewManager {
   }
 
   public clear() {
-    windowsManager.window.setBrowserView(null);
+    appWindow.setBrowserView(null);
     for (const key in this.views) {
       this.destroy(parseInt(key, 10));
-    }
-  }
-
-  public newTabView() {
-    for (const key in this.views) {
-      if (this.views[key].webContents.getURL().startsWith('dot://newtab')) {
-        return this.views[key];
-      }
     }
   }
 
@@ -128,18 +164,21 @@ export class ViewManager {
 
     if (!view || view.isDestroyed()) {
       this.destroy(tabId);
-      windowsManager.window.setBrowserView(null);
+      appWindow.setBrowserView(null);
       return;
     }
 
     if (this.isHidden) return;
 
-    windowsManager.window.setBrowserView(view);
+    appWindow.setBrowserView(view);
 
     const currUrl = view.webContents.getURL();
 
-    if ((currUrl === '' && view.homeUrl === 'about:blank') || currUrl === 'about:blank') {
-      windowsManager.window.webContents.focus();
+    if (
+      (currUrl === '' && view.homeUrl === 'about:blank') ||
+      currUrl === 'about:blank'
+    ) {
+      appWindow.webContents.focus();
     } else {
       view.webContents.focus();
     }
@@ -152,19 +191,19 @@ export class ViewManager {
 
     if (!view) return;
 
-    const { width, height } = windowsManager.window.getContentBounds();
+    const { width, height } = appWindow.getContentBounds();
     view.setBounds({
       x: 0,
       y: this.fullscreen ? 0 : TOOLBAR_HEIGHT + 1,
       width,
       height: this.fullscreen ? height : height - TOOLBAR_HEIGHT,
     });
-    view.setAutoResize({ width: true, height: true, horizontal: false, vertical: false });
+    view.setAutoResize({ width: true, height: true });
   }
 
   public hideView() {
     this.isHidden = true;
-    windowsManager.window.setBrowserView(null);
+    appWindow.setBrowserView(null);
   }
 
   public showView() {
@@ -180,8 +219,8 @@ export class ViewManager {
       return;
     }
 
-    if (windowsManager.window.getBrowserViews()[0] === view) {
-      windowsManager.window.setBrowserView(null);
+    if (appWindow.getBrowserView() === view) {
+      appWindow.setBrowserView(null);
     }
 
     view.destroy();
