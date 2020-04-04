@@ -14,10 +14,6 @@ let file = editJsonFile(resolve(homedir()) + '/dot/dot-options.json');
 // Special thanks to DusterTheFirst for this neat bit of code 😊
 
 export class WeatherStore {
-  constructor() {
-    if(!this.loaded)
-      this.load();
-  }
 
   @observable
   public loaded?: boolean = false;
