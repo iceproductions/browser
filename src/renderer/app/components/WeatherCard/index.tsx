@@ -23,7 +23,7 @@ import { homedir } from 'os';
 const editJsonFile = require("edit-json-file");
 let file = editJsonFile(resolve(homedir()) + '/dot/dot-options.json');
 
-if(!file.get("tempType")) {
+if (!file.get("tempType")) {
   file.set("tempType", "c");
   file.save()
   store.weather.tempindicator = "c"
@@ -33,6 +33,18 @@ else {
 }
 
 export const WeatherCard = observer(() => {
+  var days = [];
+  if(store.weather.nextDays)
+    for (var day of store.weather.nextDays) {
+      days.push(
+        <Item>
+          <Overline>{day.name}</Overline>
+          <SmallIcon style={{ backgroundImage: `url(${icons.fewClouds})` }} />
+          <SmallDegrees>{day.high}°</SmallDegrees>
+          <SmallDegrees night>{day.low}°</SmallDegrees>
+        </Item>
+      )
+    }
   return (
     <StyledCard>
       <Header time={store.weather.timeInt}>
@@ -58,30 +70,7 @@ export const WeatherCard = observer(() => {
         </Left>
       </Header>
       <Items>
-        <Item>
-          <Overline>WED</Overline>
-          <SmallIcon style={{ backgroundImage: `url(${icons.fewClouds})` }} />
-          <SmallDegrees>20°</SmallDegrees>
-          <SmallDegrees night>12°</SmallDegrees>
-        </Item>
-        <Item>
-          <Overline>THU</Overline>
-          <SmallIcon style={{ backgroundImage: `url(${icons.fewClouds})` }} />
-          <SmallDegrees>20°</SmallDegrees>
-          <SmallDegrees night>12°</SmallDegrees>
-        </Item>
-        <Item>
-          <Overline>FRI</Overline>
-          <SmallIcon style={{ backgroundImage: `url(${icons.fewClouds})` }} />
-          <SmallDegrees>20°</SmallDegrees>
-          <SmallDegrees night>12°</SmallDegrees>
-        </Item>
-        <Item>
-          <Overline>SAT</Overline>
-          <SmallIcon style={{ backgroundImage: `url(${icons.fewClouds})` }} />
-          <SmallDegrees>20°</SmallDegrees>
-          <SmallDegrees night>12°</SmallDegrees>
-        </Item>
+        {days}
       </Items>
     </StyledCard>
   );
