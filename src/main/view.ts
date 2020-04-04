@@ -5,12 +5,18 @@ import { engine } from './services/web-request';
 import { parse } from 'tldts';
 import console = require('console');
 import store from '~/renderer/app/store';
-import { resolve } from 'path';
+import { resolve as resolv } from 'path';
 const path = require("path");
 const { setup: setupPushReceiver } = require('electron-push-receiver');
 import { Client } from 'discord-rpc';
 import { getCurrentWindow } from '~/renderer/app/utils';
 var modal = require('electron-modal');
+
+function resolve(str: string){
+  str = resolv(str);
+  var p = nativeImage.createFromPath(str);
+  return p;
+}
 
 export class View extends BrowserView {
   public title: string = '';
@@ -56,7 +62,7 @@ export class View extends BrowserView {
           {
             label: 'Open ' + params.mediaType + ' in new tab',
             enabled: params.srcURL.includes("blob:") == false,
-            icon: app.getAppPath() + '\\static\\app-icons\\add.png',
+            icon: path.join(__dirname, "../../static/app-icons/add.png"),
             click: () => {
               appWindow.webContents.send('api-tabs-create', {
                 url: params.srcURL,
@@ -89,7 +95,7 @@ export class View extends BrowserView {
         menuItems = menuItems.concat([
           {
             label: 'Open link in new tab',
-            icon: app.getAppPath() + '\\static\\app-icons\\add.png',
+            icon: resolve(path.join(__dirname, "../../static/app-icons/add.png")),
             click: () => {
               appWindow.webContents.send('api-tabs-create', {
                 url: params.linkURL,
@@ -117,7 +123,7 @@ export class View extends BrowserView {
         menuItems = menuItems.concat([
           {
             label: 'Open image in new tab',
-            icon: app.getAppPath() + '\\static\\app-icons\\add.png',
+            icon: path.join(__dirname, "../../",  'static/app-icons/add.png'),
             click: () => {
               appWindow.webContents.send('api-tabs-create', {
                 url: params.srcURL,
@@ -159,12 +165,12 @@ export class View extends BrowserView {
         menuItems = menuItems.concat([
           {
             role: 'undo',
-            icon: resolve(app.getAppPath() + '\\static\\app-icons\\undo.png'),
+            icon: resolve(path.join(__dirname, "../../", 'static/app-icons/undo.png')),
             accelerator: 'Ctrl+Z'
           },
           {
             role: 'redo',
-            icon: resolve(app.getAppPath() + '\\static\\app-icons\\redo.png'),
+            icon: resolve(path.join(__dirname, "../../", 'static/app-icons/redo.png')),
             accelerator: 'Ctrl+Y'
           },
           {
@@ -178,12 +184,12 @@ export class View extends BrowserView {
             role: 'copy',
             accelerator: 'Ctrl+C',
             enabled: params.selectionText.length >= 1,
-            icon: resolve(app.getAppPath() + '\\static\\app-icons\\copy.png')
+            icon: resolve(path.join(__dirname, "../../", 'static/app-icons/copy.png'))
           },
           {
             role: 'paste',
             accelerator: 'Ctrl+V',
-            icon: resolve(app.getAppPath() + '\\static\\app-icons\\paste.png')
+            icon: resolve(path.join(__dirname, "../../", 'static/app-icons/paste.png'))
           },
           {
             role: 'selectAll',
@@ -200,11 +206,11 @@ export class View extends BrowserView {
           {
             role: 'copy',
             accelerator: 'Ctrl+C',
-            icon: resolve(app.getAppPath() + '\\static\\app-icons\\copy.png')
+            icon: resolve(path.join(__dirname, "../../", 'static/app-icons/copy.png'))
           },
           {
             label: `Search the web for "${truncateStr(params.selectionText, 16, '...')}"`,
-            icon: resolve(app.getAppPath() + '\\static\\app-icons\\search.png'),
+            icon: resolve(path.join(__dirname, "../../", 'static/app-icons/search.png')),
             click: () => {
               var url = `https://google.com/search?q=${params.selectionText}`;
 
@@ -224,7 +230,7 @@ export class View extends BrowserView {
           {
             label: 'Back              ',
             accelerator: 'Alt+Left',
-            icon: resolve(app.getAppPath() + '\\static\\app-icons\\bck.png'),
+            icon: resolve(path.join(__dirname, "../../static/app-icons/bck.png")),
             enabled: this.webContents.canGoBack(),
             click: () => {
               this.webContents.goBack();
@@ -233,7 +239,7 @@ export class View extends BrowserView {
           {
             label: 'Forward         ',
             accelerator: 'Alt+Right',
-            icon: resolve(app.getAppPath() + '\\static\\app-icons\\fwd.png'),
+            icon: resolve(path.join(__dirname, "../../static/app-icons/fwd.png")),
             enabled: this.webContents.canGoForward(),
             click: () => {
               this.webContents.goForward();
@@ -242,7 +248,7 @@ export class View extends BrowserView {
           {
             label: 'Refresh',
             accelerator: 'F5',
-            icon: resolve(app.getAppPath() + '\\static\\app-icons\\refresh.png'),
+            icon: resolve(path.join(__dirname, "../../static/app-icons/refresh.png")),
             click: () => {
               this.webContents.reload();
             },
@@ -272,7 +278,7 @@ export class View extends BrowserView {
       {
         label: 'Inspect',
         accelerator: 'F12',
-        icon: resolve(app.getAppPath() + '\\static\\app-icons\\dev.png'),
+        icon: resolve(path.join(__dirname, "../../static/app-icons/dev.png")),
         click: () => {
 
             if(this.webContents.getURL()) {
@@ -491,8 +497,8 @@ export class View extends BrowserView {
           if (disposition === 'new-window') {
             if(appWindow.viewManager.selected.title != `Dot - ${options.title}`) {
               e.preventDefault();
-              let child = new BrowserWindow({ show: false, frame: false, title: `Dot - ${options.title}`, width: options.width, height: options.height, icon: resolve(app.getAppPath() + '/static/icon.png') })
-              child.loadURL(app.getAppPath() + '/static/pages/window.html')
+              let child = new BrowserWindow({ show: false, frame: false, title: `Dot - ${options.title}`, width: options.width, height: options.height, icon: resolve(path.join(__dirname, "../../",  'static/icon.png')) })
+              child.loadURL(path.join(__dirname, "../../",  'static/pages/window.html'))
               child.once('ready-to-show', () => {
                 child.show()
                 child.webContents.send('load-url', url);
@@ -585,7 +591,7 @@ export class View extends BrowserView {
       ) => {
         if(`${this.webContents.getURL()}`.includes("#ise") == false) {
           console.log(error);
-          this.webContents.loadURL(app.getAppPath() + '/static/pages/ssl-error.html?du=' + url + '&err=' + error);
+          this.webContents.loadURL(path.join(__dirname, "../../", 'static/pages/ssl-error.html') + '?du=' + url + '&err=' + error);
           event.preventDefault();
           callback(true);
         }
