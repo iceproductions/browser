@@ -46,7 +46,7 @@ export const QuickMenu = observer(() => {
         <Bubble onClick={changeContent('settings')} invert icon={icons.settings}>
           {store.locale.lang.overlay[0].settings_bubble}
         </Bubble>
-        <Bubble onClick={changeContent('extensions')} disabled invert icon={icons.extensions}>
+        <Bubble onClick={changeContent('extensions')} disabled={false} invert icon={icons.extensions}>
           {store.locale.lang.overlay[0].extensions_bubble}
         </Bubble>
         <Bubble
