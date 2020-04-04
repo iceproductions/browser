@@ -1,5 +1,5 @@
 import { BrowserWindow, app, nativeImage, dialog, dialog, remote } from 'electron';
-import { resolve, join } from 'path';
+import { resolve as resolv, join } from 'path';
 import { platform } from 'os';
 
 import { ViewManager } from './view-manager';
@@ -8,6 +8,13 @@ import { existsSync, readFileSync, writeFileSync, appendFile } from 'fs';
 import store from '~/renderer/app/store';
 import console = require('console');
 const { setup: setupPushReceiver } = require('electron-push-receiver');
+
+
+function resolve(str: string){
+  str = resolv(str);
+  var p = nativeImage.createFromPath(str);
+  return p;
+}
 
 export class AppWindow extends BrowserWindow {
   public viewManager: ViewManager = new ViewManager();
@@ -21,7 +28,7 @@ export class AppWindow extends BrowserWindow {
       height: 720,
       show: false,
       backgroundColor: '#1c1c1c',
-      title: 'Dot Browser',
+      title: 'Ice Browser',
       titleBarStyle: 'hiddenInset',
       maximizable: false,
       webPreferences: {
@@ -32,7 +39,7 @@ export class AppWindow extends BrowserWindow {
         enableBlinkFeatures: 'OverlayScrollbars',
         webviewTag: true,
       },
-      icon: resolve(app.getAppPath(), '/icon.png'),
+      icon: resolve(join(app.getAppPath(), '/icon.png')),
     });
 
     app.commandLine.appendSwitch('enable-features', 'OverlayScrollbar')
@@ -57,7 +64,7 @@ export class AppWindow extends BrowserWindow {
 
     const windowDataPath = getPath('window-data.json');
 
-    const errorLogPath = getPath('dot-errors.log');
+    const errorLogPath = getPath('ice-errors.log');
 
     var time = new Date().toUTCString();
 
