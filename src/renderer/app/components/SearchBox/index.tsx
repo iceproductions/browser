@@ -50,6 +50,9 @@ const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if(searchengine == "ecosia") {
       var searchurl = `https://www.ecosia.org/search?q=`;
     }
+    if(searchengine == "seznam") {
+      var searchurl = `https://seznam.cz/?q=`
+    }
 
 
     if (isURL(text) && !text.includes('://')) {
@@ -187,6 +190,9 @@ const chipImage = () => {
   }
   if(searchengine == "ecosia") {
     searchurl = `https://ecosia.org`;
+  }
+  if(searchengine == "seznam") {
+    searchurl = `https://seznam.cz/?q=`
   }
 
   return `https://f1.allesedv.com/${searchurl}`
