@@ -284,7 +284,7 @@ export const Overlay = observer(() => {
               ))}
             </CardWrapper>
             <div onClick={preventHiding}>
-              <DropArrow visible={store.news.list.length == 5} style={{ textAlign: 'center', margin: '10px auto 20px auto', filter: 'invert(1)', zoom: '1.5', cursor: 'pointer' }} title="Load more articles" onClick={loadNews('more')}>
+              <DropArrow visible={store.news.list.length == 5} style={{ textAlign: 'center', margin: '10px auto 20px auto', filter: 'invert(1)', zoom: '1.5', cursor: 'pointer' }} title="Load more articles" onClick={openExtLink("https://news.google.com/")/*loadNews('more')*/}>
                 {store.news.shouldLoadNews == true && (
                   <Preloader
                       thickness={6}
@@ -293,7 +293,7 @@ export const Overlay = observer(() => {
                   />
                 )}
               </DropArrow>
-              <IconButton visible={store.news.list.length >= 6} style={{ textAlign: 'center', margin: '10px auto 20px auto', filter: 'invert(1)', zoom: '1.5', cursor: 'pointer' }} icon={icons.up} title="Load less articles" onClick={loadNews(5)}>
+              <IconButton visible={store.news.list.length >= 6} style={{ textAlign: 'center', margin: '10px auto 20px auto', filter: 'invert(1)', zoom: '1.5', cursor: 'pointer' }} icon={icons.up} title="Load less articles" onClick={openExtLink("https://news.google.com/")/*loadNews(5)*/}>
                 {store.news.shouldLoadNews == true && (
                   <Preloader
                       thickness={6}
