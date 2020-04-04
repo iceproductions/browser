@@ -16,25 +16,28 @@ export class NewsStore {
   @observable
   public shouldLoadNews: boolean = false;
 
-  private async loadNews(i: number, $: any, prefix: string) {
-    if(i == 0) return;
+  public $: any;
 
-    var pref = prefix + ":nth-child(" + i + ") ";
+  public async loadNews(id, el) {
+    //if(id == 0) return;
 
+    var $ = this.$;
     try {
       var obj = {
-        url: $(pref + "article > h3 > a").attr("href"),
-        favicon: `https://www.google.com/s2/favicons?domain=` + $(pref +"div > div > a").text(),
-        source: $(pref +"div > div > a").text(),
-        title: $(pref +"article > h3 > a").text(),
-        wholeTitle: $(pref +"article > h3 > a").text(),
-        desc: $(pref +"article > div > span").text(),
-        image: $(pref +"figure > img").attr("src"),
-        publishDate: $(pref +"time").text(),
-        key: i
+        url: "https://news.google.com/" + $("article > h3 > a", el).first().attr("href"),
+        favicon: `https://www.google.com/s2/favicons?domain=` + $("div > div > a", el).first().text(),
+        source: $("article > div > div > a", el).first().text(),
+        title: $("article > h3 > a", el).first().text(),
+        wholeTitle: $("article > h3 > a", el).first().text(),
+        desc: $("article > div > span", el).first().text(),
+        image: $("figure > img", el).first().attr("src"),
+        publishDate: $("time", el).first().text(),
+        key: id
       }
-      if(obj.title)
+      if(obj.title){
         this.list.push(obj);
+        console.log(obj);
+      }
     } catch(e){
       console.error(e);
     }
@@ -48,11 +51,13 @@ export class NewsStore {
     console.log("Fetching news");
 
     const prefix = "body > c-wiz > div > div > div > div > main > c-wiz > div > div";
-    var newsA = $(prefix);
+    var news = $(prefix);
 
-    for(var i = 0; i < newsA.length; i++) {
-      this.loadNews(i, $, prefix);
-    }
+    this.$ = $;
+
+    console.log("Looping news");
+
+    news.each((id, el) => this.loadNews(id, el));
   }
 
   public async loadOld() {
