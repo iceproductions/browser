@@ -1,7 +1,7 @@
 {
-  "name": "dot",
-  "version": "2.1.0",
-  "description": "A beautiful browser with darn-simple UI, based on Wexond.",
+  "name": "ice",
+  "version": "2.2.0",
+  "description": "A beautiful browser with darn-simple UI, based on Dot.",
   "keywords": [
     "web-browser",
     "material",
@@ -10,11 +10,11 @@
     "mobx",
     "styled-components"
   ],
-  "homepage": "https://github.com/dot-browser/desktop#readme",
+  "homepage": "https://github.com/iceproductions/browser#readme",
   "main": "build/main.js",
   "author": {
-    "name": "Dot Inc. & Ender And Fire Development",
-    "email": "efdev@ender.site"
+    "name": "Ice productions",
+    "email": "admin@iceproductions.dev"
   },
   "contributors": [
     {
@@ -32,27 +32,44 @@
     {
       "name": "Mikolaj Palkiewicz",
       "email": "xnerhu@gmail.com"
+    },
+    {
+      "name": "Daniel Bulant",
+      "email": "admin@iceproductions.dev"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dot-browser/desktop.git"
+    "url": "git+https://github.com/iceproductions/browser.git"
   },
   "bugs": {
-    "url": "https://github.com/dot-browser/desktop/issues"
+    "url": "https://github.com/iceproductions/browser/issues"
   },
   "scripts": {
     "dev": "npm run node-ver && npm run download-filters && cross-env NODE_ENV='dev' node fuse.js",
     "build": "npm run node-ver && npm run download-filters && node fuse.js",
     "start": "cross-env ENV='dev' electron --no-proxy-server .",
-    "compile-win32": "npm run build && electron-builder -w -p always",
-    "compile-darwin": "npm run build && electron-builder -m -p always",
+    "compile-win32": "npm run build && electron-builder -w -p always --x64",
+    "compile-darwin": "npm run build && electron-builder -m -p always --x64",
     "compile-linux": "npm run build && electron-builder -l -p always",
     "lint": "tslint \"src/**/*.ts*\"",
     "lint-fix": "prettier --write \"src/**/*.ts*\" && tslint \"src/**/*.ts*\" --fix",
     "postinstall": "electron-builder install-app-deps",
     "download-filters": "node tools/download-filters.js",
     "node-ver": "node tools/build-preload.js"
+  },
+  "build": {
+    "linux": {
+      "target": [
+        {
+          "target": ["deb", "tar.gz"],
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    }
   },
   "pre-commit": [
     "lint-fix"
