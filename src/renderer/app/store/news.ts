@@ -1,6 +1,7 @@
 import { observable } from 'mobx';
 import { ipcRenderer, remote } from 'electron';
 import console = require('console');
+import cheerio = require("cheerio");
 import store from '.';
 const editJsonFile = require("edit-json-file");
 
@@ -15,7 +16,46 @@ export class NewsStore {
   @observable
   public shouldLoadNews: boolean = false;
 
+  private async loadNews(i: number, $: any, prefix: string) {
+    if(i == 0) return;
+
+    var pref = prefix + ":nth-child(" + i + ") ";
+
+    try {
+      var obj = {
+        url: $(pref + "article > h3 > a").attr("href"),
+        favicon: `https://www.google.com/s2/favicons?domain=` + $(pref +"div > div > a").text(),
+        source: $(pref +"div > div > a").text(),
+        title: $(pref +"article > h3 > a").text(),
+        wholeTitle: $(pref +"article > h3 > a").text(),
+        desc: $(pref +"article > div > span").text(),
+        image: $(pref +"figure > img").attr("src"),
+        publishDate: $(pref +"time").text(),
+        key: i
+      }
+      if(obj.title)
+        this.list.push(obj);
+    } catch(e){
+      console.error(e);
+    }
+  }
+
   public async load() {
+    const data = await fetch(`https://cors-anywhere.herokuapp.com/https://news.google.com/topstories`);
+    const body = await data.text();
+    const $ = cheerio.load(body);
+
+    console.log("Fetching news");
+
+    const prefix = "body > c-wiz > div > div > div > div > main > c-wiz > div > div";
+    var newsA = $(prefix);
+
+    for(var i = 0; i < newsA.length; i++) {
+      this.loadNews(i, $, prefix);
+    }
+  }
+
+  public async loadOld() {
     const data = await fetch(`https://dot.ender.site/v${store.api}/news`);
     const json = await data.json();
 
