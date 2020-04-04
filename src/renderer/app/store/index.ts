@@ -91,17 +91,18 @@ export class Store {
   };
 
   public async init() {
-    const data = await fetch('https://dot.ender.site/api/v0/version');
+    /*const data = await fetch('https://dot.ender.site/api/v0/version');
     const json = await data.json();
 
-    this.api = json.api;
+    this.api = json.api;*/
 
     this.weather.load()
     this.news.load();
     this.notifications.loadAll();
     this.notifications.showPermissionWindow();
 
-    console.log("\x1b[0mdot \x1b[32msuccess \x1b[0m Loaded Dot APIs. API v" + `${this.api} on app v${remote.app.getVersion()}\x1b[0m`)
+    console.log(`\x1b[0mICE \x1b[32msuccess \x1b[0m Loaded ICE APIs. Ice v${remote.app.getVersion()}\x1b[0m`);
+    //console.log("\x1b[0mdot \x1b[32msuccess \x1b[0m Loaded Dot APIs. API v" + `${this.api} on app v${remote.app.getVersion()}\x1b[0m`)
   }
 
   public api: number;
