@@ -60,6 +60,11 @@
     "node-ver": "node tools/build-preload.js"
   },
   "build": {
+    "files": [
+      "build/**/*",
+      "package.json"
+    ],
+    "extends": null,
     "linux": {
       "target": [
         {
