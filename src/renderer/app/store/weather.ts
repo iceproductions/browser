@@ -83,7 +83,8 @@ export class WeatherStore {
         var url = re.match(/weather\/tenday\/l\/[a-z0-9]+/gmi)[0];
         var res = await fetch("https://cors-anywhere.herokuapp.com/https://weather.com/" + url);
       } catch(e){
-        console.error("Weather fetch error:", e);
+        console.error("Weather fetch error:");
+        console.error(e);
         return;
       }
 
@@ -107,26 +108,35 @@ export class WeatherStore {
         getDay(matches, 9),
         getDay(matches, 12)
       ];
-      console.log("Found days");
 
-      this.location = body.match(/city=([a-z]+)/)[1];
-      this.summary = body.match(/description"><span>([a-z ]+)<\//i)[1];
+      try {
 
+        this.location = body.match(/city=([a-z ]+)/i)[1];
+        this.location = this.location.substr(0,1) + this.location.substr(1).toLowerCase();
+      } catch(e){
+        console.warn(e);
+      }
+
+      try {
+
+        this.summary = body.match(/description"><span>([^<]*)/i)[1];
+      } catch(e) {
+        console.warn(e);
+      }
 
       var today = new Date()
       var curHr = today.getHours()
 
       if (curHr < 12) {
-        this.timetype = store.locale.lang.search_bar[0].timeTypes[0].morning
+        this.timetype = store.locale.lang.search_bar[0].timeTypes[0].morning;
         this.timeInt = 0;
       } else if (curHr < 18) {
-        this.timetype = store.locale.lang.search_bar[0].timeTypes[0].afternoon
+        this.timetype = store.locale.lang.search_bar[0].timeTypes[0].afternoon;
         this.timeInt = 2;
       } else {
-        this.timetype = store.locale.lang.search_bar[0].timeTypes[0].evening
+        this.timetype = store.locale.lang.search_bar[0].timeTypes[0].evening;
         this.timeInt = 3;
       }
-
       /*
       const data = await fetch(`https://dot.ender.site/v${store.api}/weather?d=${dt}`);
       const json = await data.json();
