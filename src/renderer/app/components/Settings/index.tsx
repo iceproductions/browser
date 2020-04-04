@@ -45,7 +45,7 @@ win.webContents.session.clearCache(function(){
   console.log("Cleared cache");
 });
 
-store.options.currentDisplay = "profile";
+store.options.currentDisplay = "appearance";
 
 const onBackClick = () => {
   scrollRef.current.scrollTop = 0;
@@ -762,8 +762,8 @@ export const openDevTools = () => {
 
 export const testNotif = () => {
   notify({
-      title: 'Dot',
-      appName: "Dot",
+      title: 'Ice',
+      appName: "Ice browser",
       message: 'Testing Notification',
       icon: resolve(app.getAppPath() + '\\static\\icon.png'),
       sound: true,
@@ -775,7 +775,7 @@ export const testNotif = () => {
 };
 
 const openLog = () => {
-  remote.shell.openItem(remote.app.getPath('userData') + '\\dot-errors.log')
+  remote.shell.openItem(remote.app.getPath('userData') + '\\ice-errors.log')
 }
 
 const MenuItem = observer(
@@ -907,7 +907,7 @@ export const Settings = observer(() => {
           search
           onSearchInput={onInput}
         >
-          <MenuItem selected={store.options.currentDisplay == 'profile'} display="profile">{store.locale.lang.settings[0].my_profile[0].title}</MenuItem>
+          {/*<MenuItem selected={store.options.currentDisplay == 'profile'} display="profile">{store.locale.lang.settings[0].my_profile[0].title}</MenuItem>*/}
           <MenuItem selected={store.options.currentDisplay == 'appearance'} display="appearance">{store.locale.lang.settings[0].appearance[0].title}</MenuItem>
           <MenuItem selected={store.options.currentDisplay == 'downloads'} display="downloads">{store.locale.lang.settings[0].downloads[0].title}</MenuItem>
           <MenuItem selected={store.options.currentDisplay == 'languages'} display="languages">{store.locale.lang.settings[0].languages[0].title}</MenuItem>
