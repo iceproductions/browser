@@ -72,7 +72,7 @@
             "guest": [
                 {
                     "message_1": "Kam chcete jít?",
-                    "message_2": "Co máš na mysli_?",
+                    "message_2": "Co máš na mysli?",
                     "message_3": "Pro začátek napiš URL či něco vyhledej",
                     "message_4": "{currentTimeType}"
                 }
