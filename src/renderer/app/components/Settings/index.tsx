@@ -42,7 +42,7 @@ const scrollRef = React.createRef<HTMLDivElement>();
 
 var win = remote.getCurrentWindow();
 win.webContents.session.clearCache(function(){
-  
+  console.log("Cleared cache");
 });
 
 store.options.currentDisplay = "profile";
@@ -539,6 +539,7 @@ const setEngineGoogle = () => {
   document.getElementById("ctx-item-y").style.backgroundColor = "";
   document.getElementById("ctx-item-d").style.backgroundColor = "";
   document.getElementById("ctx-item-e").style.backgroundColor = "";
+  document.getElementById("ctx-item-s").style.backgroundColor = "";
 }
 
 const setEngineBing = () => {
@@ -551,6 +552,7 @@ const setEngineBing = () => {
   document.getElementById("ctx-item-y").style.backgroundColor = "";
   document.getElementById("ctx-item-d").style.backgroundColor = "";
   document.getElementById("ctx-item-e").style.backgroundColor = "";
+  document.getElementById("ctx-item-s").style.backgroundColor = "";
 }
 
 const setEngineYahoo = () => {
@@ -563,6 +565,7 @@ const setEngineYahoo = () => {
   document.getElementById("ctx-item-y").style.backgroundColor = "#585858c7";
   document.getElementById("ctx-item-d").style.backgroundColor = "";
   document.getElementById("ctx-item-e").style.backgroundColor = "";
+  document.getElementById("ctx-item-s").style.backgroundColor = "";
 }
 
 const setEngineDdg = () => {
@@ -575,6 +578,7 @@ const setEngineDdg = () => {
   document.getElementById("ctx-item-y").style.backgroundColor = "";
   document.getElementById("ctx-item-d").style.backgroundColor = "#585858c7";
   document.getElementById("ctx-item-e").style.backgroundColor = "";
+  document.getElementById("ctx-item-s").style.backgroundColor = "";
 }
 
 const setEngineEcosia = () => {
@@ -587,6 +591,20 @@ const setEngineEcosia = () => {
   document.getElementById("ctx-item-y").style.backgroundColor = "";
   document.getElementById("ctx-item-d").style.backgroundColor = "";
   document.getElementById("ctx-item-e").style.backgroundColor = "#585858c7";
+  document.getElementById("ctx-item-s").style.backgroundColor = "";
+}
+
+const setEngineSeznam = () => {
+  file.set("searchEngine", "seznam");
+  console.info(`[SettingsStore] Set searchEngine to custom string seznam`)
+  file.save(); 
+  seMenuVisible = false   
+  document.getElementById("ctx-item-g").style.backgroundColor = "";
+  document.getElementById("ctx-item-b").style.backgroundColor = "";
+  document.getElementById("ctx-item-y").style.backgroundColor = "";
+  document.getElementById("ctx-item-d").style.backgroundColor = "";
+  document.getElementById("ctx-item-e").style.backgroundColor = "";
+  document.getElementById("ctx-item-s").style.backgroundColor = "#585858c7";
 }
 
 var se = file.get("searchEngine");
@@ -604,6 +622,9 @@ if(se == "ddg") {
 }
 if(se == "ecosia") {
   var cmICE = "#585858c7"
+}
+if(se == "seznam") {
+  var cmICS = "#585858c7"
 }
 
 if(!file.get("tempType")) {
@@ -707,6 +728,9 @@ export const Appearance = observer(() => {
               </ContextMenuItem>
               <ContextMenuItem icon={icons.search} onClick={setEngineEcosia} style={{ backgroundColor: `${cmICE}` }} id="ctx-item-e">
                 {store.locale.lang.settings[0].ecosia_searchEngine}
+              </ContextMenuItem>
+              <ContextMenuItem icon={icons.search} onClick={setEngineSeznam} style={{ backgroundColor: `${cmICS}` }} id="ctx-item-s">
+                Seznam
               </ContextMenuItem>
             </ContextMenu>
           </Buttons>
