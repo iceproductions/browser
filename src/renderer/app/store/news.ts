@@ -36,7 +36,6 @@ export class NewsStore {
       }
       if(obj.title){
         this.list.push(obj);
-        console.log(obj);
       }
     } catch(e){
       console.error(e);
