@@ -52,7 +52,7 @@ export class OverlayStore {
   public currentContent: 'default' | 'history' | 'bookmarks' | 'adblock' | 'extensions' | 'settings' | 'preload' = 'preload';
 
   @observable
-  public searchingChip: 'google' | 'bing' | 'yahoo' | 'ddg' | 'ecosia';
+  public searchingChip: 'google' | 'bing' | 'yahoo' | 'ddg' | 'ecosia' | 'seznam';
 
   @observable
   public dialTypeMenuVisible = false;
@@ -83,7 +83,7 @@ export class OverlayStore {
     var cleanURL = encodeURI(remote.app.getAppPath().replace(/\\/g, "/") + '\\static\\pages'.replace(/\\/g, "/"))
     
     if(this.inputRef.current.value.includes(cleanURL) == true) {
-      this.inputRef.current.value = 'dot://' + this.inputRef.current.value.split(cleanURL)[1].split("/")[1].split(".html")[0]
+      this.inputRef.current.value = 'ice://' + this.inputRef.current.value.split(cleanURL)[1].split("/")[1].split(".html")[0]
     }
   }
 
