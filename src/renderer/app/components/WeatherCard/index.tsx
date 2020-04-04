@@ -35,9 +35,10 @@ else {
 export const WeatherCard = observer(() => {
   var days = [];
   if(store.weather.nextDays)
-    for (var day of store.weather.nextDays) {
+    for (var i in store.weather.nextDays) {
+      var day = store.weather.nextDays[i];
       days.push(
-        <Item>
+        <Item key={"day-" + i}>
           <Overline>{day.name}</Overline>
           <SmallIcon style={{ backgroundImage: `url(${icons.fewClouds})` }} />
           <SmallDegrees>{day.high}°</SmallDegrees>
