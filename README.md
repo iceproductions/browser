@@ -50,7 +50,7 @@ A privacy-centric web browser, with an elegant UI and a robust built-in ad block
 
 |  [<img src="https://i.imgur.com/POJjnum.png" alt="Windows" width="24px" height="24px" />]()</br> Windows  |          [<img src="https://i.imgur.com/V0YkvU5.png" alt="Mac" width="24px" height="24px" />]()</br> Mac          |         [<img src="https://i.imgur.com/khCS5Ll.png" alt="Linux" width="24px" height="24px" />]()</br> Linux         |
 |:---------:|:---------------------:|:---------------------:|
-| Not available | Not available | Not available |
+| [download (setup)](https://github.com/iceproductions/browser/releases/tag/v2.2.0) | Not available | [download (deb x32 & x64)](https://github.com/iceproductions/browser/releases/tag/v2.2.0) |
 
 ####
 
