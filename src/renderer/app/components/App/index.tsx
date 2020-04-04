@@ -49,7 +49,7 @@ window.onbeforeunload = () => {
   checkLightMode()
 };
 
-const errorLogPath = getPath('dot-errors.log');
+const errorLogPath = getPath('ice-errors.log');
 
 var time = new Date().toUTCString();
 
