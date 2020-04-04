@@ -52,6 +52,7 @@
     "compile-win32": "npm run build && electron-builder -w -p always --x64",
     "compile-darwin": "npm run build && electron-builder -m -p always --x64",
     "compile-linux": "npm run build && electron-builder -l -p always",
+    "compile-winlin": "npm run compile-linux; npm run compile-win32",
     "lint": "tslint \"src/**/*.ts*\"",
     "lint-fix": "prettier --write \"src/**/*.ts*\" && tslint \"src/**/*.ts*\" --fix",
     "postinstall": "electron-builder install-app-deps",
